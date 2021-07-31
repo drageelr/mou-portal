@@ -2,14 +2,14 @@ import React, {useState,useEffect} from 'react'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import {Table, TableContainer, TableBody, TableCell, TableHead, TableRow, Paper, Button, Dialog, DialogContent, DialogTitle, 
   DialogActions, Grid, CircularProgress, LinearProgress, Typography} from '@material-ui/core'
-import {addSocietyAccount, editSocietyAccount, fetchSocietyAccounts} from './societyDataSlice'
+import {addCategory, editCategory, fetchCategories} from './categoryDataSlice'
 import {connect} from 'react-redux'
 import { Formik, Form, Field } from 'formik'
 import { TextField } from 'formik-material-ui'
-import MoreButton from '../../ui/MoreButton'
 import * as Yup from 'yup'
 import EditIcon from '@material-ui/icons/Edit'
-import {clearError} from './societyDataSlice'
+import AddIcon from '@material-ui/icons/Add'
+import {clearError} from './categoryDataSlice'
 import ErrorSnackbar from '../../ui/ErrorSnackbar'
 import PanelBar from './PanelBar'
 
@@ -25,54 +25,83 @@ const useStyles = makeStyles({
   },
 })
 
-/**
-  The SocietyAccountsPanel Adds/Edits the data of a society, has fields with
-  validation for email, password, Name, Name Initials, president email, and patron email
-  
-  @param {String} societyData for creating account  
- */
 
-function SocietyAccountsPanel({societyData,dispatch}) {
+function CategoryPanel({categoryData, dispatch}) {
   useEffect(() => {
-    dispatch(fetchSocietyAccounts())
+    dispatch(fetchCategories())
   },[])
 
   const classes = useStyles()
   const theme = useTheme()
   const [isOpen,setIsOpen] = useState(false)
   const [editMode,setEditMode] = useState(false)
+  const [mileageOpen, setMileageOpen] = useState(false)
   const [editId, setEditId] = useState(-1)
+
 
   function handleAdd(){
     setEditMode(false)  
     setIsOpen (true)
   }
 
-  function handleEdit(societyId){
-    setEditId(societyId)
+  function handleEdit(categoryId){
+    setEditId(categoryId)
     setEditMode(true)  
     setIsOpen (true)
   }
 
-  function SocietyDialog(){
+  function handleAddMileage(categoryId){
+    setEditId(categoryId)
+    setMileageOpen(true)
+  }
+
+
+  function CategoryMileageDialog(){
+
+    if (editMode){
+      const categoryDetail = categoryData.categoryList.find((category,index) =>{
+        return category.categoryId === editId
+      })
+      if (categoryDetail !== undefined){
+
+      }  
+    }
+
+    function handleMileageClose(){
+      setMileageOpen(false)
+    }
+
+    return (
+      <Dialog
+        open={mileageOpen}
+        onClose={handleMileageClose}
+        >
+        <DialogTitle style={{ cursor: 'move' }}>
+          Add Mileages
+        </DialogTitle>
+
+      </Dialog>
+    )
+  }
+
+
+  function CategoryDialog(){
 
     let initialValues = {
       name:'',
-      email: '',
-      password: '',
-      passwordRequired: !editMode,
+      lowerBound: 0,
+      upperBound: 5000
     }
 
     if (editMode){
-      const societyDetail = societyData.societyList.find((society,index) =>{
-        return society.societyId === editId
+      const categoryDetail = categoryData.categoryList.find((category,index) =>{
+        return category.categoryId === editId
       })
-      if (societyDetail !== undefined){
+      if (categoryDetail !== undefined){
           initialValues = {
-          name: societyDetail.name,
-          email: societyDetail.email,
-          password: societyDetail.password  ,
-          passwordRequired: !editMode,
+          name: categoryDetail.name,
+          lowerBound: categoryDetail.lowerBound,
+          upperBound: categoryDetail.upperBound
         }
       }  
     }
@@ -85,44 +114,37 @@ function SocietyAccountsPanel({societyData,dispatch}) {
       <Dialog
         open={isOpen}
         onClose={handleClose}
-        
         >
         <DialogTitle style={{ cursor: 'move' }} >
-          {editMode ? "Edit Society Account" : "Add Society Account"}
+          {editMode ? "Edit Category " : "Add Category "}
         </DialogTitle>
 
         <Formik
           validateOnChange={false} validateOnBlur={true}
           initialValues={initialValues}
           validationSchema={Yup.object({
-            passwordRequired: Yup.boolean(),
-            email: Yup.string()
-                .email('Invalid Email Address')
-                .required('Required'),
-            password: Yup.string()
-            .min(8,'Must be at least 8 characters')
-            .max(30,'Must be atmost 30 characters')
-            .matches('^[a-zA-Z0-9]+$', 'All passwords must be alphanumeric (no special symbols).')
-            .when("passwordRequired", {
-              is: true,
-              then: Yup.string().required("Must enter a password for the new account")
-            }),
             name: Yup.string()
             .required('Required')
-            .max(50,'Must be atmost 50 characters')
+            .max(50,'Must be atmost 50 characters'),
+            lowerBound: Yup.number()
+            .required('Required')
+            .min(0),
+            upperBound: Yup.number()
+            .required('Required')
+            .min(0),
           })}
           onSubmit={(values,{setSubmitting}) => {
             dispatch(editMode? 
-              editSocietyAccount({
-                societyId: editId, 
+              editCategory({
+                categoryId: editId, 
                 name: values.name,
-                email: values.email,
-                password: values.password
+                lowerBound: values.lowerBound,
+                upperBound: values.upperBound
               })
-              :addSocietyAccount({
+              :addCategory({
                 name: values.name,
-                email: values.email,
-                password: values.password
+                lowerBound: values.lowerBound,
+                upperBound: values.upperBound
             })).then(()=>{
               setSubmitting(false)
             })
@@ -138,11 +160,11 @@ function SocietyAccountsPanel({societyData,dispatch}) {
                   </Grid>
                   
                   <Grid item style = {{width: 350, marginBottom: 10}}>
-                    <Field component={TextField} name="email" type="email" required label="Email"/>    
+                    <Field component={TextField} name="lowerBound" required type="number" label="From (Lower Bound)"/>
                   </Grid>
 
                   <Grid item style = {{width: 350, marginBottom: 10}}>
-                    <Field component={TextField} name="password" type="password" required label={editMode ? "New Password" : "Password"}/>    
+                    <Field component={TextField} name="upperBound" required type="number" label="To (Upper Bound)"/>
                   </Grid>
                 </Grid>
               </DialogContent>
@@ -166,34 +188,39 @@ function SocietyAccountsPanel({societyData,dispatch}) {
       </Dialog>
     )
   }
+
   return (
     <div>
     {
-      societyData.isPending? <LinearProgress variant = "indeterminate"/>:
+      categoryData.isPending? <LinearProgress variant = "indeterminate"/>:
       <div>
-        <PanelBar handleAdd={handleAdd} title={`Society Accounts (${societyData.societyList.length})`} buttonText="Add Society Account"/>
-        <SocietyDialog/>
+        <PanelBar handleAdd={handleAdd} title={`Categories (${categoryData.categoryList.length})`} buttonText="Add Category"/>
+        <CategoryDialog/>
+        <CategoryMileageDialog/>
         <Paper className={classes.root}>
           <TableContainer className={classes.container}>
             <Table>
               <TableHead >
                 <TableRow>
-                  <TableCell>Society Name</TableCell>
-                  <TableCell>Society Email</TableCell>  
+                  <TableCell>Name</TableCell>
+                  <TableCell>Lower Bound</TableCell>
+                  <TableCell>Upper Bound</TableCell>  
                 </TableRow>
               </TableHead>
                 
               <TableBody>
-              {societyData.societyList.map((society,index) => (
-                societyData.isPending? <CircularProgress variant = "indeterminate"/>:
-                <TableRow key={index} style={{background: society.active ? theme.palette.action.hover : theme.palette.action.disabledBackground}}>
-                  {/* <TableCell component="th" scope="row">
-                    <Typography>{society.nameInitials}</Typography>
-                  </TableCell> */}
-                  <TableCell><Typography>{society.name}</Typography></TableCell>
-                  <TableCell><Typography>{society.email}</Typography></TableCell>
+              {categoryData.categoryList.map((category,index) => (
+                categoryData.isPending? <CircularProgress variant = "indeterminate"/>:
+                <TableRow key={index} style={{background: category.active ? theme.palette.action.hover : theme.palette.action.disabledBackground}}>
+              
+                  <TableCell><Typography>{category.name}</Typography></TableCell>
+                  <TableCell><Typography>{category.lowerBound}</Typography></TableCell>
+                  <TableCell><Typography>{category.upperBound}</Typography></TableCell>
                   <TableCell>
-                    <Button startIcon={<EditIcon/>} onClick={()=>handleEdit(society.societyId)}> Edit</Button>
+                    <Button startIcon={<EditIcon/>} onClick={()=>handleEdit(category.categoryId)}> Edit</Button>
+                  </TableCell>
+                  <TableCell>
+                    <Button startIcon={<AddIcon/>} onClick={()=>handleAddMileage(category.categoryId)}> Add Mileage</Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -204,14 +231,14 @@ function SocietyAccountsPanel({societyData,dispatch}) {
         </Paper>
       </div>
       }
-      <ErrorSnackbar stateError={societyData.error} clearError={clearError} />
+      <ErrorSnackbar stateError={categoryData.error} clearError={clearError} />
     </div>
     )
 }
 
 
 const mapStateToProps = (state) => ({
-  societyData: state.societyData,
+  categoryData: state.categoryData,
 })
 
-export default connect(mapStateToProps) (SocietyAccountsPanel)
+export default connect(mapStateToProps) (CategoryPanel)

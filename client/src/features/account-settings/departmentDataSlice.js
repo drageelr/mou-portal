@@ -7,8 +7,8 @@ const initialState = {
   error: null
 }
 
-export const fetchDepartmentAccounts = createAsyncThunk(
-  'departmentData/fetchDepartmentAccounts',
+export const fetchDepartments = createAsyncThunk(
+  'departmentData/fetchDepartments',
   async(_, { getState, rejectWithValue}) => {
     const { isPending } = getState().departmentData
     if (!isPending) {
@@ -23,8 +23,8 @@ export const fetchDepartmentAccounts = createAsyncThunk(
   }
 )
 
-export const addDepartmentAccount = createAsyncThunk(
-  'departmentData/addDepartmentAccount',
+export const addDepartment = createAsyncThunk(
+  'departmentData/addDepartment',
   async (departmentObject, { rejectWithValue }) => {
     const { name } = departmentObject
     return await apiCaller('/api/account/department/create', {
@@ -37,8 +37,8 @@ export const addDepartmentAccount = createAsyncThunk(
     }
 )
 
-export const editDepartmentAccount = createAsyncThunk(
-  'departmentData/editDepartmentAccount',
+export const editDepartment = createAsyncThunk(
+  'departmentData/editDepartment',
   async (departmentObject, { rejectWithValue}) => {
     const {departmentId, name } = departmentObject
     let body = {
@@ -64,18 +64,18 @@ const departmentData = createSlice({
   },
 
   extraReducers: {
-    [addDepartmentAccount.fulfilled]: (state, action) => {
+    [addDepartment.fulfilled]: (state, action) => {
       state.departmentList.push({
         departmentId: action.payload.departmentId, 
         ...action.payload.departmentObject
       })
       state.error = 'Department Added Successfully'
     },
-    [addDepartmentAccount.rejected]: (state, action) => {
+    [addDepartment.rejected]: (state, action) => {
         state.error = action.payload
     },
 
-    [editDepartmentAccount.fulfilled]: (state, action) => {
+    [editDepartment.fulfilled]: (state, action) => {
       let i = 0
       state.departmentList.forEach((obj,index) => {
         if (obj.departmentId === action.payload.departmentId){
@@ -85,21 +85,21 @@ const departmentData = createSlice({
       state.departmentList[i] = action.payload.departmentObject
       state.error = 'Department Edited Successfully'
     },
-    [editDepartmentAccount.rejected]: (state, action) => {
+    [editDepartment.rejected]: (state, action) => {
         state.error = action.payload
     },
-    [fetchDepartmentAccounts.pending]: (state, action) => {
+    [fetchDepartments.pending]: (state, action) => {
       if (state.isPending === false) {
         state.isPending = true
       }
     },
-    [fetchDepartmentAccounts.fulfilled]: (state, action) => {
+    [fetchDepartments.fulfilled]: (state, action) => {
       if(state.isPending === true){
         state.isPending = false
         state.departmentList = action.payload.departmentList
       }
     },
-    [fetchDepartmentAccounts.rejected]: (state, action) => {
+    [fetchDepartments.rejected]: (state, action) => {
       if (state.isPending === true) {
         state.isPending = false
         state.error = action.payload

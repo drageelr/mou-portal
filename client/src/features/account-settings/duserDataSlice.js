@@ -2,7 +2,7 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import { apiCaller } from "../../helpers"
 
 const initialState = {
-  duserList: [{duserId: 1, name: 'Hammad Nasir', email: 'hammad.nasir@lums.edu.pk', password: 'hammad123'}],
+  duserList: [{duserId: 1, name: 'Hammad Nasir', departmentId: 1, email: 'hammad.nasir@lums.edu.pk', password: 'hammad123'}],
   isPending: true,
   error: null
 }

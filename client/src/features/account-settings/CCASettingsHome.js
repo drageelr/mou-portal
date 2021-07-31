@@ -6,6 +6,8 @@ import PersonIcon from '@material-ui/icons/Person';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import BusinessIcon from '@material-ui/icons/Business';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle'
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import { makeStyles, Container, Card } from '@material-ui/core';
 
 /**
@@ -38,10 +40,10 @@ export default function CCASettingsHome() {
           <Link to={link} style={{ textDecoration: 'none' }}>
             <Card style={{
               width: 150,
-              height: 100,
+              height: 90,
               border: 30,
               padding: 40,
-              margin: 20,
+              margin: 15,
               borderRadius: '10%',
               backgroundImage:bgImage,
               backgroundPosition:'50%',
@@ -72,7 +74,7 @@ export default function CCASettingsHome() {
 
         <SettingsLinkBox 
         text="CCA Accounts" 
-        bgImage={`linear-gradient(to bottom, #FF6BAF70, #FF917C), url(${image})`}
+        bgImage={`linear-gradient(to bottom, #13b5a080, #06bc8e), url(${image})`}
         link="/cca-panel"
         icon={<PersonIcon/>}
         />
@@ -80,33 +82,47 @@ export default function CCASettingsHome() {
         <SettingsLinkBox 
         text="Society Accounts" 
         link="/society-panel"
-        bgImage={`linear-gradient(to bottom, #FFA40080, #FFC65F),url(${image})`}
+        bgImage={`linear-gradient(to bottom, #148a7780, #148a77),url(${image})`}
 
         icon={<PeopleAltIcon/>}
-        />
+        />  
 
-        <SettingsLinkBox 
-        text="Change Password" 
-        link="/change-password"
-        bgImage={`linear-gradient(to bottom, #3578FA70, #736BE8),url(${image})`}
-        icon={<LockIcon/>}
-        />
-      </Grid>
-
-      <Grid container direction="row" justify="center" alignItems="center">
-        
         <SettingsLinkBox 
         text="Departments" 
         link="/department-panel"
-        bgImage={`linear-gradient(to bottom, #ADD10070, #7B920A),url(${image})`}
+        bgImage={`linear-gradient(to bottom, #06bc8e80, #06bc8e),url(${image})`}
         icon={<BusinessIcon/>}
         />
 
         <SettingsLinkBox 
         text="Department Members" 
         link="/duser-panel"
-        bgImage={`linear-gradient(to bottom, #136a8a70, #267871),url(${image})`}
+        bgImage={`linear-gradient(to bottom, #148a7780, #148a77),url(${image})`}
         icon={<AssignmentIndIcon/>}
+        />
+      </Grid>
+
+      <Grid container direction="row" justify="center" alignItems="center">
+
+        <SettingsLinkBox 
+        text="Sponsor Categories" 
+        link="/category-panel"
+        bgImage={`linear-gradient(to bottom, #06bc8e80, #06bc8e),url(${image})`}
+        icon={<MonetizationOnIcon/>}
+        /> 
+
+        <SettingsLinkBox 
+        text="Sponsor Mileages" 
+        link="/mileage-panel"
+        bgImage={`linear-gradient(to bottom, #148a7780, #148a77),url(${image})`}
+        icon={<CheckCircleIcon/>}
+        />
+
+        <SettingsLinkBox 
+        text="Change Password" 
+        link="/change-password"
+        bgImage={`linear-gradient(to bottom, #06bc8e80, #06bc8e),url(${image})`}
+        icon={<LockIcon/>}
         />
         
       

@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import {Table, TableContainer, TableBody, TableCell, TableHead, TableRow, Paper, Button, Dialog, DialogContent, DialogTitle, 
-  DialogActions, Grid, CircularProgress, LinearProgress, Typography} from '@material-ui/core'
+  DialogActions, Grid, CircularProgress, LinearProgress, Typography, FormControl, InputLabel, Select, MenuItem} from '@material-ui/core'
 import {addDUserAccount, editDUserAccount, fetchDUserAccounts} from './duserDataSlice'
 import {connect} from 'react-redux'
 import { Formik, Form, Field } from 'formik'
@@ -26,7 +26,7 @@ const useStyles = makeStyles({
 })
 
 
-function DUserAccountsPanel({duserData,dispatch}) {
+function DUserAccountsPanel({duserData, departmentList, dispatch}) {
   useEffect(() => {
     dispatch(fetchDUserAccounts())
   },[])
@@ -56,6 +56,7 @@ function DUserAccountsPanel({duserData,dispatch}) {
       email: '',
       password: '',
       passwordRequired: !editMode,
+      departmentId: 1
     }
 
     if (editMode){
@@ -66,7 +67,8 @@ function DUserAccountsPanel({duserData,dispatch}) {
           initialValues = {
           name: duserDetail.name,
           email: duserDetail.email,
-          password: duserDetail.password  ,
+          departmentId: duserDetail.departmentId,
+          password: duserDetail.password,
           passwordRequired: !editMode,
         }
       }  
@@ -76,13 +78,17 @@ function DUserAccountsPanel({duserData,dispatch}) {
       setIsOpen(false)
     }
 
+    function handleDepartmentChange(e) {
+
+    }
+
     return (
       <Dialog
         open={isOpen}
         onClose={handleClose}
-        aria-labelledby="draggable-dialog-title"
+        
         >
-        <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+        <DialogTitle style={{ cursor: 'move' }} >
           {editMode ? "Edit Department Member Account" : "Add Department Member Account"}
         </DialogTitle>
 
@@ -94,17 +100,19 @@ function DUserAccountsPanel({duserData,dispatch}) {
             email: Yup.string()
                 .email('Invalid Email Address')
                 .required('Required'),
+            departmentId: Yup.number()
+              .required('Required'),
             password: Yup.string()
-            .min(8,'Must be at least 8 characters')
-            .max(30,'Must be atmost 30 characters')
-            .matches('^[a-zA-Z0-9]+$', 'All passwords must be alphanumeric (no special symbols).')
-            .when("passwordRequired", {
+              .min(8,'Must be at least 8 characters')
+              .max(30,'Must be atmost 30 characters')
+              .matches('^[a-zA-Z0-9]+$', 'All passwords must be alphanumeric (no special symbols).')
+              .when("passwordRequired", {
               is: true,
               then: Yup.string().required("Must enter a password for the new account")
             }),
             name: Yup.string()
             .required('Required')
-            .max(100,'Must be atmost 100 characters')
+            .max(50,'Must be atmost 50 characters')
           })}
           onSubmit={(values,{setSubmitting}) => {
             dispatch(editMode? 
@@ -112,12 +120,14 @@ function DUserAccountsPanel({duserData,dispatch}) {
                 duserId: editId, 
                 name: values.name,
                 email: values.email,
-                password: values.password
+                password: values.password,
+                departmentId: values.departmentId
               })
               :addDUserAccount({
                 name: values.name,
                 email: values.email,
-                password: values.password
+                password: values.password,
+                departmentId: values.departmentId
             })).then(()=>{
               setSubmitting(false)
             })
@@ -132,6 +142,26 @@ function DUserAccountsPanel({duserData,dispatch}) {
                     <Field component={TextField} name="name" required label="Name"/>
                   </Grid>
                   
+                  <Grid item >
+                    <FormControl variant="outlined">
+                      <InputLabel>Department</InputLabel>
+                      <Select 
+                      name="departmentId" 
+                      label="Department" 
+                      value={initialValues.departmentId}
+                      style={{width: 350, marginBottom: 10}}
+                      onChange={(e) => handleDepartmentChange(e)}>
+                        {
+                          departmentList.map((department, index) => {
+                            return (
+                              <MenuItem key={index}  value={department.departmentId}>{department.name}</MenuItem>
+                            )
+                          })
+                        }
+                      </Select>
+                    </FormControl>
+                  </Grid>
+
                   <Grid item style = {{width: 350, marginBottom: 10}}>
                     <Field component={TextField} name="email" type="email" required label="Email"/>    
                   </Grid>
@@ -174,6 +204,7 @@ function DUserAccountsPanel({duserData,dispatch}) {
               <TableHead >
                 <TableRow>
                   <TableCell>Name</TableCell>
+                  <TableCell>Department</TableCell>
                   <TableCell>Email</TableCell>  
                 </TableRow>
               </TableHead>
@@ -186,6 +217,7 @@ function DUserAccountsPanel({duserData,dispatch}) {
                     <Typography>{duser.nameInitials}</Typography>
                   </TableCell> */}
                   <TableCell><Typography>{duser.name}</Typography></TableCell>
+                  <TableCell><Typography>{duser.departmentId}</Typography></TableCell>
                   <TableCell><Typography>{duser.email}</Typography></TableCell>
                   <TableCell>
                     <Button startIcon={<EditIcon/>} onClick={()=>handleEdit(duser.duserId)}> Edit</Button>
@@ -207,6 +239,7 @@ function DUserAccountsPanel({duserData,dispatch}) {
 
 const mapStateToProps = (state) => ({
   duserData: state.duserData,
+  departmentList: state.departmentData.departmentList
 })
 
 export default connect(mapStateToProps) (DUserAccountsPanel)

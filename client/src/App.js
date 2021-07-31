@@ -11,6 +11,8 @@ import CCAAccountsPanel from './features/account-settings/CCAAccountsPanel'
 import SocietyAccountsPanel from './features/account-settings/SocietyAccountsPanel'
 import DUserAccountsPanel from './features/account-settings/DUserAccountsPanel'
 import DepartmentPanel from './features/account-settings/DepartmentPanel'
+import CategoryPanel from './features/account-settings/CategoryPanel'
+import MileagePanel from './features/account-settings/MileagePanel'
 import ChangePassword from './features/account-settings/ChangePassword'
 import SocietyDashboard from './ui/SocietyDashboard'
 import { connect } from 'react-redux'
@@ -57,7 +59,7 @@ function App({ user }) {
         <div>
           { 
             isLoggedIn &&
-            <NavBar name={name} userType={userType} darkMode={darkMode} ccaId={id} userThemeColor={themeColor}/>
+            <NavBar name={name} userType={userType} />
           }
           <Switch>
             <Route path="/" exact component={isLoggedIn ? (userType === "CCA" ? RequestList : SocietyDashboard) : LoginPage}/>
@@ -69,6 +71,8 @@ function App({ user }) {
             <Route path="/cca-panel" exact component={isLoggedIn ? CCAAccountsPanel : LoginPage}/>
             <Route path="/society-panel" exact component={isLoggedIn ? SocietyAccountsPanel : LoginPage}/>
             <Route path="/department-panel" exact component={isLoggedIn ? DepartmentPanel : LoginPage}/>
+            <Route path="/category-panel" exact component={isLoggedIn ? CategoryPanel : LoginPage}/>
+            <Route path="/mileage-panel" exact component={isLoggedIn ? MileagePanel : LoginPage}/>
             <Route path="/duser-panel" exact component={isLoggedIn ? DUserAccountsPanel : LoginPage}/>
           </Switch>
         </div>

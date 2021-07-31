@@ -2,7 +2,7 @@ import React, {useState,useEffect} from 'react'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import {Table, TableContainer, TableBody, TableCell, TableHead, TableRow, Paper, Button, Dialog, DialogContent, DialogTitle, 
   DialogActions, Grid, CircularProgress, LinearProgress, Typography} from '@material-ui/core'
-import {addDepartmentAccount, editDepartmentAccount, fetchDepartmentAccounts} from './departmentDataSlice'
+import {addDepartment, editDepartment, fetchDepartments} from './departmentDataSlice'
 import {connect} from 'react-redux'
 import { Formik, Form, Field } from 'formik'
 import { TextField } from 'formik-material-ui'
@@ -27,7 +27,7 @@ const useStyles = makeStyles({
 
 function DepartmentPanel({departmentData, dispatch}) {
   useEffect(() => {
-    dispatch(fetchDepartmentAccounts())
+    dispatch(fetchDepartments())
   },[])
 
   const classes = useStyles()
@@ -73,9 +73,9 @@ function DepartmentPanel({departmentData, dispatch}) {
       <Dialog
         open={isOpen}
         onClose={handleClose}
-        aria-labelledby="draggable-dialog-title"
+        
         >
-        <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+        <DialogTitle style={{ cursor: 'move' }} >
           {editMode ? "Edit Department" : "Add Department"}
         </DialogTitle>
 
@@ -85,15 +85,15 @@ function DepartmentPanel({departmentData, dispatch}) {
           validationSchema={Yup.object({ 
             name: Yup.string()
             .required('Required')
-            .max(100,'Must be atmost 100 characters')
+            .max(50,'Must be atmost 50 characters')
           })}
           onSubmit={(values,{setSubmitting}) => {
             dispatch(editMode? 
-              editDepartmentAccount({
+              editDepartment({
                 departmentId: editId, 
                 name: values.name
               })
-              :addDepartmentAccount({
+              :addDepartment({
                 name: values.name
             })).then(()=>{
               setSubmitting(false)

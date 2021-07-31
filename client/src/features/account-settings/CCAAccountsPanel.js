@@ -172,10 +172,10 @@ function CCAAccountPanel({ccaDetails, dispatch}) {
       <Dialog 
         open={isOpen}
         onClose={handleClose}
-        aria-labelledby="draggable-dialog-title"
+        
       >
 
-      <DialogTitle style={{ cursor: 'move' }} ccaId="draggable-dialog-title">
+      <DialogTitle style={{ cursor: 'move' }} >
         {editMode ? "Edit Account" : "Add Account"}
       </DialogTitle>
       

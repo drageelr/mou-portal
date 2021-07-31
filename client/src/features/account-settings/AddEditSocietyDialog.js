@@ -31,9 +31,9 @@ export default function AddEditSocietyDialog(isOpen) {
     <Dialog
       open={open}
       onClose={handleClose}
-      aria-labelledby="draggable-dialog-title"
+      
       >
-      <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+      <DialogTitle style={{ cursor: 'move' }} >
         Add-Edit Society Card
       </DialogTitle>
 
