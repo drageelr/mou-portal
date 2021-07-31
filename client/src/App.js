@@ -14,7 +14,7 @@ import SocietyDashboard from './ui/SocietyDashboard'
 import { connect } from 'react-redux'
 
 function App({ user }) {
-  const { id, isLoggedIn, userType, name, picture, themeColor, darkMode } = user
+  const { id, isLoggedIn, userType, name, themeColor, darkMode } = user
   
   document.body.style = darkMode ? 'background: #424242' : 'background: #ffffff' 
 
@@ -22,7 +22,7 @@ function App({ user }) {
     palette: {
       type: darkMode ? 'dark' : 'light',
       primary: {
-        main: '#00b489',
+        main: '#01bc8d',
       },
       secondary: {
         main: '#ffffff',

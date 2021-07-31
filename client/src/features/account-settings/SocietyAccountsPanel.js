@@ -75,11 +75,8 @@ function SocietyAccountsPanel({societyData,dispatch}) {
   function SocietyDialog(){
 
     let initialValues = {
-      nameInitials: '',
       name:'',
       email: '',
-      presidentEmail: '',
-      patronEmail: '',
       password: '',
       passwordRequired: !editMode,
     }
@@ -90,11 +87,8 @@ function SocietyAccountsPanel({societyData,dispatch}) {
       })
       if (societyDetail !== undefined){
           initialValues = {
-          nameInitials: societyDetail.nameInitials,
           name: societyDetail.name,
           email: societyDetail.email,
-          presidentEmail: societyDetail.presidentEmail,
-          patronEmail: societyDetail.patronEmail,
           password: societyDetail.password  ,
           passwordRequired: !editMode,
         }
@@ -131,36 +125,21 @@ function SocietyAccountsPanel({societyData,dispatch}) {
               is: true,
               then: Yup.string().required("Must enter a password for the new account")
             }),
-            nameInitials: Yup.string()
-            .required('Required')
-            .max(10,'Must be atmost 10 characters'),
             name: Yup.string()
             .required('Required')
-            .max(100,'Must be atmost 100 characters'),
-            presidentEmail: Yup.string()
-              .email('Invalid Email Address')
-              .required('Required'),
-            patronEmail: Yup.string()
-              .email('Invalid Email Address')  
-              .required('Required'),
+            .max(100,'Must be atmost 100 characters')
           })}
           onSubmit={(values,{setSubmitting}) => {
             dispatch(editMode? 
               editSocietyAccount({
                 societyId: editId, 
-                nameInitials: values.nameInitials,
                 name: values.name,
                 email: values.email,
-                presidentEmail: values.presidentEmail,
-                patronEmail: values.patronEmail,
                 password: values.password
               })
               :addSocietyAccount({
-                nameInitials: values.nameInitials,
                 name: values.name,
                 email: values.email,
-                presidentEmail: values.presidentEmail,
-                patronEmail: values.patronEmail,
                 password: values.password
             })).then(()=>{
               setSubmitting(false)
@@ -177,19 +156,7 @@ function SocietyAccountsPanel({societyData,dispatch}) {
                   </Grid>
                   
                   <Grid item style = {{width: 350, marginBottom: 10}}>
-                    <Field component={TextField} name="nameInitials" required label="Name Initials"/>    
-                  </Grid>
-
-                  <Grid item style = {{width: 350, marginBottom: 10}}>
                     <Field component={TextField} name="email" type="email" required label="Email"/>    
-                  </Grid>
-                  
-                  <Grid item style = {{width: 350, marginBottom: 10}}>
-                    <Field component={TextField} name="presidentEmail" type="email" required label="President Email"/>    
-                  </Grid>
-
-                  <Grid item style = {{width: 350, marginBottom: 10}}>
-                    <Field component={TextField} name="patronEmail" type="email" required label="Patron Email"/>    
                   </Grid>
 
                   <Grid item style = {{width: 350, marginBottom: 10}}>
@@ -239,9 +206,9 @@ function SocietyAccountsPanel({societyData,dispatch}) {
               {societyData.societyList.map((society,index) => (
                 societyData.isPending? <CircularProgress variant = "indeterminate"/>:
                 <TableRow key={index} style={{background: society.active ? theme.palette.action.hover : theme.palette.action.disabledBackground}}>
-                  <TableCell component="th" scope="row">
+                  {/* <TableCell component="th" scope="row">
                     <Typography>{society.nameInitials}</Typography>
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell align="right"><Typography>{society.name}</Typography></TableCell>
                   <TableCell align="right"><Typography>{society.email}</Typography></TableCell>
                   <TableCell align="right">

@@ -12,10 +12,10 @@ import * as Yup from 'yup'
 import ErrorSnackbar from "../../ui/ErrorSnackbar"
 import PanelBar from './PanelBar'
 import AccessibilityIcon from '@material-ui/icons/Accessibility'
-import { addCCAAccount, toggleActiveCCAAccount, editCCAAccount, fetchCCAAccounts, clearError, editCCAPermissions } from './ccaDetailsSlice'
+import { addCCAAccount, editCCAAccount, fetchCCAAccounts, clearError, editCCAPermissions } from './ccaDetailsSlice'
 
 
-function CCAAccountPanel({ccaDetails,dispatch}) {
+function CCAAccountPanel({ccaDetails, dispatch}) {
 
   useEffect(() => {
     dispatch(fetchCCAAccounts())
@@ -41,13 +41,13 @@ function CCAAccountPanel({ccaDetails,dispatch}) {
 
   function handlePermissions(ccaId) {
     setEditId(ccaId)
-    setPermissionsMode(true)
     const ccaMember = ccaDetails.ccaList.find((member,index) => {
       return member.ccaId === ccaId
     })
     if(ccaMember !== undefined){
       setPermissions(ccaMember.permissions)
     }
+    setPermissionsMode(true)
   }
 
   function handleClosePermission() {
@@ -66,17 +66,12 @@ function CCAAccountPanel({ccaDetails,dispatch}) {
         onClick: ()=>handleEdit(ccaId)
       },
       {
-        text: active ? 'Deactivate' : 'Activate',
-        icon: active ? <ToggleOffIcon/> : <ToggleOnIcon/>,  
-        onClick: ()=>dispatch(toggleActiveCCAAccount({ccaId, active}))
-      },
-      {
         text: 'Manage Permissions',
         icon: <AccessibilityIcon/>,
         onClick: () => handlePermissions(ccaId)
       }
     ]
-    return <MoreButton menusList={menusList}/>
+    return <MoreButton menuBtnStyle={{float: 'right'}} vertical menusList={menusList}/>
   }
 
   function handleAdd(){
@@ -91,6 +86,7 @@ function CCAAccountPanel({ccaDetails,dispatch}) {
   }
 
   function PermissionsDialog(){
+
     return (
     <Dialog 
       open={permissionMode}
@@ -148,7 +144,6 @@ function CCAAccountPanel({ccaDetails,dispatch}) {
       email: '',
       password: '',
       passwordRequired: !editMode,
-      role:'',
       permissions: {
         accountAccess: true,
         approvalAccess: true,
@@ -202,7 +197,6 @@ function CCAAccountPanel({ccaDetails,dispatch}) {
           }),
           name: Yup.string().required(),
           designation: Yup.string().required(),
-          picture: Yup.string(),
         })}
         onSubmit={(values, {setSubmitting}) => {
           dispatch(editMode ?
@@ -230,22 +224,23 @@ function CCAAccountPanel({ccaDetails,dispatch}) {
           <Form>
             <DialogContent> 
               <Grid container direction="row" justify="space-evenly" alignItems="center">
-                <Grid item direction = "column" justify = "space-evenly" alignItems = "center" style = {{width: 200}}>
-                  <Grid item style = {{width: 350}}>
-                    <Field component={TextField} name="name" required label="Name"/>
+                <Grid item direction = "column" justify = "space-evenly" alignItems = "center" style = {{width: 250}}>
+                  <Grid item>
+                    <Field style={{width: 235}} component={TextField} name="name" required label="Name"/>
                   </Grid>
 
-                  <Grid item style = {{width: 350}}>
-                    <Field component={TextField} name="designation" required label="Designation"/>
+                  <Grid item>
+                    <Field style={{width: 235}} component={TextField} name="designation" required label="Designation"/>
                   </Grid>
 
-                  <Grid item style = {{width: 350}}>
-                    <Field component={TextField} name="email" required label="Email"/>
+                  <Grid item>
+                    <Field style={{width: 235}} component={TextField} name="email" required label="Email"/>
                   </Grid>
 
-                  <Grid item style = {{width: 350}}>
-                    <Field component={TextField} name="password" required type="password" label={editMode ? "New Password" : "Password"}/>
+                  <Grid item>
+                    <Field style={{width: 235}} component={TextField} name="password" required type="password" label={editMode ? "New Password" : "Password"}/>
                   </Grid>
+                  <br/>
                 </Grid>
                 
               </Grid>
@@ -276,23 +271,19 @@ function CCAAccountPanel({ccaDetails,dispatch}) {
           <PanelBar style = {{fontWeight: 'bold'}} handleAdd={handleAdd} title={`CCA Accounts (${ccaDetails.ccaList.length})`} buttonText="Add CCA Account"/>
           {permissionMode ? <PermissionsDialog/> : <CCADialog />}
           <br/>
-          <Container  >
-            <Grid container spacing={3} >
+          <Container  style={{marginLeft: 0}} >
+            <Grid container spacing={2} >
             {
               ccaDetails.ccaList !== undefined &&
               ccaDetails.ccaList.map((ccaDetail,index) => (
-                <Grid item xs={3}> 
+                <Grid item xs={4}> 
                   <Card display='flex' elevation={7} style={{
                     marginLeft: 20, 
                     maxWidth: 275, 
                     }}>
-                    <CardHeader
-                      action={
-                        
-                        <EditDeleteMoreButton ccaId={ccaDetail.ccaId} active={ccaDetail.active}/>
-                      }
-                    />
                     <CardContent>
+                      <EditDeleteMoreButton ccaId={ccaDetail.ccaId} active={ccaDetail.active}/>
+
                       <Typography color="textPrimary" style = {{textAlign: 'left', fontSize: 20, fontWeight: 'bold'}}>{ccaDetail.name}</Typography>
 
                       <Typography color="textSecondary" style = {{fontWeight:500}}>{ccaDetail.designation}</Typography>

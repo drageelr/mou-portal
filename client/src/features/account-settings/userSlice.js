@@ -9,7 +9,7 @@ const initialState = {
   designation: "",
   userType: "CCA", // Society, General
   isLoggedIn: true,
-  themeColor: '#00b489',
+  themeColor: '#01bc8d',
   darkMode: false,
   token: "",
   permissions: {
@@ -109,7 +109,6 @@ const user = createSlice ({
       if (state.isPending === true) {
         return {
           ...action.payload.user,
-          role: "admin",
           token: action.payload.token,
           isLoggedIn: true,
           isPending: false,
@@ -143,6 +142,6 @@ const user = createSlice ({
   }
 })
 
-export const { logout, clearError, setUserPicture, setUserDetails } = user.actions
+export const { logout, clearError, setUserDetails } = user.actions
 
 export default user.reducer

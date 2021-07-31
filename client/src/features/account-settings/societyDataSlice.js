@@ -2,7 +2,7 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import { apiCaller } from "../../helpers"
 
 const initialState = {
-  societyList: [],
+  societyList: [{societyId: 1, name: 'LUMUN', email: 'lumun@lums.edu.pk', password: 'lumun123'}],
   isPending: true,
   error: null
 }

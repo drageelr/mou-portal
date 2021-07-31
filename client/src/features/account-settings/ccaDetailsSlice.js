@@ -2,7 +2,22 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import { apiCaller } from "../../helpers"
 
 const initialState = {
-  ccaList : [],
+  ccaList : [{
+    ccaId: 1, 
+    name: 'Ashar', 
+    email: 'ashar.javaid@lums.edu.pk',
+    password: 'ashar123', 
+    designation: 'Admin',
+    permissions: {
+      accountAccess: true,
+      approvalAccess: true,
+      reviewAccess: true,
+      verifyAccess: true,
+      cancelAccess: true,
+      logAccess: true,
+      categoryAccess: true
+    }
+  }],
   isPending: true,
   error: null
 }
@@ -17,19 +32,6 @@ export const fetchCCAAccounts = createAsyncThunk(
 
     return await apiCaller('/api/account/cca/account-list', {}, 200,
     (data) => ({isPending: false, error: '' , ccaList: data.userList}),
-    rejectWithValue)
-  }
-)
-
-export const toggleActiveCCAAccount = createAsyncThunk(
-  'ccaDetails/toggleActiveCCAAccount',
-  async ({ccaId, active}, { rejectWithValue }) => {
-
-    return await apiCaller('/api/account/cca/edit-account', {
-      ccaId: ccaId,
-      active: !active
-    }, 203,
-    (data) => ({ccaId, active}),
     rejectWithValue)
   }
 )
@@ -50,14 +52,12 @@ export const editCCAPermissions = createAsyncThunk(
 export const editCCAAccount = createAsyncThunk(
   'ccaDetails/editCCAAccount',
   async (ccaObject, { rejectWithValue }) => {
-    const {ccaId, name, designation, email, password, picture, role} = ccaObject 
+    const {ccaId, name, designation, email, password} = ccaObject 
     let body = {
       ccaId: ccaId,
       email: email,
       name: name,
-      designation: designation,
-      picture: picture,
-      role: role,
+      designation: designation
     }
     if (password !== undefined){
       body = {...body, password: password}
@@ -72,32 +72,17 @@ export const editCCAAccount = createAsyncThunk(
 export const addCCAAccount = createAsyncThunk(
   'ccaDetails/addCCAAccount',
   async (ccaObject, { rejectWithValue }) => {
-    const { name, designation, email, password, picture, role, permissions } = ccaObject
+    const { name, designation, email, password,  permissions } = ccaObject
     
     return await apiCaller('/api/account/cca/create-account', {
       email: email,
       password: password,
       name: name,
       designation: designation,
-      picture: picture,
-      role: role,
       permissions: permissions
     }, 201,
     (data) => ({ccaId: data.ccaId, ccaObject}),
     rejectWithValue)
-  }
-)
-
-export const changeCCAPicture = createAsyncThunk(
-  'ccaDetails/changeCCAPicture',
-  async ({ccaId, url}, {rejectWithValue}) => {
-
-    return await apiCaller('/api/account/cca/edit-account', {
-      picture: url
-    }, 203,
-    (data) => ({ccaId, url}),
-    rejectWithValue)
-    
   }
 )
 
@@ -110,18 +95,6 @@ const ccaDetails = createSlice({
     },
   },
   extraReducers: {
-    [toggleActiveCCAAccount.fulfilled]: (state, action) => {
-        state.ccaList.forEach((obj,index) => {
-          if (obj.ccaId === action.payload.ccaId){
-            console.log("active status: ", action.payload.active)
-            state.ccaList[index].active = !action.payload.active
-          }  
-        })  
-    },
-    [toggleActiveCCAAccount.rejected]: (state, action) => {
-        state.error = action.payload
-    },
-
     [editCCAAccount.fulfilled]: (state, action) => {
       let i = 0
       state.ccaList.forEach((obj,index) => {
@@ -164,17 +137,6 @@ const ccaDetails = createSlice({
         state.isPending = false
         state.error = action.payload
       }
-    },
-
-    [changeCCAPicture.fulfilled]: (state, action) => { 
-        state.ccaList.forEach(ccaUser => {
-          if (ccaUser.ccaId === action.payload.ccaId) {
-            ccaUser.picture = action.payload.url
-          }
-        })
-    },
-    [changeCCAPicture.rejected]: (state, action) => {
-        state.error = action.payload
     },
 
     [editCCAPermissions.fulfilled]: (state, action) => {
