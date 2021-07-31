@@ -10,13 +10,6 @@ import { useHistory } from 'react-router-dom'
 import ErrorSnackbar from '../../ui/ErrorSnackbar'
 import Timestamp from 'react-timestamp'
 
-/**
-  The component displays a table of all the forms submitted by the society. The society can view
-  the submission, as well as delete ir from their screen.
-  @param {object} user use is the society object. the Id from it is used to fetch all forms submitted by user
-  @param {object} submissionListData corresponding slice from redux, used to fetch the forms data  
-  @param {function} dispatch redux function which dispatches the delete form action to the reducer  
-*/
 
 const useStyles = makeStyles((theme) => ({
   submissionListPaper: {
@@ -32,20 +25,16 @@ export function SocietyFormSubmissionView({user, submissionListData, dispatch}) 
     dispatch(fetchSocietyList())
   }, [])
   
-  const statusTypes = ["Pending(President)","Issue(President)", "Pending(Patron)", "Issue(Patron)", "Approved(Patron)", 
-    "Pending(CCA)", "Issue(CCA)", "Approved(CCA)",  "Write-Up",  "Completed"]
+  const statusTypes = ["Reviewed", "Approved", "Verified", "Issue", "Cancelled", "Signed" ]
 
   const statusColors = {
-    "Pending(President)": "#F1C231",
-    "Issue(President)": "#E24A00",
-    "Pending(Patron)": "#F1C231",
-    "Issue(Patron)": "#E24A00",
-    "Approved(Patron)": "#009D5E",
-    "Pending(CCA)": "#F1C231",
-    "Issue(CCA)": "#E24A00",
-    "Approved(CCA)": "#009D5E",
+    "Reviewed": "#F1C231",
+    "Cancelled": "#E24A00",
+    "Verified": "#F1C231",
+    "Issue": "#E24A00",
+    "Approved": "#009D5E",
     "Write-Up": "#E24A00",
-    "Completed": "#009D5E",
+    "Signed": "#009D5E"
   }
   
   const numStatuses = statusTypes.length

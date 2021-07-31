@@ -22,7 +22,6 @@ export default function MoreButton({menusList, menuBtnStyle, vertical}) {
           <MoreVertIcon fontSize="large"/>
           : <MoreHorizIcon fontSize="large"/>
         }
-        }
       </IconButton>
       <Menu
         id="form-menu"
@@ -43,6 +42,6 @@ export default function MoreButton({menusList, menuBtnStyle, vertical}) {
         })
       }
       </Menu>
-    </div>
+  </div>
   )
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import MenuIcon from '@material-ui/icons/Menu'
 import ListAltIcon from '@material-ui/icons/ListAlt'
 import EditIcon from '@material-ui/icons/Edit'
@@ -7,10 +7,9 @@ import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck'
 import SettingsIcon from '@material-ui/icons/Settings'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import { makeStyles } from '@material-ui/core/styles'
-import {AppBar, Toolbar, IconButton, Drawer, Avatar, Typography, Box, Grid, Button, FormControlLabel, 
-  Switch, Dialog, DialogTitle, TextField, DialogActions, DialogContent} from '@material-ui/core'
+import {AppBar, Toolbar, IconButton, Drawer, Typography, Box, Grid } from '@material-ui/core'
 import { useDispatch } from 'react-redux'
-import { logout, changeDarkMode, changeThemeColor } from '../features/account-settings/userSlice'
+import { logout } from '../features/account-settings/userSlice'
 
 const useStyles = makeStyles((theme) => ({
   drawerPaper: {

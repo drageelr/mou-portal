@@ -27,9 +27,7 @@ export function RequestList({requestListData, dispatch}) {
 
   //constants
   const timeFilterOptions = ["1 month", "3 months", "1 year", "Specific duration"]
-  const allStatuses = ["Issue(President)", "Pending(Patron)", "Issue(Patron)", "Approved(Patron)", 
-  "Pending(CCA)", "Issue(CCA)", "Approved(CCA)",  "Write-Up",  "Completed"] //all statuses
-  const ccaStatuses = ["Pending(CCA)", "Issue(CCA)", "Approved(CCA)",  "Write-Up",  "Completed"] 
+  const allStatuses = ["Reviewed", "Approved", "Verified", "Issue", "Cancelled", "Signed" ] //all statuses
   const options = {
     download: false,
     disableToolbarSelect: true,
@@ -88,7 +86,6 @@ export function RequestList({requestListData, dispatch}) {
   //local states
   const [open, setOpen] = useState(false)
   const [openDateDialog, setOpenDateDialog] = useState(false)
-  const [showAllFilter, setShowAllFilter] = useState(false)
   const [timeFilter, setTimeFilter] = useState("1 month")
   const [dateStart, setDateStart] = useState(new Date())
   const [dateEnd, setDateEnd] = useState(new Date())
@@ -98,7 +95,7 @@ export function RequestList({requestListData, dispatch}) {
     const dateUntil = updateDateRange(1)
     console.log(dateUntil)
     dispatch(fetchCCARequestList({
-      statusList: ccaStatuses, 
+      statusList: allStatuses, 
       // timeObj: {
       //   dateStart: dateUntil,
       //   dateEnd: new Date()
@@ -152,16 +149,7 @@ export function RequestList({requestListData, dispatch}) {
   function handleDateDialogClose() {
     setOpenDateDialog(false)
     dispatch(fetchCCARequestList({
-      statusList: showAllFilter ? allStatuses : ccaStatuses, 
-      // timeObj: {dateStart, dateEnd}
-    }))
-  }
-
-
-  function handleShowAllFilterChange(e) {
-    setShowAllFilter(e.target.checked)
-    dispatch(fetchCCARequestList({
-      statusList: e.target.checked ? allStatuses : ccaStatuses, 
+      statusList: allStatuses, 
       // timeObj: {dateStart, dateEnd}
     }))
   }
@@ -211,13 +199,6 @@ export function RequestList({requestListData, dispatch}) {
         <Typography>
           Only requests with CCA statuses are shown by default.
         </Typography> 
-        
-        <Grid item>
-          <FormControlLabel // ALL REQUESTS
-            control={<Switch color="primary" size="small" checked={showAllFilter} onChange={handleShowAllFilterChange} name="show-all-filter"/>}
-            label="Show All Requests"
-          />
-        </Grid>
 
         <Grid item>
           <FormControl variant="outlined" > {/*FILTER BY MONTHS*/}
@@ -305,7 +286,7 @@ export function RequestList({requestListData, dispatch}) {
               request.submissionId,
               request.formTitle,
               request.timestampModified, //<DateRangeIcon style={{marginBottom: -5, marginRight: 4}}/>
-              request.societyNameInitials,
+              request.societyName,
               request.status,
               <Button 
                 value={request.submissionId}

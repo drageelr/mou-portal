@@ -23,19 +23,16 @@ export default function ChangeFormStatusSelect({submissionId, value, updateValue
     // updateValue(newStatus)
   }
 
-  const disabledOptions = ["Pending(President)","Issue(President)", "Pending(Patron)", "Issue(Patron)", "Approved(Patron)"]
-  const options = ["Pending(CCA)", "Issue(CCA)", "Approved(CCA)",  "Write-Up",  "Completed"]
+  const options = ["Reviewed", "Approved", "Verified", "Issue", "Cancelled", "Signed" ]
+
   const statusColors = {
-    "Pending(President)": "#F1C231",
-    "Issue(President)": "#E24A00",
-    "Pending(Patron)": "#F1C231",
-    "Issue(Patron)": "#E24A00",
-    "Approved(Patron)": "#009D5E",
-    "Pending(CCA)": "#F1C231",
-    "Issue(CCA)": "#E24A00",
-    "Approved(CCA)": "#009D5E",
+    "Reviewed": "#F1C231",
+    "Cancelled": "#E24A00",
+    "Verified": "#F1C231",
+    "Issue": "#E24A00",
+    "Approved": "#009D5E",
     "Write-Up": "#E24A00",
-    "Completed": "#009D5E",
+    "Signed": "#009D5E"
   }
   
   return (
@@ -55,9 +52,9 @@ export default function ChangeFormStatusSelect({submissionId, value, updateValue
         {
           options.map((option, index) => <MenuItem key={index} value={option}>{option}</MenuItem>)
         }
-        {
+        {/* {
           disabledOptions.map((option, index) => <MenuItem key={index} disabled={true} value={option}>{option}</MenuItem>)
-        }
+        } */}
         </Select>
       </FormControl>
     </div>
