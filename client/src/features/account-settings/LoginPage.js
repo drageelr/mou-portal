@@ -10,8 +10,8 @@ import { TextField } from 'formik-material-ui'
 import { connect } from 'react-redux'
 import { login, clearError } from './userSlice'
 import ErrorSnackbar from '../../ui/ErrorSnackbar'
-import landingBG from './landingBG.svg'
-import lumslogo from './LUMSLogo.png'
+import landingBG from './assets/landingBG.svg'
+import lumslogo from './assets/LUMSLogo.png'
 
 // card styling
 const useStyles = makeStyles(theme=>({

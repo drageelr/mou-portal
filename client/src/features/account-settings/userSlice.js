@@ -8,7 +8,7 @@ const initialState = {
   name: "",
   designation: "",
   userType: "CCA", // Society, DUser
-  isLoggedIn: false,
+  isLoggedIn: true,
   themeColor: '#01bc8d',
   darkMode: false,
   token: "",

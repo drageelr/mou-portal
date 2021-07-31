@@ -2,14 +2,14 @@ import React, {useState,useEffect} from 'react'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import {Table, TableContainer, TableBody, TableCell, TableHead, TableRow, Paper, Button, Dialog, DialogContent, DialogTitle, 
   DialogActions, Grid, CircularProgress, LinearProgress, Typography} from '@material-ui/core'
-import {addSocietyAccount, editSocietyAccount, fetchSocietyAccounts} from './societyDataSlice'
+import {addDUserAccount, editDUserAccount, fetchDUserAccounts} from './duserDataSlice'
 import {connect} from 'react-redux'
 import { Formik, Form, Field } from 'formik'
 import { TextField } from 'formik-material-ui'
 import MoreButton from '../../ui/MoreButton'
 import * as Yup from 'yup'
 import EditIcon from '@material-ui/icons/Edit'
-import {clearError} from './societyDataSlice'
+import {clearError} from './duserDataSlice'
 import ErrorSnackbar from '../../ui/ErrorSnackbar'
 import PanelBar from './PanelBar'
 
@@ -25,16 +25,10 @@ const useStyles = makeStyles({
   },
 })
 
-/**
-  The SocietyAccountsPanel Adds/Edits the data of a society, has fields with
-  validation for email, password, Name, Name Initials, president email, and patron email
-  
-  @param {String} societyData for creating account  
- */
 
-function SocietyAccountsPanel({societyData,dispatch}) {
+function DUserAccountsPanel({duserData,dispatch}) {
   useEffect(() => {
-    dispatch(fetchSocietyAccounts())
+    dispatch(fetchDUserAccounts())
   },[])
 
   const classes = useStyles()
@@ -43,18 +37,19 @@ function SocietyAccountsPanel({societyData,dispatch}) {
   const [editMode,setEditMode] = useState(false)
   const [editId, setEditId] = useState(-1)
 
+
   function handleAdd(){
     setEditMode(false)  
     setIsOpen (true)
   }
 
-  function handleEdit(societyId){
-    setEditId(societyId)
+  function handleEdit(duserId){
+    setEditId(duserId)
     setEditMode(true)  
     setIsOpen (true)
   }
 
-  function SocietyDialog(){
+  function DUserDialog(){
 
     let initialValues = {
       name:'',
@@ -64,14 +59,14 @@ function SocietyAccountsPanel({societyData,dispatch}) {
     }
 
     if (editMode){
-      const societyDetail = societyData.societyList.find((society,index) =>{
-        return society.societyId === editId
+      const duserDetail = duserData.duserList.find((duser,index) =>{
+        return duser.duserId === editId
       })
-      if (societyDetail !== undefined){
+      if (duserDetail !== undefined){
           initialValues = {
-          name: societyDetail.name,
-          email: societyDetail.email,
-          password: societyDetail.password  ,
+          name: duserDetail.name,
+          email: duserDetail.email,
+          password: duserDetail.password  ,
           passwordRequired: !editMode,
         }
       }  
@@ -88,7 +83,7 @@ function SocietyAccountsPanel({societyData,dispatch}) {
         aria-labelledby="draggable-dialog-title"
         >
         <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-          {editMode ? "Edit Society Account" : "Add Society Account"}
+          {editMode ? "Edit Department Member Account" : "Add Department Member Account"}
         </DialogTitle>
 
         <Formik
@@ -113,13 +108,13 @@ function SocietyAccountsPanel({societyData,dispatch}) {
           })}
           onSubmit={(values,{setSubmitting}) => {
             dispatch(editMode? 
-              editSocietyAccount({
-                societyId: editId, 
+              editDUserAccount({
+                duserId: editId, 
                 name: values.name,
                 email: values.email,
                 password: values.password
               })
-              :addSocietyAccount({
+              :addDUserAccount({
                 name: values.name,
                 email: values.email,
                 password: values.password
@@ -169,31 +164,31 @@ function SocietyAccountsPanel({societyData,dispatch}) {
   return (
     <div>
     {
-      societyData.isPending? <LinearProgress variant = "indeterminate"/>:
+      duserData.isPending? <LinearProgress variant = "indeterminate"/>:
       <div>
-        <PanelBar handleAdd={handleAdd} title={`Society Accounts (${societyData.societyList.length})`} buttonText="Add Society Account"/>
-        <SocietyDialog/>
+        <PanelBar handleAdd={handleAdd} title={`Department Members (${duserData.duserList.length})`} buttonText="Add Department Member"/>
+        <DUserDialog/>
         <Paper className={classes.root}>
           <TableContainer className={classes.container}>
             <Table>
               <TableHead >
                 <TableRow>
-                  <TableCell>Society Name</TableCell>
-                  <TableCell>Society Email</TableCell>  
+                  <TableCell>Name</TableCell>
+                  <TableCell>Email</TableCell>  
                 </TableRow>
               </TableHead>
                 
               <TableBody>
-              {societyData.societyList.map((society,index) => (
-                societyData.isPending? <CircularProgress variant = "indeterminate"/>:
-                <TableRow key={index} style={{background: society.active ? theme.palette.action.hover : theme.palette.action.disabledBackground}}>
+              {duserData.duserList.map((duser,index) => (
+                duserData.isPending? <CircularProgress variant = "indeterminate"/>:
+                <TableRow key={index} style={{background: duser.active ? theme.palette.action.hover : theme.palette.action.disabledBackground}}>
                   {/* <TableCell component="th" scope="row">
-                    <Typography>{society.nameInitials}</Typography>
+                    <Typography>{duser.nameInitials}</Typography>
                   </TableCell> */}
-                  <TableCell><Typography>{society.name}</Typography></TableCell>
-                  <TableCell><Typography>{society.email}</Typography></TableCell>
+                  <TableCell><Typography>{duser.name}</Typography></TableCell>
+                  <TableCell><Typography>{duser.email}</Typography></TableCell>
                   <TableCell>
-                    <Button startIcon={<EditIcon/>} onClick={()=>handleEdit(society.societyId)}> Edit</Button>
+                    <Button startIcon={<EditIcon/>} onClick={()=>handleEdit(duser.duserId)}> Edit</Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -204,14 +199,14 @@ function SocietyAccountsPanel({societyData,dispatch}) {
         </Paper>
       </div>
       }
-      <ErrorSnackbar stateError={societyData.error} clearError={clearError} />
+      <ErrorSnackbar stateError={duserData.error} clearError={clearError} />
     </div>
     )
 }
 
 
 const mapStateToProps = (state) => ({
-  societyData: state.societyData,
+  duserData: state.duserData,
 })
 
-export default connect(mapStateToProps) (SocietyAccountsPanel)
+export default connect(mapStateToProps) (DUserAccountsPanel)

@@ -23,31 +23,14 @@ export const fetchSocietyAccounts = createAsyncThunk(
   }
 )
 
-export const toggleActiveSocietyAccount = createAsyncThunk(
-  'societyData/toggleActiveSocietyAccount',
-  async({societyId, active}, { rejectWithValue}) => {
-    return await apiCaller('/api/account/society/edit-account', {
-      societyId: societyId,
-      active: !active
-    }, 203,
-    (data) => {
-      return {societyId, active}
-    },
-    rejectWithValue)   
-  }
-)
-
 export const addSocietyAccount = createAsyncThunk(
   'societyData/addSocietyAccount',
   async (societyObject, { rejectWithValue }) => {
-    const {nameInitials, name, email, presidentEmail, patronEmail, password} = societyObject
+    const { name, email, password } = societyObject
     return await apiCaller('/api/account/society/create-account', {
       email: email,
       password: password,
-      name: name,
-      nameInitials: nameInitials,
-      presidentEmail: presidentEmail,
-      patronEmail: patronEmail
+      name: name
     }, 201,
     (data) => {
       return {societyId: data.societyId, societyObject}
@@ -59,15 +42,11 @@ export const addSocietyAccount = createAsyncThunk(
 export const editSocietyAccount = createAsyncThunk(
   'societyData/editSocietyAccount',
   async (societyObject, { rejectWithValue}) => {
-    const {societyId, nameInitials, name, email, presidentEmail, patronEmail, password} = societyObject
+    const {societyId, name, email, password} = societyObject
     let body = {
       societyId: societyId,
       email: email,
-      password: password,
-      name: name,
-      nameInitials: nameInitials,
-      presidentEmail: presidentEmail,
-      patronEmail: patronEmail
+      name: name
     }
     if (password !== undefined){
       body = {...body, password: password}
@@ -91,19 +70,6 @@ const societyData = createSlice({
   },
 
   extraReducers: {
-    [toggleActiveSocietyAccount.fulfilled]: (state, action) => {
-      let i = 0
-      state.societyList.forEach((obj,index) => {
-        if (obj.societyId === action.payload.societyId){
-          i = index
-        }  
-      })  
-      state.societyList[i].active = !action.payload.active
-    },
-    [toggleActiveSocietyAccount.rejected]: (state, action) => {
-        state.error = action.payload
-    },
-
     [addSocietyAccount.fulfilled]: (state, action) => {
       state.societyList.push({
         societyId: action.payload.societyId, 

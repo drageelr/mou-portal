@@ -9,6 +9,8 @@ import CCASettingsHome from './features/account-settings/CCASettingsHome'
 import SponsorForm from './features/form-management/SponsorForm'
 import CCAAccountsPanel from './features/account-settings/CCAAccountsPanel'
 import SocietyAccountsPanel from './features/account-settings/SocietyAccountsPanel'
+import DUserAccountsPanel from './features/account-settings/DUserAccountsPanel'
+import DepartmentPanel from './features/account-settings/DepartmentPanel'
 import ChangePassword from './features/account-settings/ChangePassword'
 import SocietyDashboard from './ui/SocietyDashboard'
 import { connect } from 'react-redux'
@@ -66,6 +68,8 @@ function App({ user }) {
             <Route path="/request-list" exact component={isLoggedIn ? RequestList : LoginPage}/>
             <Route path="/cca-panel" exact component={isLoggedIn ? CCAAccountsPanel : LoginPage}/>
             <Route path="/society-panel" exact component={isLoggedIn ? SocietyAccountsPanel : LoginPage}/>
+            <Route path="/department-panel" exact component={isLoggedIn ? DepartmentPanel : LoginPage}/>
+            <Route path="/duser-panel" exact component={isLoggedIn ? DUserAccountsPanel : LoginPage}/>
           </Switch>
         </div>
 

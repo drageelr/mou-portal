@@ -11,13 +11,7 @@ import { useHistory } from 'react-router-dom'
 import ErrorSnackbar from '../../ui/ErrorSnackbar'
 
 
-/**
-  Description
 
-  @param {string} error shows errors from user state
-  @param {function} dispatch to dispatch actions to redux, prop by connect 
-  (these 2 will be commonly used by redux components so they will not be repeated in the comments)
-*/
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,

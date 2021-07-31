@@ -1,10 +1,12 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { Grid, Box, Typography} from '@material-ui/core'
-import LockIcon from '@material-ui/icons/Lock'
-import PersonIcon from '@material-ui/icons/Person'
-import PeopleAltIcon from '@material-ui/icons/PeopleAlt'
-import { makeStyles, Container, Card } from '@material-ui/core'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Grid, Box, Typography} from '@material-ui/core';
+import LockIcon from '@material-ui/icons/Lock';
+import PersonIcon from '@material-ui/icons/Person';
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
+import BusinessIcon from '@material-ui/icons/Business';
+import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
+import { makeStyles, Container, Card } from '@material-ui/core';
 
 /**
   The CCASettingsHome constitutes buttons for the following: Change Password, CCA Accounts,
@@ -82,15 +84,29 @@ export default function CCASettingsHome() {
 
         icon={<PeopleAltIcon/>}
         />
-      </Grid>
 
-      <Grid container direction="row" justify="center" alignItems="center">
-        
         <SettingsLinkBox 
         text="Change Password" 
         link="/change-password"
         bgImage={`linear-gradient(to bottom, #3578FA70, #736BE8),url(${image})`}
         icon={<LockIcon/>}
+        />
+      </Grid>
+
+      <Grid container direction="row" justify="center" alignItems="center">
+        
+        <SettingsLinkBox 
+        text="Departments" 
+        link="/department-panel"
+        bgImage={`linear-gradient(to bottom, #ADD10070, #7B920A),url(${image})`}
+        icon={<BusinessIcon/>}
+        />
+
+        <SettingsLinkBox 
+        text="Department Members" 
+        link="/duser-panel"
+        bgImage={`linear-gradient(to bottom, #136a8a70, #267871),url(${image})`}
+        icon={<AssignmentIndIcon/>}
         />
         
       
