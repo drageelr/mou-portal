@@ -6,12 +6,11 @@ import NotesIcon from '@material-ui/icons/Notes'
 import SaveIcon from '@material-ui/icons/Save'
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 import DoneOutlineIcon from '@material-ui/icons/DoneOutline'
-import NotesSideBar from './NotesSideBar'
-import IssueDialog from './IssueDialog'
+import NotesSideBar from './FormSideBar'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { createFormData, editFormData, resetState } from '../formDataSlice'
-import { changeFormStatus } from '../../request-management/requestListSlice'
+import { createFormData, editFormData, resetState } from './formDataSlice'
+import { changeFormStatus } from '../request-management/requestListSlice'
 
 const useStyles = makeStyles((theme) => ({
   propertiesPaper: {
@@ -22,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function FormViewerBar({ }) {
+export default function FormViewerBar({ isCCA, commentsData }) {
   const classes = useStyles()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [exitDialogOpen, setExitDialogOpen] = useState(false)
@@ -87,24 +86,6 @@ export default function FormViewerBar({ }) {
         </DialogActions>
       </Dialog>
 
-      <Dialog aria-labelledby="approved-dialog" open={approvedDialogOpen}>
-        <DialogTitle id="approved-dialog-title">Submission Approved</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            The submission under review has been approved.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={()=>{
-            setApprovedDialogOpen(false)
-          }} color="primary">
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-
-      <IssueDialog presOrPat={presOrPat} setIssueDialogOpen={setIssueDialogOpen} issueDialogOpen={issueDialogOpen} />
     </div>
   )
 }

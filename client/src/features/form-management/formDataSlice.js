@@ -9,7 +9,7 @@ const initialState = {
   ccaNotes: [],
   itemsData: [],
   itemFilledIds: [],
-  createMode: true,
+  fillMode: true,
   isPending: true,
   error: null
 }
@@ -176,8 +176,8 @@ const formData = createSlice({
   name: 'formData',
   initialState: initialState,
   reducers: {
-    setCreateMode: (state, action) => {
-      state.createMode = action.payload.createMode
+    setFillMode: (state, action) => {
+      state.fillMode = action.payload.fillMode
     },
 
     resetState: (state, action) => {
@@ -215,7 +215,7 @@ const formData = createSlice({
           id: action.payload.id,
           formId: action.payload.formId,
           comments: action.payload.ccaNotes,
-          createMode: false,
+          fillMode: false,
           isPending: false,
           error: null,
         }
@@ -241,7 +241,7 @@ const formData = createSlice({
     [createFormData.fulfilled]: (state, action) => {
       state.error = 'Submitted Form'
       state.id = action.payload.id 
-      state.createMode = false
+      state.fillMode = false
       action.payload.itemsData.forEach(itemData => {
         state.itemFilledIds.push(itemData.itemId)
       })
@@ -282,6 +282,6 @@ const formData = createSlice({
   }
 })
 
-export const { setItemData, clearError, setCreateMode, resetState, setError } = formData.actions
+export const { setItemData, clearError, setFillMode, resetState, setError } = formData.actions
 
 export default formData.reducer

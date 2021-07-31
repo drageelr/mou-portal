@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-function SponsorForm({formData}) {
+function SponsorForm({formData, submitMode, id, commentsData}) {
   const classes = useStyles()
   const [userType, setUserType] = React.useState("CCA")
 
@@ -43,139 +43,137 @@ function SponsorForm({formData}) {
 
 
   return (
-    <Container component="main" className={classes.root}>
-      <Formik
-        validateOnChange={false} validateOnBlur={true}
-        initialValues = {{
-            sponsorName: '',
-            sponsorAlias: '',
-            sponsorEmail: '',
-            societyID: 0,
-            amount: 0,
-            tax: false
-        }}
-        validationSchema={Yup.object({
-            sponsorName: Yup.string()
-              .required('Required'),
-            sponsorAlias: Yup.string()
-              .required('Required'),
-            sponsorEmail: Yup.string()
-              .email('Invalid Email Address')
-              .required('Required'),
-            societyID: Yup.number()
-              .required('Required'),
-            amount: Yup.number()
-              .required('Required'),
-            tax: Yup.bool()
-              .required('Required')
-        })}
-        onSubmit={ (values, { setSubmitting }) => {
-            // tsCreated
-            // login({email: values.email, password: values.password, userType: userType})
-            // .then(() => {
-            //   setSubmitting(false)
-            // }) 
-          }
-        }
-      >
-        {({submitForm, isSubmitting})=>(
-          <Form>
-            <h1 style={{color: "white"}}>Login</h1>      
-
-            <Field
-              style = {{backgroundColor: 'white'}}
-              component={TextField}
-              variant="filled"
-              margin="normal"
-              required
-              label="Sponsor Name"
-              name="sponsorName"
-            ></Field>
-            <br/>
-            <Field
-              style = {{backgroundColor: 'white'}}
-              component={TextField}
-              variant="filled"
-              margin="normal"
-              required
-              label="Sponsor Alias"
-              name="sponsorAlias"
-            ></Field>
-            <br/>
-            <Field
-              style = {{backgroundColor: 'white'}}
-              component={TextField}
-              variant="filled"
-              margin="normal"
-              required
-              type="email"
-              label="Sponsor Email"
-              name="sponsorEmail"
-            ></Field>
-            <br/>            
-            <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel htmlFor="societyID">Society</InputLabel>
-              <Field
-                component={Select}
-                name="societyID"
-                inputProps={{
-                  id: 'societyID',
-                }}
-              >
-                <MenuItem value={0}>LUMUN</MenuItem>
-                <MenuItem value={1}>SPADES</MenuItem>
-                <MenuItem value={2}>LAS</MenuItem>
-              </Field>
-            </FormControl>
-            <br/>
-            <Field
-              style = {{backgroundColor: 'white'}}
-              component={TextField}
-              variant="filled"
-              margin="normal"
-              required
-              type="number"
-              label="Amount"
-              name="amount"
-            ></Field>
-            <br/>
-            <Field
-              component={CheckboxWithLabel}
-              type="checkbox"
-              name="tax"
-              Label={{ label: 'Tax included' }}
-            />
-            <br/>
-            {
-              !false ?
-              <div>
-                <input
-                  accept={['.pdf']}
-                  id={`file-1`}
-                  hidden // hide input html since MuiButton html will be used
-                  type="file"
-                  onChange={handleFileChange} //single files only, at the first index in FileList
-                />
-                <label htmlFor={`file-1`}>
-                  <Button variant="contained" disabled={false} component="span" startIcon={<CloudUploadIcon/>}>
-                    Upload PDF
-                  </Button>
-                  {/* <p>{data.length !==0 && `Uploaded File [${data.substr(data.length - 7)}]`}</p> */}
-                </label>
-              </div> : 
-              <Button variant="contained" onClick={handleFileChange} component="span" startIcon={<GetAppIcon/>}>
-                Download File
-              </Button>
+    <div>
+      <FormViewerBar commentsData={{commentsData}} submissionId={id} isCCA={userType==="CCA"} submitMode={submitMode}/>
+      <br/>
+    
+      <Container component="main" className={classes.root}>
+        <Formik
+          validateOnChange={false} validateOnBlur={true}
+          initialValues = {{
+              sponsorName: '',
+              sponsorAlias: '',
+              sponsorEmail: '',
+              societyID: 0,
+              amount: 0,
+              tax: false
+          }}
+          validationSchema={Yup.object({
+              sponsorName: Yup.string()
+                .required('Required'),
+              sponsorAlias: Yup.string()
+                .required('Required'),
+              sponsorEmail: Yup.string()
+                .email('Invalid Email Address')
+                .required('Required'),
+              societyID: Yup.number()
+                .required('Required'),
+              amount: Yup.number()
+                .required('Required'),
+              tax: Yup.bool()
+                .required('Required')
+          })}
+          onSubmit={ (values, { setSubmitting }) => {
+              // tsCreated
+              // login({email: values.email, password: values.password, userType: userType})
+              // .then(() => {
+              //   setSubmitting(false)
+              // }) 
             }
-            <br/>
-            <Button size="large" onClick={submitForm} type="submit"
-            variant="contained" color="secondary" spacing= '10'>
-              Login
-            </Button>
-          </Form>
-        )}
-      </Formik>
-      
-    </Container>
+          }
+        >
+          {({submitForm, isSubmitting})=>(
+            <Form>
+              <h1 style={{color: "white"}}>Login</h1>      
+
+              <Field
+                style = {{backgroundColor: 'white'}}
+                component={TextField}
+                variant="filled"
+                margin="normal"
+                required
+                label="Sponsor Name"
+                name="sponsorName"
+              ></Field>
+              <br/>
+              <Field
+                style = {{backgroundColor: 'white'}}
+                component={TextField}
+                variant="filled"
+                margin="normal"
+                required
+                label="Sponsor Alias"
+                name="sponsorAlias"
+              ></Field>
+              <br/>
+              <Field
+                style = {{backgroundColor: 'white'}}
+                component={TextField}
+                variant="filled"
+                margin="normal"
+                required
+                type="email"
+                label="Sponsor Email"
+                name="sponsorEmail"
+              ></Field>
+              <br/>    
+              <Field
+                style = {{backgroundColor: 'white'}}
+                component={TextField}
+                variant="filled"
+                margin="normal"
+                required
+                type="number"
+                label="Amount"
+                name="amount"
+              ></Field>
+              <br/>
+              <Field
+                component={CheckboxWithLabel}
+                type="checkbox"
+                name="tax"
+                Label={{ label: 'Tax included' }}
+              />
+              <br/>
+              {
+                !false ?
+                <div>
+                  <input
+                    accept={['.pdf']}
+                    id={`file-1`}
+                    hidden // hide input html since MuiButton html will be used
+                    type="file"
+                    onChange={handleFileChange} //single files only, at the first index in FileList
+                  />
+                  <label htmlFor={`file-1`}>
+                    <Button variant="contained" disabled={false} component="span" startIcon={<CloudUploadIcon/>}>
+                      Upload PDF
+                    </Button>
+                    {/* <p>{data.length !==0 && `Uploaded File [${data.substr(data.length - 7)}]`}</p> */}
+                  </label>
+                </div> : 
+                <Button variant="contained" onClick={handleFileChange} component="span" startIcon={<GetAppIcon/>}>
+                  Download File
+                </Button>
+              }
+              <br/>
+              <Button size="large" onClick={submitForm} type="submit"
+              variant="contained" color="secondary" spacing= '10'>
+                Login
+              </Button>
+            </Form>
+          )}
+        </Formik>
+        
+      </Container>
+    </div>
   )
 }
+
+const mapStateToProps = (state) => ({ //needs both the template and data to render the form
+  formData: state.formData,
+  userType: state.user.userType,
+})
+
+
+export default connect(mapStateToProps) (SponsorForm)

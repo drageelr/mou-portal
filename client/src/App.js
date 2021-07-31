@@ -3,12 +3,10 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import 'typeface-montserrat'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core'
 import NavBar from './ui/NavBar'
-import FormMaker from './features/form-management/form-maker/FormMaker'
-import RequestList from './features/request-management/request-list/RequestList'
+import RequestList from './features/request-management/RequestList'
 import LoginPage from './features/account-settings/LoginPage'
 import CCASettingsHome from './features/account-settings/CCASettingsHome'
-import FormList from './features/form-management/form-list/FormList'
-import FormViewer from './features/form-management/form-viewer/FormViewer'
+import SponsorForm from './features/form-management/SponsorForm'
 import CCAAccountsPanel from './features/account-settings/CCAAccountsPanel'
 import SocietyAccountsPanel from './features/account-settings/SocietyAccountsPanel'
 import ChangePassword from './features/account-settings/ChangePassword'
@@ -62,18 +60,13 @@ function App({ user }) {
           }
           <Switch>
             <Route path="/" exact component={isLoggedIn ? (userType === "CCA" ? CCAAccountsPanel : SocietyDashboard) : LoginPage}/>
-            <Route path="/review/:type" component={FormViewer}/>
-            <Route path="/form-viewer" exact component={isLoggedIn ? FormViewer : LoginPage}/>
-            <Route path="/form-viewer/:mode/:id" component={isLoggedIn ? FormViewer : LoginPage}/>
+            <Route path="/sponsor-mou" exact component={isLoggedIn ? SponsorForm : LoginPage}/>
+            <Route path="/sponsor-mou/:mode/:id" component={isLoggedIn ? SponsorForm : LoginPage}/>
             <Route path="/change-password" exact component={isLoggedIn ? ChangePassword : LoginPage}/>
             <Route path="/settings" exact component={isLoggedIn ? CCASettingsHome : LoginPage}/>
             <Route path="/request-list" exact component={isLoggedIn ? RequestList : LoginPage}/>
             <Route path="/cca-panel" exact component={isLoggedIn ? CCAAccountsPanel : LoginPage}/>
             <Route path="/society-panel" exact component={isLoggedIn ? SocietyAccountsPanel : LoginPage}/>
-            <Route path="/form-maker" exact component={isLoggedIn ? FormMaker : LoginPage}/>
-            <Route path="/form-maker/:id" exact component={isLoggedIn ? FormMaker : LoginPage}/>
-            <Route path="/forms" exact component={isLoggedIn ? FormList : LoginPage}/>
-
           </Switch>
         </div>
 

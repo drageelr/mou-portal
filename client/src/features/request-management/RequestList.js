@@ -4,8 +4,8 @@ import MUIDataTable from "mui-datatables"
 import ChangeFormStatusSelect from './ChangeFormStatusSelect'
 import { Box, Button, LinearProgress, FormControlLabel, Grid, Typography, FormControl, Select, MenuItem, 
   Dialog, DialogActions, DialogContent, DialogTitle, useTheme } from '@material-ui/core'
-import { fetchCCARequestList, clearError } from '../requestListSlice'
-import ErrorSnackBar from "../../../ui/ErrorSnackbar"
+import { fetchCCARequestList, clearError } from './requestListSlice'
+import ErrorSnackBar from "../../ui/ErrorSnackbar"
 import { useHistory } from "react-router-dom"
 import DateRangeIcon from '@material-ui/icons/DateRange'
 import Switch from '@material-ui/core/Switch'
@@ -200,7 +200,7 @@ export function RequestList({requestListData, dispatch}) {
 
   
   function handleClick(reqId) {
-    history.push(`/form-viewer/review/${reqId}`)
+    history.push(`/sponsor-mou/review/${reqId}`)
   }
 
   function CustomFilterBar() {

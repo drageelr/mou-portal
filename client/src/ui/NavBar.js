@@ -100,7 +100,7 @@ export default function NavBar({name, ccaId,  userType, picture, darkMode, userT
                 <Grid item>
                   <Typography>
                     <Box color="text.primary" fontSize={26} fontWeight={600}>
-                      {"CCA Events"}
+                      {"CCA MoU Portal"}
                     </Box>
                   </Typography>
                 </Grid>
@@ -120,7 +120,7 @@ export default function NavBar({name, ccaId,  userType, picture, darkMode, userT
                 </Box>
               </Typography>
               {  
-              userType !== "PresPatron" &&  (   
+                 
                 userType === "CCA" ? 
                 <Link to='settings'>
                   <IconButton edge="end" style={{padding: 10, marginRight: 5}}>
@@ -134,17 +134,15 @@ export default function NavBar({name, ccaId,  userType, picture, darkMode, userT
                       </IconButton>
                     </Link>  
                 </Grid>
-              )
               }
               <br/>
-              {
-              userType !=="PresPatron" &&
+         
               <Link to='/'>
                 <IconButton  edge="end" style={{padding: 10}} onClick={()=>dispatch(logout())}>
                   <ExitToAppIcon />
                 </IconButton>
               </Link>
-              }
+
             </Grid>
           </Grid>
         </Toolbar>

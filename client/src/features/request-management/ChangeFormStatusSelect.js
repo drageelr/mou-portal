@@ -1,6 +1,6 @@
 import React from 'react'
 import { Select, FormControl, MenuItem } from '@material-ui/core'
-import { changeFormStatus } from '../requestListSlice'
+import { changeFormStatus } from './requestListSlice'
 import { useDispatch } from 'react-redux'
 
 /**

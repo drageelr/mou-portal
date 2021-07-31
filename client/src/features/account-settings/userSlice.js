@@ -22,7 +22,7 @@ const initialState = {
     categoryAccess: true
   },
   darkMode: false,
-  themeColor: '#3578fa',
+  themeColor: '#00b489',
   isPending: true,
   error: null
 }

@@ -150,7 +150,7 @@ export function SocietyFormSubmissionView({user, submissionListData, dispatch}) 
             <Button key={index} variant="outlined" 
             color="primary" 
             style={{marginRight: -30}}
-            onClick={()=>history.push(`/form-viewer/edit/${submission.submissionId}`)}
+            onClick={()=>history.push(`/sponsor-mou/edit/${submission.submissionId}`)}
             >
               view submission
             </Button>
