@@ -7,8 +7,8 @@ const initialState = {
   password: "",
   name: "",
   designation: "",
-  userType: "CCA", // Society, General
-  isLoggedIn: true,
+  userType: "CCA", // Society, DUser
+  isLoggedIn: false,
   themeColor: '#01bc8d',
   darkMode: false,
   token: "",
@@ -38,8 +38,8 @@ export const login = createAsyncThunk(
     if (userType === "Society") {
       QUERY = '/api/auth/society/login';
     }
-    else if (userType === "General") {
-      QUERY = '/api/auth/general/login';
+    else if (userType === "DUser") {
+      QUERY = '/api/auth/DUser/login';
     }
 
     return await apiCaller(QUERY, {email, password}, 200,

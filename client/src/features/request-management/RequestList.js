@@ -38,14 +38,6 @@ export function RequestList({requestListData, dispatch}) {
   const columns = [
     "Request ID",
     {
-      name:"Form Title",
-      options: {
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return value
-        }
-      }
-    }, 
-    {
       name:"Date",
       options: {
         customBodyRender: (value, tableMeta, updateValue) => {
@@ -188,17 +180,13 @@ export function RequestList({requestListData, dispatch}) {
 
   
   function handleClick(reqId) {
-    history.push(`/sponsor-mou/review/${reqId}`)
+    history.push(`/sponsor-mou/view/${reqId}`)
   }
 
   function CustomFilterBar() {
     return (
-      <Grid container direction= "row" justify="space-evenly" style={{marginLeft: '5%'}}>
+      <Grid container direction= "row" justify="flex-end" style={{marginRight: '5%'}}>
         <CustomDatePicker />
-
-        <Typography>
-          Only requests with CCA statuses are shown by default.
-        </Typography> 
 
         <Grid item>
           <FormControl variant="outlined" > {/*FILTER BY MONTHS*/}
@@ -278,14 +266,13 @@ export function RequestList({requestListData, dispatch}) {
           title={
           <Typography variant="h5">
             <Box fontWeight={600}>
-              Request List
+              MoU Requests
             </Box>
           </Typography>}
           data={
-            requestListData.formDataList.map((request, _) => [
+            requestListData.requestDataList.map((request, _) => [
               request.submissionId,
-              request.formTitle,
-              request.timestampModified, //<DateRangeIcon style={{marginBottom: -5, marginRight: 4}}/>
+              request.timestampModified,
               request.societyName,
               request.status,
               <Button 

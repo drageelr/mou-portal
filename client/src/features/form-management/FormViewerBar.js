@@ -25,8 +25,6 @@ export default function FormViewerBar({ isCCA, commentsData }) {
   const classes = useStyles()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [exitDialogOpen, setExitDialogOpen] = useState(false)
-  const [issueDialogOpen, setIssueDialogOpen] = useState(false)
-  const [approvedDialogOpen, setApprovedDialogOpen] = useState(false)
   const dispatch = useDispatch()
   const history = useHistory()
 
@@ -42,7 +40,7 @@ export default function FormViewerBar({ isCCA, commentsData }) {
           <Grid item>
             <Typography variant="h5">
                 <Box fontWeight={600}>
-                  Society MoU Form
+                  Sponsor MoU Form
                 </Box>
               </Typography>
           </Grid>

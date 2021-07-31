@@ -11,6 +11,17 @@ import { TextField, CheckboxWithLabel, Select } from 'formik-material-ui';
 
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    alignSelf: 'center'
+  },
+  itemPaper: {
+    // backgroundColor: theme.palette.secondary.main,
+    padding: theme.spacing(1),
+    width: '40%',
+    marginBottom: 5,
+    marginLeft: -5,
+    paddingTop: 7
+  },
   sectionPaper: {
     padding: theme.spacing(2),
     height: '100%',
@@ -19,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     // backgroundColor: theme.palette.primary.main,
   },
   formControl: {
-    minWidth: '30%'
+    minWidth: '50%'
   }
 }))
 
@@ -44,36 +55,37 @@ function SponsorForm({formData, submitMode, id, commentsData}) {
 
   return (
     <div>
-      <FormViewerBar commentsData={{commentsData}} submissionId={id} isCCA={userType==="CCA"} submitMode={submitMode}/>
+      <FormViewerBar commentsData={{lastComment: {desc: 'CCA was here.', tsCreated: '05/05/2001'}}} submissionId={id} isCCA={userType==="CCA"} submitMode={submitMode}/>
       <br/>
     
-      <Container component="main" className={classes.root}>
+      <Container>
         <Formik
           validateOnChange={false} validateOnBlur={true}
           initialValues = {{
               sponsorName: '',
               sponsorAlias: '',
               sponsorEmail: '',
-              societyID: 0,
               amount: 0,
               tax: false
           }}
           validationSchema={Yup.object({
               sponsorName: Yup.string()
-                .required('Required'),
+                .required('Required')
+                .max(50,'Atmost 50 characters'),
               sponsorAlias: Yup.string()
-                .required('Required'),
+                .required('Required')
+                .max(50,'Atmost 50 characters'),
               sponsorEmail: Yup.string()
+                .required('Required')
                 .email('Invalid Email Address')
-                .required('Required'),
-              societyID: Yup.number()
-                .required('Required'),
+                .max(50,'Atmost 50 characters'),
               amount: Yup.number()
                 .required('Required'),
               tax: Yup.bool()
                 .required('Required')
           })}
           onSubmit={ (values, { setSubmitting }) => {
+              // get society ID from society user
               // tsCreated
               // login({email: values.email, password: values.password, userType: userType})
               // .then(() => {
@@ -84,9 +96,8 @@ function SponsorForm({formData, submitMode, id, commentsData}) {
         >
           {({submitForm, isSubmitting})=>(
             <Form>
-              <h1 style={{color: "white"}}>Login</h1>      
-
               <Field
+                className={classes.itemPaper}
                 style = {{backgroundColor: 'white'}}
                 component={TextField}
                 variant="filled"
@@ -97,6 +108,7 @@ function SponsorForm({formData, submitMode, id, commentsData}) {
               ></Field>
               <br/>
               <Field
+                className={classes.itemPaper}
                 style = {{backgroundColor: 'white'}}
                 component={TextField}
                 variant="filled"
@@ -107,6 +119,7 @@ function SponsorForm({formData, submitMode, id, commentsData}) {
               ></Field>
               <br/>
               <Field
+                className={classes.itemPaper}                
                 style = {{backgroundColor: 'white'}}
                 component={TextField}
                 variant="filled"
@@ -118,6 +131,7 @@ function SponsorForm({formData, submitMode, id, commentsData}) {
               ></Field>
               <br/>    
               <Field
+                className={classes.itemPaper}
                 style = {{backgroundColor: 'white'}}
                 component={TextField}
                 variant="filled"
@@ -129,12 +143,13 @@ function SponsorForm({formData, submitMode, id, commentsData}) {
               ></Field>
               <br/>
               <Field
+                style={{marginLeft: 10}}
                 component={CheckboxWithLabel}
                 type="checkbox"
                 name="tax"
                 Label={{ label: 'Tax included' }}
               />
-              <br/>
+              <br/><br/>
               {
                 !false ?
                 <div>
@@ -146,22 +161,24 @@ function SponsorForm({formData, submitMode, id, commentsData}) {
                     onChange={handleFileChange} //single files only, at the first index in FileList
                   />
                   <label htmlFor={`file-1`}>
-                    <Button variant="contained" disabled={false} component="span" startIcon={<CloudUploadIcon/>}>
+                    <Button variant="outlined" disabled={false} component="span" startIcon={<CloudUploadIcon/>}>
                       Upload PDF
                     </Button>
                     {/* <p>{data.length !==0 && `Uploaded File [${data.substr(data.length - 7)}]`}</p> */}
                   </label>
                 </div> : 
-                <Button variant="contained" onClick={handleFileChange} component="span" startIcon={<GetAppIcon/>}>
+                <Button variant="outlined" onClick={handleFileChange} component="span" startIcon={<GetAppIcon/>}>
                   Download File
                 </Button>
               }
               <br/>
               <Button size="large" onClick={submitForm} type="submit"
-              variant="contained" color="secondary" spacing= '10'>
-                Login
+              variant="contained" color="primary" spacing= '10'>
+                Submit
               </Button>
+              <br/><br/>
             </Form>
+            
           )}
         </Formik>
         

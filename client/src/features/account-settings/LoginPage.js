@@ -12,7 +12,7 @@ import { login, clearError } from './userSlice'
 import ErrorSnackbar from '../../ui/ErrorSnackbar'
 import landingBG from './landingBG.svg'
 import lumslogo from './LUMSLogo.png'
-import cmsLogo from './cmswhite.png'
+
 // card styling
 const useStyles = makeStyles(theme=>({
   root: {
@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme=>({
     marginLeft: 0,
     marginTop: 0,
     height: '100%',
-    backgroundColor: "#3578fa",
+    backgroundColor: theme.palette.primary.main,
     color: theme.palette.secondary.main
   },
   input: {
@@ -36,8 +36,8 @@ const useStyles = makeStyles(theme=>({
 
 function LoginPage({error, dispatch, match, location}) {
   const classes = useStyles()
-  const selectedBGStyle = {backgroundColor: "cornflowerblue", color:"white", borderColor: "#F5FFFA"}
-  const normalBGStyle = {backgroundColor: "#2555b5", color:"white"}
+  const selectedBGStyle = {backgroundColor: "#25b6b0", color:"white", borderColor: "#F5FFFA"}
+  const normalBGStyle = {backgroundColor: "#148a77", color:"white"}
   const [userType, setUserType] = React.useState("CCA")
 
   // React.useEffect(() => {
@@ -50,13 +50,13 @@ function LoginPage({error, dispatch, match, location}) {
       <img style={{position: 'absolute', left: '30vw', width: '70vw', height: '100vh'}}
       src={landingBG} alt="CMS"/>
       <img style={{
-        left: '3vw',
+        marginTop: '2vh',
         width: '12vw',
-        height: '9vh',
+        height: '5vw',
       }}
       src={lumslogo} alt="lumslogo"/>
     
-      <div style={{marginTop: '20vh', marginLeft: '3vw'}}>
+      <div style={{marginTop: '20%', marginLeft: '3vw'}}>
       <Formik
         validateOnChange={false} validateOnBlur={true}
         initialValues = {{
@@ -96,10 +96,10 @@ function LoginPage({error, dispatch, match, location}) {
                 Society
               </ToggleButton>
               <ToggleButton 
-              value="General" 
-              onClick={()=>setUserType("General")}
-              style={userType==="General" ? selectedBGStyle : normalBGStyle}>
-                General
+              value="DUser" 
+              onClick={()=>setUserType("DUser")}
+              style={userType==="DUser" ? selectedBGStyle : normalBGStyle}>
+                Dept
               </ToggleButton>
             </ToggleButtonGroup>
             <br/>            

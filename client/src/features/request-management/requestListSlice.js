@@ -2,7 +2,12 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { apiCaller } from "../../helpers"
 
 const initialState = {
-  formDataList: [],
+  requestDataList: [{
+    submissionId: 1,
+    timestampModified: '11/05/1995',
+    societyName: 'LUMUN',
+    status: 'Reviewed'
+  }],
   isPending: true,
   error: null
 }
@@ -50,7 +55,7 @@ const requestListData = createSlice ({
     [fetchCCARequestList.fulfilled]: (state, action) => {
       if (state.isPending === true) {
         state.isPending = false
-        state.formDataList = action.payload.ccaList
+        state.requestDataList = action.payload.ccaList
       }
     },
     [fetchCCARequestList.rejected]: (state, action) => {
@@ -62,7 +67,7 @@ const requestListData = createSlice ({
 
     [changeFormStatus.fulfilled]: (state, action) => {
       const {submissionId, status} = action.payload
-      state.formDataList.forEach(submission => {
+      state.requestDataList.forEach(submission => {
         if(submission.formId === submissionId) {
           submission.status = status
         }

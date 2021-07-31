@@ -58,7 +58,7 @@ function App({ user }) {
             <NavBar name={name} userType={userType} darkMode={darkMode} ccaId={id} userThemeColor={themeColor}/>
           }
           <Switch>
-            <Route path="/" exact component={isLoggedIn ? (userType === "CCA" ? CCAAccountsPanel : SocietyDashboard) : LoginPage}/>
+            <Route path="/" exact component={isLoggedIn ? (userType === "CCA" ? RequestList : SocietyDashboard) : LoginPage}/>
             <Route path="/sponsor-mou" exact component={isLoggedIn ? SponsorForm : LoginPage}/>
             <Route path="/sponsor-mou/:mode/:id" component={isLoggedIn ? SponsorForm : LoginPage}/>
             <Route path="/change-password" exact component={isLoggedIn ? ChangePassword : LoginPage}/>

@@ -131,7 +131,7 @@ export function SocietyFormSubmissionView({user, submissionListData, dispatch}) 
       <MUIDataTable
         title={"Submissions"} 
         data={
-          submissionListData.formDataList.map((submission, index) => [
+          submissionListData.requestDataList.map((submission, index) => [
             submission.formTitle,
             submission.timestampModified,
             selectValue(submission.status),

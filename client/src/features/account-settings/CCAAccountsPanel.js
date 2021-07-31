@@ -186,17 +186,22 @@ function CCAAccountPanel({ccaDetails, dispatch}) {
           passwordRequired: Yup.boolean(),
           email: Yup.string()
             .email('Invalid Email Address')
+            .max(50,'Atmost 50 characters')
             .required('Required'),
           password: Yup.string()
-          .min(8,'Must be at least 8 characters')
-          .max(30,'Must be atmost 30 characters')
-          .matches('^[a-zA-Z0-9]+$', 'All passwords must be alphanumeric (no special symbols).')
-          .when("passwordRequired", {
-            is: true,
-            then: Yup.string().required("Must enter a password for the new account")
-          }),
-          name: Yup.string().required(),
-          designation: Yup.string().required(),
+            .min(8,'Must be at least 8 characters')
+            .max(30,'Must be atmost 30 characters')
+            .matches('^[a-zA-Z0-9]+$', 'All passwords must be alphanumeric (no special symbols).')
+            .when("passwordRequired", {
+              is: true,
+              then: Yup.string().required("Must enter a password for the new account")
+            }),
+          name: Yup.string()
+            .required()
+            .max(50,'Atmost 50 characters'),
+          designation: Yup.string()
+            .required()
+            .max(50,'Atmost 50 characters'),
         })}
         onSubmit={(values, {setSubmitting}) => {
           dispatch(editMode ?
