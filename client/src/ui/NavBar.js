@@ -26,35 +26,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function NavBar({name, ccaId,  userType, picture, darkMode, userThemeColor}) {
+export default function NavBar({name,  userType}) {
   const classes = useStyles()
   const [drawerOpen, setDrawerOpen] = useState(false)
-  const [dialogOpen, setDialogOpen] = useState(false)
-  const [themeColor, setThemeColor] = React.useState(userThemeColor)
-
 
   const dispatch = useDispatch()
 
-  function handleDialogOpen() {
-    setThemeColor(userThemeColor)
-    setDialogOpen(true)
-  }
-
-  function handleDialogClose() {
-    setDialogOpen(false)
-  }
-
-  function handleThemeColor() {
-    dispatch(changeThemeColor({ccaId, themeColor}))
-    setDialogOpen(false)
-  }
-
   function toggleDrawer() {
     setDrawerOpen(!drawerOpen)
-  }
-
-  function handleDarkModeChange() {
-    dispatch(changeDarkMode({darkMode: !darkMode, ccaId}))
   }
 
   function RoundLinkButton({ link, icon, title }) {
@@ -108,19 +87,12 @@ export default function NavBar({name, ccaId,  userType, picture, darkMode, userT
             </Grid>
 
             <Grid item style={{ display: 'flex', alignItems: 'center'}}>
-              <Avatar
-                style={{margin: 5, width: 35, height: 35}} 
-                alt={name} 
-                src={picture}
-                className={classes.drawerPaper}
-              >{name[0]}</Avatar>
               <Typography>
                 <Box color="text.primary" fontWeight={600} m={1}>
                   {name}
                 </Box>
               </Typography>
               {  
-                 
                 userType === "CCA" ? 
                 <Link to='settings'>
                   <IconButton edge="end" style={{padding: 10, marginRight: 5}}>
@@ -153,43 +125,17 @@ export default function NavBar({name, ccaId,  userType, picture, darkMode, userT
         <br/>
         <Grid container direction="column" justify="flex-end">
           <Grid item>
-            <RoundLinkButton link={'/forms'} icon={<EditIcon fontSize='large'/>} title={'Forms'}/>
-            <RoundLinkButton link={'/request-list'} icon={<ListAltIcon fontSize='large'/>} title={'Submissions'}/>
-          </Grid>
-          <Grid item>
-            <FormControlLabel
-              style={{marginLeft: 10, color: "white"}}
-              control={<Switch color="secondary" size="small" checked={darkMode} onChange={handleDarkModeChange} name="darkMode"/>}
-              label="Dark Mode"
-            />
-          </Grid>
-
-          <Grid item>
-            <Button onClick={handleDialogOpen} size ="small" variant="contained" style={{marginLeft: 7, marginTop: "15%"}}>
-              Set Theme Color
-            </Button> 
-            <Dialog open={dialogOpen} onClose={handleDialogClose} aria-labelledby="theme-dialog">
-              <DialogTitle id="theme-dialog">Set Theme Color</DialogTitle>
-                <DialogContent>
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="name"
-                    label="Hex Color"
-                    value = {themeColor}
-                    onChange={(e)=>{setThemeColor(e.target.value)}}
-                    helperText = "Enter Hex Value for Color (#000000)"
-                  />
-                </DialogContent>
-              <DialogActions>
-                <Button onClick={handleDialogClose} color="primary">
-                  Cancel
-                </Button>
-                <Button onClick={handleThemeColor} color="primary">
-                  Save
-                </Button>
-              </DialogActions>
-            </Dialog>
+            {
+              userType === "Society" &&
+              <RoundLinkButton link={'/sponsor-mou/fill'} icon={<EditIcon fontSize='large'/>} title={'New Sponsor MoU'}/>
+            }
+            {
+              userType === "Society" ?
+              <RoundLinkButton link={'/'} icon={<ListAltIcon fontSize='large'/>} title={'My Submissions'}/>
+              :
+              <RoundLinkButton link={'/request-list'} icon={<ListAltIcon fontSize='large'/>} title={'Submissions'}/>
+            }
+            
           </Grid>
         </Grid>
       </Drawer>

@@ -22,7 +22,7 @@ function App({ user }) {
     palette: {
       type: darkMode ? 'dark' : 'light',
       primary: {
-        main: themeColor !== undefined ? themeColor : '#3578fa',
+        main: '#00b489',
       },
       secondary: {
         main: '#ffffff',
@@ -55,8 +55,7 @@ function App({ user }) {
         <div>
           { 
             isLoggedIn &&
-            <NavBar name={name} userType={userType} picture={picture} 
-              darkMode={darkMode} ccaId={id} userThemeColor={themeColor}/>
+            <NavBar name={name} userType={userType} darkMode={darkMode} ccaId={id} userThemeColor={themeColor}/>
           }
           <Switch>
             <Route path="/" exact component={isLoggedIn ? (userType === "CCA" ? CCAAccountsPanel : SocietyDashboard) : LoginPage}/>

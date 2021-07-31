@@ -6,11 +6,11 @@ const initialState = {
   email: "",
   password: "",
   name: "",
-  nameInitials: "CD",
-  role: "",
+  designation: "",
   userType: "CCA", // Society, General
   isLoggedIn: true,
-  picture: "",
+  themeColor: '#00b489',
+  darkMode: false,
   token: "",
   permissions: {
     accountAccess: true,
@@ -21,8 +21,6 @@ const initialState = {
     logAccess: true,
     categoryAccess: true
   },
-  darkMode: false,
-  themeColor: '#00b489',
   isPending: true,
   error: null
 }
@@ -49,10 +47,10 @@ export const login = createAsyncThunk(
       localStorage.setItem('token', data.token)
 
       if (userType==="CCA"){
-        return {token: data.token, user: {email, userType, password, name: (data.user.firstName + ' ' + data.user.lastName),...data.user},}
+        return {token: data.token, user: {email, userType, password, name: data.user.name,...data.user},}
       }
       else {
-        return {token: data.token, themeColor: '#3578fa', darkMode: false, user: {email, userType, password, ...data.user},}
+        return {token: data.token, user: {email, userType, password, ...data.user},}
       }
     },rejectWithValue)
   }
@@ -81,29 +79,6 @@ export const changePassword = createAsyncThunk(
 )
 
 
-export const changeThemeColor = createAsyncThunk(
-  'ccaDetails/changeThemeColor',
-  async (themeObj,  { rejectWithValue }) => {
-    const {ccaId, themeColor} = themeObj
-
-    return await apiCaller('/api/account/cca/edit-account', {ccaId, themeColor}, 203,
-    (data) => themeColor,
-    rejectWithValue)
-  }
-)
-
-export const changeDarkMode = createAsyncThunk(
-  'ccaDetails/changeDarkMode',
-  async (modeObj,  { rejectWithValue }) => {
-    const {darkMode, ccaId} = modeObj
-    
-    return await apiCaller('/api/account/cca/edit-account', {ccaId, darkMode}, 203,
-    (data) => darkMode,
-    rejectWithValue)
-  }
-)
-
-
 const user = createSlice ({
   name:'user',
   initialState: initialState,
@@ -115,10 +90,6 @@ const user = createSlice ({
     },
     clearError: (state, action) => {
       state.error = null
-    },
-
-    setUserPicture: (state, action) => {
-      state.picture = action.payload.picture
     },
 
     setUserDetails: (state, action) => {
@@ -169,20 +140,6 @@ const user = createSlice ({
         state.error = action.payload
       }
     },
-
-    [changeThemeColor.fulfilled]: (state, action) => {
-      state.themeColor = action.payload
-    },
-    [changeThemeColor.rejected]: (state, action) => {
-      state.error = action.payload
-    },
-
-    [changeDarkMode.fulfilled]: (state, action) => {
-      state.darkMode = action.payload
-    },
-    [changeDarkMode.rejected]: (state, action) => {
-      state.error = action.payload
-    }
   }
 })
 

@@ -13,7 +13,6 @@ import ErrorSnackbar from "../../ui/ErrorSnackbar"
 import PanelBar from './PanelBar'
 import AccessibilityIcon from '@material-ui/icons/Accessibility'
 import { addCCAAccount, toggleActiveCCAAccount, editCCAAccount, fetchCCAAccounts, clearError, editCCAPermissions } from './ccaDetailsSlice'
-import { setUserPicture } from './userSlice'
 
 
 function CCAAccountPanel({ccaDetails,dispatch}) {
@@ -25,30 +24,9 @@ function CCAAccountPanel({ccaDetails,dispatch}) {
   const [isOpen, setIsOpen] = useState(false)
   const [editMode, setEditMode] = useState(false)
   const [editId, setEditId] = useState(-1)
-  const [picture, setPicture] = useState("https://pngimage.net/wp-content/uploads/2018/05/default-user-profile-image-png-6.png")
   const [permissionMode, setPermissionsMode] = useState(false)
   const [permissions, setPermissions] = useState({})
-  // const [page, setPage] = React.useState(0);
   
-  
-  // function handleChangePage(event, newPage){
-  //   setPage(newPage);
-  // }
-
-  function handleImageUpload(event, ccaId) {
-    var reader = new FileReader()
-    reader.readAsDataURL(event.target.files[0])
-    
-    reader.onload = async () => {
-      const b64 = reader.result
-      setPicture(b64)
-      dispatch(setUserPicture({picture: b64}))
-    }
-
-    reader.onerror = (error) => {
-      console.log('Error: ', error)
-    }
-  }
 
   function handlePermissionsChange(event) {
     setPermissions({ 
@@ -124,53 +102,33 @@ function CCAAccountPanel({ccaDetails,dispatch}) {
       <FormControl component="fieldset" style={{marginLeft: "10%", marginBottom: 20}}>
         <FormGroup>
           <FormControlLabel
-            control={<Switch color="primary" size="small" checked={permissions.societyCRUD} onChange={handlePermissionsChange} name="societyCRUD"/>}
-            label="Society CRUD"
+            control={<Switch color="primary" size="small" checked={permissions.accountAccess} onChange={handlePermissionsChange} name="accountAccess"/>}
+            label="Account Access"
             style={{marginBottom: 8}}
           />
           <FormControlLabel
-            control={<Switch color="primary" size="small" checked={permissions.ccaCRUD} onChange={handlePermissionsChange} name="ccaCRUD"/>}
-            label="CCA CRUD"
+            control={<Switch color="primary" size="small" checked={permissions.approvalAccess} onChange={handlePermissionsChange} name="approvalAccess"/>}
+            label="Approval Access"
             style={{marginBottom: 8}}
           />
           <FormControlLabel
-            control={<Switch color="primary" size="small" checked={permissions.accessFormMaker} onChange={handlePermissionsChange} name="accessFormMaker"/>}
-            label="Access Form Maker"
+            control={<Switch color="primary" size="small" checked={permissions.reviewAccess} onChange={handlePermissionsChange} name="reviewAccess"/>}
+            label="Review Access"
             style={{marginBottom: 8}}
           />
           <FormControlLabel
-            control={<Switch color="primary" size="small" checked={permissions.createReqTask} onChange={handlePermissionsChange} name="createReqTask"/>}
-            label="Create Request Task"
+            control={<Switch color="primary" size="small" checked={permissions.cancelAccess} onChange={handlePermissionsChange} name="cancelAccess"/>}
+            label="Cancel Access"
             style={{marginBottom: 8}}
           />
           <FormControlLabel
-            control={<Switch color="primary" size="small" checked={permissions.createCustomTask} onChange={handlePermissionsChange} name="createCustomTask"/>}
-            label="Create Custom Task"
+            control={<Switch color="primary" size="small" checked={permissions.logAccess} onChange={handlePermissionsChange} name="logAccess"/>}
+            label="View Logs of MoU"
             style={{marginBottom: 8}}
           />
           <FormControlLabel
-            control={<Switch color="primary" size="small" checked={permissions.createTaskStatus} onChange={handlePermissionsChange} name="createTaskStatus"/>}
-            label="Create Task Status"
-            style={{marginBottom: 8}}
-          />
-          <FormControlLabel
-            control={<Switch color="primary" size="small" checked={permissions.archiveTask} onChange={handlePermissionsChange} name="archiveTask"/>}
-            label="Archive Task"
-            style={{marginBottom: 8}}
-          />
-          <FormControlLabel
-            control={<Switch color="primary" size="small" checked={permissions.unarchiveTask} onChange={handlePermissionsChange} name="unarchiveTask"/>}
-            label="Unarchive Task"
-            style={{marginBottom: 8}}
-          />
-          <FormControlLabel
-            control={<Switch color="primary" size="small" checked={permissions.setFormStatus} onChange={handlePermissionsChange} name="setFormStatus"/>}
-            label="Set Form Status"
-            style={{marginBottom: 8}}
-          />
-          <FormControlLabel
-            control={<Switch color="primary" size="small" checked={permissions.addCCANote} onChange={handlePermissionsChange} name="addCCANote"/>}
-            label="Add CCA Note"
+            control={<Switch color="primary" size="small" checked={permissions.categoryAccess} onChange={handlePermissionsChange} name="categoryAccess"/>}
+            label="Categories & Mileage Access"
             style={{marginBottom: 8}}
           />
         </FormGroup>
@@ -185,24 +143,20 @@ function CCAAccountPanel({ccaDetails,dispatch}) {
 
   function CCADialog(){
     let initialValues = {
-      firstName: '',
-      lastName: '',
+      name: '',
+      designation: '',
       email: '',
       password: '',
       passwordRequired: !editMode,
-      picture: 'https://pngimage.net/wp-content/uploads/2018/05/default-user-profile-image-png-6.png',
       role:'',
       permissions: {
-        societyCRUD: true,
-        ccaCRUD: true,
-        accessFormMaker: true,
-        createReqTask: true,
-        createCustomTask: true,
-        createTaskStatus: true,
-        archiveTask: true,
-        unarchiveTask: true,
-        setFormStatus: true,
-        addCCANote: true
+        accountAccess: true,
+        approvalAccess: true,
+        reviewAccess: true,
+        verifyAccess: true,
+        cancelAccess: true,
+        logAccess: true,
+        categoryAccess: true
       }
     }
 
@@ -246,29 +200,24 @@ function CCAAccountPanel({ccaDetails,dispatch}) {
             is: true,
             then: Yup.string().required("Must enter a password for the new account")
           }),
-          firstName: Yup.string().required(),
-          lastName: Yup.string().required(),
+          name: Yup.string().required(),
+          designation: Yup.string().required(),
           picture: Yup.string(),
-          role: Yup.string().required(),
         })}
         onSubmit={(values, {setSubmitting}) => {
           dispatch(editMode ?
             editCCAAccount({
               ccaId: editId,
-              firstName: values.firstName,
-              lastName: values.lastName,
+              name: values.name,
+              designation: values.designation,
               email: values.email,
               password: values.password,
-              picture: picture,
-              role:values.role,
             })
             :addCCAAccount({
-              firstName: values.firstName,
-              lastName: values.lastName,
+              name: values.name,
+              designation: values.designation,
               email: values.email,
               password: values.password,
-              picture: picture,
-              role:values.role,
               permissions: initialValues.permissions,
             })).then(() => {
               setSubmitting(false)
@@ -283,11 +232,11 @@ function CCAAccountPanel({ccaDetails,dispatch}) {
               <Grid container direction="row" justify="space-evenly" alignItems="center">
                 <Grid item direction = "column" justify = "space-evenly" alignItems = "center" style = {{width: 200}}>
                   <Grid item style = {{width: 350}}>
-                    <Field component={TextField} name="firstName" required label="First Name"/>
+                    <Field component={TextField} name="name" required label="Name"/>
                   </Grid>
 
                   <Grid item style = {{width: 350}}>
-                    <Field component={TextField} name="lastName" required label="Last Name"/>
+                    <Field component={TextField} name="designation" required label="Designation"/>
                   </Grid>
 
                   <Grid item style = {{width: 350}}>
@@ -296,33 +245,6 @@ function CCAAccountPanel({ccaDetails,dispatch}) {
 
                   <Grid item style = {{width: 350}}>
                     <Field component={TextField} name="password" required type="password" label={editMode ? "New Password" : "Password"}/>
-                  </Grid>
-
-                  <Grid item style = {{width: 350}}>
-                    <FormControl>
-                      <InputLabel htmlFor="role">Role</InputLabel>
-                      <Field
-                        component={Select}
-                        name="role"
-                        inputProps={{
-                          id: 'role',
-                        }}
-                        style={{width: 100}}
-                      >
-                        <MenuItem value={'member'}>Member</MenuItem>
-                        <MenuItem value={'admin'}>Admin</MenuItem>
-                      </Field>
-                    </FormControl>
-                  </Grid>
-                </Grid>
-                <Grid item>
-                  <Grid direction="column" justify="flex-end" alignItems="flex-start">
-                    <Grid item>
-                      <Avatar style = {{width:180, height:180, marginLeft: 50, marginTop: 30}} src={editMode ? initialValues.picture : picture}/>
-                    </Grid>
-                    <Grid item>
-                      <input style = {{marginLeft: 80, marginTop: 10}} type="file" onChange={(e) => {handleImageUpload(e, editId)}}/>
-                    </Grid>
                   </Grid>
                 </Grid>
                 
@@ -347,10 +269,6 @@ function CCAAccountPanel({ccaDetails,dispatch}) {
 
   }
 
-  function CCAPicture({src}){
-    return <Avatar style = {{width:125, height:125}} src={src}/>
-  }
-
   return (
     <div>
       {ccaDetails.isPending ? <LinearProgress /> :
@@ -369,17 +287,15 @@ function CCAAccountPanel({ccaDetails,dispatch}) {
                     maxWidth: 275, 
                     }}>
                     <CardHeader
-                      avatar={
-                        <CCAPicture src={ccaDetail.picture}/>
-                      }
                       action={
                         
                         <EditDeleteMoreButton ccaId={ccaDetail.ccaId} active={ccaDetail.active}/>
                       }
                     />
                     <CardContent>
-                      <Typography color="textPrimary" style = {{textAlign: 'left', fontSize: 20, fontWeight: 'bold'}}>{ccaDetail.firstName} {ccaDetail.lastName}</Typography>
-                      <Typography color="textSecondary" style = {{fontWeight:500}}>{(ccaDetail.role).charAt(0).toUpperCase() + (ccaDetail.role).slice(1)}</Typography>
+                      <Typography color="textPrimary" style = {{textAlign: 'left', fontSize: 20, fontWeight: 'bold'}}>{ccaDetail.name}</Typography>
+
+                      <Typography color="textSecondary" style = {{fontWeight:500}}>{ccaDetail.designation}</Typography>
                       <br/>
                       <Typography color="textSecondary">{ccaDetail.email}</Typography>
                     </CardContent>
