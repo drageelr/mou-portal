@@ -11,7 +11,15 @@ const userAccess = {
     '/api/account/cca/edit-access': ['cca'],
     '/api/account/society/edit': ['cca'],
     '/api/account/dept/edit': ['cca'],
-    '/api/account/duser/edit': ['cca']
+    '/api/account/duser/edit': ['cca'],
+
+    // API 3: Category Management
+    '/api/category/create': ['cca'],
+    '/api/category/create-mileage': ['cca'],
+    '/api/category/edit': ['cca'],
+    '/api/category/edit-mileage': ['cca'],
+    '/api/category/add-mileage': ['cca'],
+    '/api/category/remove-mileage': ['cca']
 };
 
 const ccaAccess = {
@@ -24,7 +32,15 @@ const ccaAccess = {
     '/api/account/cca/edit-access': 'account',
     '/api/account/society/edit': 'account',
     '/api/account/dept/edit': 'account',
-    '/api/account/duser/edit': 'account'
+    '/api/account/duser/edit': 'account',
+
+    // API 3: Category Management
+    '/api/category/create': 'category',
+    '/api/category/create-mileage': 'category',
+    '/api/category/edit': 'category',
+    '/api/category/edit-mileage': 'category',
+    '/api/category/add-mileage': 'category',
+    '/api/category/remove-mileage': 'category'
 };
 
 exports.validateUserAccess = (req, res, next) => {
