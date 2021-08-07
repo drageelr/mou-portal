@@ -2,37 +2,67 @@ const router = require('express').Router();
 const validate = require('express-validation').validate;
 const { verfiyUser } = require('../services/jwt');
 const { validateUserAccess, validateCCAAccess } = require('../services/access-validator');
-const categoryValidation = require('../validations/account.validation');
-const categoryController = require('../controllers/account.controller');
+const categoryValidation = require('../validations/category.validation');
+const categoryController = require('../controllers/category.controller');
 
-// API 2.1: Create Category
+// API 3.1: Create Category
 router.post(
     '/create',
-    validate(accountValidation.createCategoryValidation, { keyByField: true }),
+    validate(categoryValidation.createCategoryValidation, { keyByField: true }),
     verfiyUser,
     validateUserAccess,
     validateCCAAccess,
-    accountController.createCategory
+    categoryController.createCategory
 );
 
-// API 2.2: Edit Category
+// API 3.2: Create Mileage
+router.post(
+    '/create-mileage',
+    validate(categoryValidation.createMileageValidation, { keyByField: true }),
+    verfiyUser,
+    validateUserAccess,
+    validateCCAAccess,
+    categoryController.createMileage
+);
+
+// API 3.3: Edit Category
 router.post(
     '/edit',
-    validate(accountValidation.editCategoryValidation, { keyByField: true }),
+    validate(categoryValidation.editCategoryValidation, { keyByField: true }),
     verfiyUser,
     validateUserAccess,
     validateCCAAccess,
-    accountController.editCategory
+    categoryController.editCategory
 );
 
-// API 2.2: Add Mileage
+// API 3.4: Edit Mileage
+router.post(
+    '/edit-mileage',
+    validate(categoryValidation.editMileageValidation, { keyByField: true }),
+    verfiyUser,
+    validateUserAccess,
+    validateCCAAccess,
+    categoryController.editMileage
+);
+
+// API 3.5: Add Mileage
 router.post(
     '/add-mileage',
-    validate(accountValidation.addMileageValidation, { keyByField: true }),
+    validate(categoryValidation.addMileageValidation, { keyByField: true }),
     verfiyUser,
     validateUserAccess,
     validateCCAAccess,
-    accountController.addMileage
+    categoryController.addMileage
 );
 
-module.exports = router;``
+// API 3.6: Remove Mileage
+router.post(
+    '/remove-mileage',
+    validate(categoryValidation.removeMileageValidation, { keyByField: true }),
+    verfiyUser,
+    validateUserAccess,
+    validateCCAAccess,
+    categoryController.removeMileage
+);
+
+module.exports = router;
