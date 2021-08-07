@@ -22,7 +22,6 @@ const SMouMileage = sequelize.define('SMouMileage', {
     checkDeptId: {
         type: DataTypes.INTEGER,
         unique: true,
-        primaryKey: true,
         allowNull: false,
         references: 'Dept',
         referencesKey: 'id'
@@ -37,7 +36,7 @@ const SMouMileage = sequelize.define('SMouMileage', {
     }
 }, {
     freezeTableName: true,
-    timestamps: true
+    timestamps: false
 });
 
-module.exports = SMou;
+module.exports = SMouMileage;

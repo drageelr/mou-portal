@@ -16,7 +16,6 @@ const Mileage = sequelize.define('Mileage', {
     checkDeptId: {
         type: DataTypes.INTEGER,
         unique: true,
-        primaryKey: true,
         allowNull: false,
         references: 'Dept',
         referencesKey: 'id'

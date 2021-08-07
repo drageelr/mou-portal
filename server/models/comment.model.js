@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../services/sequelize');
 
-const SMouBenefit = sequelize.define('SMouBenefit', {
+const SMouComment = sequelize.define('SMouComment', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -15,17 +15,19 @@ const SMouBenefit = sequelize.define('SMouBenefit', {
         references: 'SMou',
         referencesKey: 'id'
     },
-    description: {
-        type: DataTypes.STRING(250),
+    content: {
+        type: DataTypes.STRING(500),
         allowNull: false
     },
-    value: {
+    ccaId: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: 'CCA',
+        referencesKey: 'id'
     }
 }, {
     freezeTableName: true,
-    timestamps: false
+    timestamps: true
 });
 
-module.exports = SMouBenefit;
+module.exports = SMouComment;
