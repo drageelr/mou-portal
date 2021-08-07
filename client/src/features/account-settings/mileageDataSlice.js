@@ -15,7 +15,7 @@ export const fetchMileages = createAsyncThunk(
       return
     }
 
-    return await apiCaller('/mileage/fetch', {}, 200,
+    return await apiCaller('/account/category/fetch-mileage', {}, 200,
     (data) => {
       return {isPending: false, error: '' , mileageList: data.userList}
     },
@@ -27,7 +27,7 @@ export const addMileage = createAsyncThunk(
   'mileageData/addMileage',
   async (mileageObject, { rejectWithValue }) => {
     const {name, email, password} = mileageObject
-    return await apiCaller('/mileage/create', {
+    return await apiCaller('/account/category/create-mileage', {
       name: name,
       email: email,
       password: password
@@ -51,7 +51,7 @@ export const editMileage = createAsyncThunk(
     if (password !== undefined){
       body = {...body, password: password}
     }
-    return await apiCaller('/mileage/edit', body, 203,
+    return await apiCaller('/account/category/edit-mileage', body, 203,
     (data) => {
       return {mileageId, mileageObject}
     },

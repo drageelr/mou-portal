@@ -33,16 +33,9 @@ export const login = createAsyncThunk(
       return
     }
 
-    let QUERY = '/api/auth/cca/login';
+    let QUERY = '/api/auth/login';
 
-    if (userType === "Society") {
-      QUERY = '/api/auth/society/login';
-    }
-    else if (userType === "DUser") {
-      QUERY = '/api/auth/duser/login';
-    }
-
-    return await apiCaller(QUERY, {email, password}, 200,
+    return await apiCaller(QUERY, {email, password, userType}, 200,
     (data)=> {
       localStorage.setItem('token', data.token)
 
@@ -65,7 +58,7 @@ export const changePassword = createAsyncThunk(
       return
     }
 
-    const QUERY = (userType === "Society") ? '/change-password' : '/change-password'
+    const QUERY = '/api/account/change-password'
 
     return await apiCaller(QUERY, {
       passwordCurrent: currentPassword,

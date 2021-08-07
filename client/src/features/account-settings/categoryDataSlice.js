@@ -15,7 +15,7 @@ export const fetchCategories = createAsyncThunk(
       return
     }
 
-    return await apiCaller('/category/fetch', {}, 200,
+    return await apiCaller('/api/category/fetch', {}, 200,
     (data) => {
       return {isPending: false, error: '' , categoryList: data.userList}
     },
@@ -27,7 +27,7 @@ export const addCategory = createAsyncThunk(
   'categoryData/addCategory',
   async (categoryObject, { rejectWithValue }) => {
     const {name, email, password} = categoryObject
-    return await apiCaller('/category/create', {
+    return await apiCaller('/api/category/create', {
       name: name,
       email: email,
       password: password
@@ -51,13 +51,55 @@ export const editCategory = createAsyncThunk(
     if (password !== undefined){
       body = {...body, password: password}
     }
-    return await apiCaller('/category/edit', body, 203,
+    return await apiCaller('/api/category/edit', body, 203,
     (data) => {
       return {categoryId, categoryObject}
     },
     rejectWithValue)
   }
 )
+
+
+// export const addMileage = createAsyncThunk(
+//   'categoryData/addMileage',
+//   async (categoryObject, { rejectWithValue}) => {
+//     const {categoryId, name, email, password } = categoryObject
+//     let body = {
+//       categoryId: categoryId,
+//       name: name,
+//       email: email,
+//     }
+//     if (password !== undefined){
+//       body = {...body, password: password}
+//     }
+//     return await apiCaller('/api/category/add-mileage', body, 203,
+//     (data) => {
+//       return {categoryId, categoryObject}
+//     },
+//     rejectWithValue)
+//   }
+// )
+
+
+// export const removeMileage = createAsyncThunk(
+//   'categoryData/removeMileage',
+//   async (categoryObject, { rejectWithValue}) => {
+//     const {categoryId, name, email, password } = categoryObject
+//     let body = {
+//       categoryId: categoryId,
+//       name: name,
+//       email: email,
+//     }
+//     if (password !== undefined){
+//       body = {...body, password: password}
+//     }
+//     return await apiCaller('/api/category/remove-mileage', body, 203,
+//     (data) => {
+//       return {categoryId, categoryObject}
+//     },
+//     rejectWithValue)
+//   }
+// )
 
 
 const categoryData = createSlice({
@@ -75,7 +117,7 @@ const categoryData = createSlice({
         categoryId: action.payload.categoryId, 
         ...action.payload.categoryObject
       })
-      state.error = 'Department Member Added Successfully'
+      state.error = 'Category Added Successfully'
     },
     [addCategory.rejected]: (state, action) => {
         state.error = action.payload

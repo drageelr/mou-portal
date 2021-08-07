@@ -30,7 +30,7 @@ export const fetchCCAAccounts = createAsyncThunk(
       return
     } 
 
-    return await apiCaller('/cca/fetch', {}, 200,
+    return await apiCaller('/api/account/cca/fetch', {}, 200,
     (data) => ({isPending: false, error: '' , ccaList: data.userList}),
     rejectWithValue)
   }
@@ -40,7 +40,7 @@ export const editCCAPermissions = createAsyncThunk(
   'ccaDetails/editCCAPermissions',
   async ({ccaId, permissions}, { rejectWithValue }) => {
 
-    return await apiCaller('/cca/edit-access', {
+    return await apiCaller('/api/account/cca/edit-access', {
       ccaId: ccaId,
       permissions: permissions
     }, 203,
@@ -63,7 +63,7 @@ export const editCCAAccount = createAsyncThunk(
       body = {...body, password: password}
     }
 
-    return await apiCaller('/cca/edit', body, 203,
+    return await apiCaller('/api/account/cca/edit', body, 203,
     (data) => ({ccaId, ccaObject}),
     rejectWithValue)
   }
@@ -74,7 +74,7 @@ export const addCCAAccount = createAsyncThunk(
   async (ccaObject, { rejectWithValue }) => {
     const { name, designation, email, password,  permissions } = ccaObject
     
-    return await apiCaller('/cca/create', {
+    return await apiCaller('/api/account/cca/create', {
       email: email,
       password: password,
       name: name,
