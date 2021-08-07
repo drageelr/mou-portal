@@ -17,7 +17,7 @@ const SMou = sequelize.define('SMou', {
     },
     categoryId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        // allowNull: false,
         references: 'Category',
         referencesKey: 'id'
     },

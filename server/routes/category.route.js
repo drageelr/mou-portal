@@ -5,7 +5,7 @@ const { validateUserAccess, validateCCAAccess } = require('../services/access-va
 const categoryValidation = require('../validations/category.validation');
 const categoryController = require('../controllers/category.controller');
 
-// API 2.1: Create Category
+// API 3.1: Create Category
 router.post(
     '/create',
     validate(categoryValidation.createCategoryValidation, { keyByField: true }),
@@ -15,7 +15,7 @@ router.post(
     categoryController.createCategory
 );
 
-// API 2.2: Create Mileage
+// API 3.2: Create Mileage
 router.post(
     '/create-mileage',
     validate(categoryValidation.createMileageValidation, { keyByField: true }),
@@ -25,7 +25,7 @@ router.post(
     categoryController.createMileage
 );
 
-// API 2.3: Edit Category
+// API 3.3: Edit Category
 router.post(
     '/edit',
     validate(categoryValidation.editCategoryValidation, { keyByField: true }),
@@ -35,7 +35,7 @@ router.post(
     categoryController.editCategory
 );
 
-// API 2.4: Edit Mileage
+// API 3.4: Edit Mileage
 router.post(
     '/edit-mileage',
     validate(categoryValidation.editMileageValidation, { keyByField: true }),
@@ -45,7 +45,7 @@ router.post(
     categoryController.editMileage
 );
 
-// API 2.5: Add Mileage
+// API 3.5: Add Mileage
 router.post(
     '/add-mileage',
     validate(categoryValidation.addMileageValidation, { keyByField: true }),
@@ -55,7 +55,7 @@ router.post(
     categoryController.addMileage
 );
 
-// API 2.6: Remove Mileage
+// API 3.6: Remove Mileage
 router.post(
     '/remove-mileage',
     validate(categoryValidation.removeMileageValidation, { keyByField: true }),
