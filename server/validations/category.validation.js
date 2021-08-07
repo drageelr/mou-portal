@@ -39,7 +39,7 @@ exports.removeMileageValidation = {
 exports.createMileageValidation = {
     body: Joi.object({
         description: Joi.string().min(1).max(250).required(),
-        deptId: Joi.number().integer().required(),
+        checkdeptId: Joi.number().integer().required(),
         checkCCA: Joi.boolean().required(),
         checkSociety: Joi.boolean().required()
     })
@@ -49,7 +49,7 @@ exports.editMileageValidation = {
     body: Joi.object({
         id: Joi.number().integer().required(),
         description: Joi.string().min(1).max(250),
-        deptId: Joi.number().integer(),
+        checkdeptId: Joi.number().integer(),
         checkCCA: Joi.boolean(),
         checkSociety: Joi.boolean()
     })

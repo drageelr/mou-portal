@@ -34,7 +34,7 @@ exports.createMileage = async (req, res, next) => {
 
         let newEntry = await Mileage.create({
             description: params.description,
-            deptId: params.deptId,
+            checkdeptId: params.checkdeptId,
             checkCCA: params.checkCCA,
             checkSociety: params.checkSociety
         });
@@ -78,7 +78,7 @@ exports.editMileage = async (req, res, next) => {
     try {
         let params = req.body;
 
-        let updateAttributes = hFuncs.duplicateObject(params, ['description', 'deptId', 'checkCCA', 'checkSociety'], true);
+        let updateAttributes = hFuncs.duplicateObject(params, ['description', 'checkdeptId', 'checkCCA', 'checkSociety'], true);
 
         let updatedEntry = await Mileage.update(updateAttributes, {
             where: { id: params.id },

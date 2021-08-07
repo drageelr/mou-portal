@@ -1,37 +1,31 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../services/sequelize');
 
-const Mileage = sequelize.define('Mileage', {
+const SMou = sequelize.define('SMou', {
     id: {
         type: DataTypes.INTEGER,
-        unique: true,
         primaryKey: true,
         allowNull: false,
         autoIncrement: true
+    },
+    smouId: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        allowNull: false,
+        references: 'SMou',
+        referencesKey: 'id'
     },
     description: {
         type: DataTypes.STRING(250),
         allowNull: false
     },
-    checkDeptId: {
+    value: {
         type: DataTypes.INTEGER,
-        unique: true,
-        primaryKey: true,
-        allowNull: false,
-        references: 'Dept',
-        referencesKey: 'id'
-    },
-    checkCCA: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false
-    },
-    checkSociety: {
-        type: DataTypes.BOOLEAN,
         allowNull: false
     }
 }, {
     freezeTableName: true,
-    timestamps: false
+    timestamps: true
 });
 
-module.exports = Mileage;
+module.exports = SMou;
