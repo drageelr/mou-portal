@@ -15,7 +15,7 @@ export const fetchDUserAccounts = createAsyncThunk(
       return
     }
 
-    return await apiCaller('/api/account/duser/fetch', {}, 200,
+    return await apiCaller('/duser/fetch', {}, 200,
     (data) => {
       return {isPending: false, error: '' , duserList: data.userList}
     },
@@ -27,7 +27,7 @@ export const addDUserAccount = createAsyncThunk(
   'duserData/addDUserAccount',
   async (duserObject, { rejectWithValue }) => {
     const {name, email, password} = duserObject
-    return await apiCaller('/api/account/duser/create', {
+    return await apiCaller('/duser/create', {
       name: name,
       email: email,
       password: password
@@ -51,7 +51,7 @@ export const editDUserAccount = createAsyncThunk(
     if (password !== undefined){
       body = {...body, password: password}
     }
-    return await apiCaller('/api/account/duser/edit', body, 203,
+    return await apiCaller('/duser/edit', body, 203,
     (data) => {
       return {duserId, duserObject}
     },

@@ -8,7 +8,7 @@ const initialState = {
   name: "",
   designation: "",
   userType: "CCA", // Society, DUser
-  isLoggedIn: true,
+  isLoggedIn: false,
   themeColor: '#01bc8d',
   darkMode: false,
   token: "",
@@ -39,7 +39,7 @@ export const login = createAsyncThunk(
       QUERY = '/api/auth/society/login';
     }
     else if (userType === "DUser") {
-      QUERY = '/api/auth/DUser/login';
+      QUERY = '/api/auth/duser/login';
     }
 
     return await apiCaller(QUERY, {email, password}, 200,
@@ -65,7 +65,7 @@ export const changePassword = createAsyncThunk(
       return
     }
 
-    const QUERY = (userType === "Society") ? '/api/account/society/change-password' : '/api/account/cca/change-password'
+    const QUERY = (userType === "Society") ? '/change-password' : '/change-password'
 
     return await apiCaller(QUERY, {
       passwordCurrent: currentPassword,

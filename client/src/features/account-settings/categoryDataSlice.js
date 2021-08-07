@@ -15,7 +15,7 @@ export const fetchCategories = createAsyncThunk(
       return
     }
 
-    return await apiCaller('/api/account/category/fetch', {}, 200,
+    return await apiCaller('/category/fetch', {}, 200,
     (data) => {
       return {isPending: false, error: '' , categoryList: data.userList}
     },
@@ -27,7 +27,7 @@ export const addCategory = createAsyncThunk(
   'categoryData/addCategory',
   async (categoryObject, { rejectWithValue }) => {
     const {name, email, password} = categoryObject
-    return await apiCaller('/api/account/category/create', {
+    return await apiCaller('/category/create', {
       name: name,
       email: email,
       password: password
@@ -51,7 +51,7 @@ export const editCategory = createAsyncThunk(
     if (password !== undefined){
       body = {...body, password: password}
     }
-    return await apiCaller('/api/account/category/edit', body, 203,
+    return await apiCaller('/category/edit', body, 203,
     (data) => {
       return {categoryId, categoryObject}
     },
@@ -89,7 +89,7 @@ const categoryData = createSlice({
         }
       })
       state.categoryList[i] = action.payload.categoryObject
-      state.error = 'Department Member Edited Successfully'
+      state.error = 'Category Edited Successfully'
     },
     [editCategory.rejected]: (state, action) => {
         state.error = action.payload
