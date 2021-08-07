@@ -77,6 +77,30 @@ exports.editDUserValidation = {
     })
 };
 
+exports.fetchCCAValidation = {
+    body: Joi.object({
+    
+    })
+};
+
+exports.fetchSocietyValidation = {
+    body: Joi.object({
+    
+    })
+};
+
+exports.fetchDepartmentValidation = {
+    body: Joi.object({
+    
+    })
+};
+
+exports.fetchDUserValidation = {
+    body: Joi.object({
+    
+    })
+};
+
 exports.changePasswordValidation = {
     body: Joi.object({
         oldPassword: Joi.string().min(8).max(30).required(),
