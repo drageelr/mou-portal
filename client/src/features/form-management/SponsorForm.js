@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
 function SponsorForm({formData, submitMode, id, commentsData}) {
   const classes = useStyles()
-  const [userType, setUserType] = React.useState("CCA")
+  const [userType, setUserType] = React.useState("cca")
 
 
   async function handleFileChange(e){
@@ -55,7 +55,7 @@ function SponsorForm({formData, submitMode, id, commentsData}) {
 
   return (
     <div>
-      <FormViewerBar commentsData={{lastComment: {desc: 'CCA was here.', tsCreated: '05/05/2001'}}} submissionId={id} isCCA={userType==="CCA"} submitMode={submitMode}/>
+      <FormViewerBar commentsData={{lastComment: {desc: 'CCA was here.', tsCreated: '05/05/2001'}}} submissionId={id} isCCA={userType==="cca"} submitMode={submitMode}/>
       <br/>
     
       <Container>
@@ -146,6 +146,7 @@ function SponsorForm({formData, submitMode, id, commentsData}) {
                 style={{marginLeft: 10}}
                 component={CheckboxWithLabel}
                 type="checkbox"
+                color="primary"
                 name="tax"
                 Label={{ label: 'Tax included' }}
               />

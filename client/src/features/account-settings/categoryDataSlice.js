@@ -2,7 +2,7 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import { apiCaller } from "../../helpers"
 
 const initialState = {
-  categoryList: [{categoryId: 1, name: 'Bronze', lowerBound: 0, upperBound: 50000}],
+  categoryList: [{categoryId: 1, name: 'Bronze', lowerBound: 0, upperBound: 50000, lowerSuggestionBound: 0, upperSuggestionBound: 50000, active: true}],
   isPending: true,
   error: null
 }
@@ -26,31 +26,36 @@ export const fetchCategories = createAsyncThunk(
 export const addCategory = createAsyncThunk(
   'categoryData/addCategory',
   async (categoryObject, { rejectWithValue }) => {
-    const {name, email, password} = categoryObject
+    const {name, lowerBound, upperBound, lowerSuggestionBound, upperSuggestionBound} = categoryObject
     return await apiCaller('/api/category/create', {
-      name: name,
-      email: email,
-      password: password
+      name, 
+      lowerBound, 
+      upperBound, 
+      lowerSuggestionBound, 
+      upperSuggestionBound, 
+      active: true
     }, 201,
     (data) => {
       return {categoryId: data.categoryId, categoryObject}
     },
     rejectWithValue)   
-    }
+  }
 )
 
 export const editCategory = createAsyncThunk(
   'categoryData/editCategory',
   async (categoryObject, { rejectWithValue}) => {
-    const {categoryId, name, email, password } = categoryObject
+    const {categoryId, name, lowerBound, upperBound, lowerSuggestionBound, upperSuggestionBound} = categoryObject
     let body = {
-      categoryId: categoryId,
-      name: name,
-      email: email,
+      id: categoryId,
+      name, 
+      lowerBound, 
+      upperBound, 
+      lowerSuggestionBound, 
+      upperSuggestionBound, 
+      // active
     }
-    if (password !== undefined){
-      body = {...body, password: password}
-    }
+    
     return await apiCaller('/api/category/edit', body, 203,
     (data) => {
       return {categoryId, categoryObject}
@@ -60,46 +65,38 @@ export const editCategory = createAsyncThunk(
 )
 
 
-// export const addMileage = createAsyncThunk(
-//   'categoryData/addMileage',
-//   async (categoryObject, { rejectWithValue}) => {
-//     const {categoryId, name, email, password } = categoryObject
-//     let body = {
-//       categoryId: categoryId,
-//       name: name,
-//       email: email,
-//     }
-//     if (password !== undefined){
-//       body = {...body, password: password}
-//     }
-//     return await apiCaller('/api/category/add-mileage', body, 203,
-//     (data) => {
-//       return {categoryId, categoryObject}
-//     },
-//     rejectWithValue)
-//   }
-// )
+export const addMileage = createAsyncThunk(
+  'categoryData/addMileage',
+  async ({categoryId, mileageId }, { rejectWithValue}) => {
+    let body = {
+      categoryId: categoryId,
+      mileageId: mileageId
+    }
+
+    return await apiCaller('/api/category/add-mileage', body, 203,
+    (data) => {
+      return {categoryId, categoryObject}
+    },
+    rejectWithValue)
+  }
+)
 
 
-// export const removeMileage = createAsyncThunk(
-//   'categoryData/removeMileage',
-//   async (categoryObject, { rejectWithValue}) => {
-//     const {categoryId, name, email, password } = categoryObject
-//     let body = {
-//       categoryId: categoryId,
-//       name: name,
-//       email: email,
-//     }
-//     if (password !== undefined){
-//       body = {...body, password: password}
-//     }
-//     return await apiCaller('/api/category/remove-mileage', body, 203,
-//     (data) => {
-//       return {categoryId, categoryObject}
-//     },
-//     rejectWithValue)
-//   }
-// )
+export const removeMileage = createAsyncThunk(
+  'categoryData/removeMileage',
+  async ({categoryId, mileageId }, { rejectWithValue}) => {
+    let body = {
+      categoryId: categoryId,
+      mileageId: mileageId
+    }
+    
+    return await apiCaller('/api/category/remove-mileage', body, 203,
+    (data) => {
+      return {categoryId, categoryObject}
+    },
+    rejectWithValue)
+  }
+)
 
 
 const categoryData = createSlice({

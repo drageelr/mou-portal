@@ -6,7 +6,6 @@ const initialState = {
     ccaId: 1, 
     name: 'Ashar', 
     email: 'ashar.javaid@lums.edu.pk',
-    password: 'ashar123', 
     designation: 'Admin',
     permissions: {
       accountAccess: true,
@@ -22,6 +21,25 @@ const initialState = {
   error: null
 }
 
+
+
+export const addCCAAccount = createAsyncThunk(
+  'ccaDetails/addCCAAccount',
+  async (ccaObject, { rejectWithValue }) => {
+    const { name, designation, email, permissions } = ccaObject
+    
+    return await apiCaller('/api/account/cca/create', {
+      email,
+      name,
+      designation,
+      // permissions
+    }, 201,
+    (data) => ({ccaId: data.data.id, ccaObject}),
+    rejectWithValue)
+  }
+)
+
+
 export const fetchCCAAccounts = createAsyncThunk(
   'ccaDetails/fetchCCAAccounts',
   async (_, { getState, rejectWithValue }) => {
@@ -36,31 +54,16 @@ export const fetchCCAAccounts = createAsyncThunk(
   }
 )
 
-export const editCCAPermissions = createAsyncThunk(
-  'ccaDetails/editCCAPermissions',
-  async ({ccaId, permissions}, { rejectWithValue }) => {
-
-    return await apiCaller('/api/account/cca/edit-access', {
-      ccaId: ccaId,
-      permissions: permissions
-    }, 203,
-    (data) => ({ccaId, permissions}),
-    rejectWithValue)
-  }
-)
 
 export const editCCAAccount = createAsyncThunk(
   'ccaDetails/editCCAAccount',
   async (ccaObject, { rejectWithValue }) => {
-    const {ccaId, name, designation, email, password} = ccaObject 
+    const {ccaId, name, designation, email} = ccaObject 
     let body = {
-      ccaId: ccaId,
-      email: email,
-      name: name,
-      designation: designation
-    }
-    if (password !== undefined){
-      body = {...body, password: password}
+      id: ccaId,
+      name,
+      email,
+      designation,
     }
 
     return await apiCaller('/api/account/cca/edit', body, 203,
@@ -69,22 +72,22 @@ export const editCCAAccount = createAsyncThunk(
   }
 )
 
-export const addCCAAccount = createAsyncThunk(
-  'ccaDetails/addCCAAccount',
-  async (ccaObject, { rejectWithValue }) => {
-    const { name, designation, email, password,  permissions } = ccaObject
-    
-    return await apiCaller('/api/account/cca/create', {
-      email: email,
-      password: password,
-      name: name,
-      designation: designation,
-      permissions: permissions
-    }, 201,
-    (data) => ({ccaId: data.ccaId, ccaObject}),
+
+export const editCCAPermissions = createAsyncThunk(
+  'ccaDetails/editCCAPermissions',
+  async ({ccaId, permissions}, { rejectWithValue }) => {
+
+    return await apiCaller('/api/account/cca/edit-access', {
+      id: ccaId,
+      ...permissions // account, approval, review, verify, cancel, log, category
+    }, 203,
+    (data) => ({ccaId, permissions}),
     rejectWithValue)
   }
 )
+
+
+
 
 const ccaDetails = createSlice({
   name: 'ccaDetails',
@@ -95,6 +98,41 @@ const ccaDetails = createSlice({
     },
   },
   extraReducers: {
+    
+    
+    [addCCAAccount.fulfilled]: (state, action) => {
+      state.ccaList.push({
+        ccaId: action.payload.ccaId, 
+        ...action.payload.ccaObject
+      })
+      state.error = 'CCA Account Added Successfully'
+    },
+    [addCCAAccount.rejected]: (state, action) => {
+        state.error = action.payload
+    },
+
+
+
+    [fetchCCAAccounts.pending]: (state, action) => {
+      if (state.isPending === false) {
+        state.isPending = true
+      }
+    },
+    [fetchCCAAccounts.fulfilled]: (state, action) => {
+      if (state.isPending === true) {
+        state.isPending = false
+        state.ccaList = action.payload.ccaList 
+      }
+    },
+    [fetchCCAAccounts.rejected]: (state, action) => {
+      if (state.isPending === true) {
+        state.isPending = false
+        state.error = action.payload
+      }
+    },
+
+
+
     [editCCAAccount.fulfilled]: (state, action) => {
       let i = 0
       state.ccaList.forEach((obj,index) => {
@@ -108,36 +146,8 @@ const ccaDetails = createSlice({
     [editCCAAccount.rejected]: (state, action) => {
       state.error = action.payload
     },
-    
-    [addCCAAccount.fulfilled]: (state, action) => {
-      state.ccaList.push({
-        ccaId: action.payload.ccaId, 
-        ...action.payload.ccaObject
-      })
-      state.error = 'CCA Account Added Successfully'
-    },
-    [addCCAAccount.rejected]: (state, action) => {
-        state.error = action.payload
-    },
 
-    [fetchCCAAccounts.pending]: (state, action) => {
-      if (state.isPending === false) {
-        state.isPending = true
-      }
-    },
-    [fetchCCAAccounts.fulfilled]: (state, action) => {
-      if (state.isPending === true) {
-        state.isPending = false
-        state.ccaList = action.payload.ccaList 
-        // state.error = 'Fetched all CCA Accounts'
-      }
-    },
-    [fetchCCAAccounts.rejected]: (state, action) => {
-      if (state.isPending === true) {
-        state.isPending = false
-        state.error = action.payload
-      }
-    },
+
 
     [editCCAPermissions.fulfilled]: (state, action) => {
       state.ccaList.forEach((obj,index) => {

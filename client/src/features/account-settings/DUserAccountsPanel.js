@@ -54,9 +54,7 @@ function DUserAccountsPanel({duserData, departmentList, dispatch}) {
     let initialValues = {
       name:'',
       email: '',
-      password: '',
-      passwordRequired: !editMode,
-      departmentId: 1
+      deptId: 1,
     }
 
     if (editMode){
@@ -67,9 +65,7 @@ function DUserAccountsPanel({duserData, departmentList, dispatch}) {
           initialValues = {
           name: duserDetail.name,
           email: duserDetail.email,
-          departmentId: duserDetail.departmentId,
-          password: duserDetail.password,
-          passwordRequired: !editMode,
+          deptId: duserDetail.deptId,
         }
       }  
     }
@@ -96,20 +92,11 @@ function DUserAccountsPanel({duserData, departmentList, dispatch}) {
           validateOnChange={false} validateOnBlur={true}
           initialValues={initialValues}
           validationSchema={Yup.object({
-            passwordRequired: Yup.boolean(),
             email: Yup.string()
                 .email('Invalid Email Address')
                 .required('Required'),
-            departmentId: Yup.number()
+            deptId: Yup.number()
               .required('Required'),
-            password: Yup.string()
-              .min(8,'Must be at least 8 characters')
-              .max(30,'Must be atmost 30 characters')
-              .matches('^[a-zA-Z0-9]+$', 'All passwords must be alphanumeric (no special symbols).')
-              .when("passwordRequired", {
-              is: true,
-              then: Yup.string().required("Must enter a password for the new account")
-            }),
             name: Yup.string()
             .required('Required')
             .max(50,'Must be atmost 50 characters')
@@ -120,14 +107,12 @@ function DUserAccountsPanel({duserData, departmentList, dispatch}) {
                 duserId: editId, 
                 name: values.name,
                 email: values.email,
-                password: values.password,
-                departmentId: values.departmentId
+                deptId: values.deptId
               })
               :addDUserAccount({
                 name: values.name,
                 email: values.email,
-                password: values.password,
-                departmentId: values.departmentId
+                deptId: values.deptId
             })).then(()=>{
               setSubmitting(false)
             })
@@ -146,15 +131,15 @@ function DUserAccountsPanel({duserData, departmentList, dispatch}) {
                     <FormControl variant="outlined">
                       <InputLabel>Department</InputLabel>
                       <Select 
-                      name="departmentId" 
+                      name="deptId" 
                       label="Department" 
-                      value={initialValues.departmentId}
+                      value={initialValues.deptId}
                       style={{width: 350, marginBottom: 10}}
                       onChange={(e) => handleDepartmentChange(e)}>
                         {
                           departmentList.map((department, index) => {
                             return (
-                              <MenuItem key={index}  value={department.departmentId}>{department.name}</MenuItem>
+                              <MenuItem key={index}  value={department.deptId}>{department.name}</MenuItem>
                             )
                           })
                         }
@@ -166,9 +151,6 @@ function DUserAccountsPanel({duserData, departmentList, dispatch}) {
                     <Field component={TextField} name="email" type="email" required label="Email"/>    
                   </Grid>
 
-                  <Grid item style = {{width: 350, marginBottom: 10}}>
-                    <Field component={TextField} name="password" type="password" required label={editMode ? "New Password" : "Password"}/>    
-                  </Grid>
                 </Grid>
               </DialogContent>
               {isSubmitting && <CircularProgress />}
@@ -213,11 +195,8 @@ function DUserAccountsPanel({duserData, departmentList, dispatch}) {
               {duserData.duserList.map((duser,index) => (
                 duserData.isPending? <CircularProgress variant = "indeterminate"/>:
                 <TableRow key={index} style={{background: duser.active ? theme.palette.action.hover : theme.palette.action.disabledBackground}}>
-                  {/* <TableCell component="th" scope="row">
-                    <Typography>{duser.nameInitials}</Typography>
-                  </TableCell> */}
                   <TableCell><Typography>{duser.name}</Typography></TableCell>
-                  <TableCell><Typography>{duser.departmentId}</Typography></TableCell>
+                  <TableCell><Typography>{duser.deptId}</Typography></TableCell>
                   <TableCell><Typography>{duser.email}</Typography></TableCell>
                   <TableCell>
                     <Button startIcon={<EditIcon/>} onClick={()=>handleEdit(duser.duserId)}> Edit</Button>

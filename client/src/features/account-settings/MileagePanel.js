@@ -52,7 +52,7 @@ function MileagePanel({ mileageData, departmentList, dispatch }) {
 
     let initialValues = {
       description:'',
-      departmentId: 0,
+      deptId: 0,
       ccaCheck: true,
       societyCheck: false,
     }
@@ -64,7 +64,7 @@ function MileagePanel({ mileageData, departmentList, dispatch }) {
       if (mileageDetail !== undefined){
         initialValues = {
           description: mileageDetail.description,
-          departmentId: mileageDetail.departmentId,
+          deptId: mileageDetail.deptId,
           ccaCheck: mileageDetail.ccaCheck,
           societyCheck: mileageDetail.societyCheck,
         }
@@ -96,7 +96,7 @@ function MileagePanel({ mileageData, departmentList, dispatch }) {
             description: Yup.string()
             .required('Required')
             .max(250,'Must be atmost 250 characters'),
-            departmentId: Yup.number()
+            deptId: Yup.number()
             .required('Required'),
             ccaCheck: Yup.bool()
             .required('Required'),
@@ -109,13 +109,13 @@ function MileagePanel({ mileageData, departmentList, dispatch }) {
               editMileage({
                 mileageId: editId, 
                 description: values.description,
-                departmentId: values.departmentId,
+                deptId: values.deptId,
                 ccaCheck: values.ccaCheck,
                 societyCheck: values.societyCheck
               })
               :addMileage({
                 description: values.description,
-                departmentId: values.departmentId,
+                deptId: values.deptId,
                 ccaCheck: values.ccaCheck,
                 societyCheck: values.societyCheck
             })).then(()=>{
@@ -139,15 +139,15 @@ function MileagePanel({ mileageData, departmentList, dispatch }) {
                     <FormControl variant="outlined">
                       <InputLabel>Department</InputLabel>
                       <Select 
-                      name="departmentId" 
+                      name="deptId" 
                       label="Department" 
-                      value={initialValues.departmentId}
+                      value={initialValues.deptId}
                       style={{width: 400, marginBottom: 10}}
                       onChange={(e) => handleDepartmentChange(e)}>
                         {
                           departmentList.map((department, index) => {
                             return (
-                              <MenuItem key={index}  value={department.departmentId}>{department.name}</MenuItem>
+                              <MenuItem key={index}  value={department.deptId}>{department.name}</MenuItem>
                             )
                           })
                         }
@@ -227,7 +227,7 @@ function MileagePanel({ mileageData, departmentList, dispatch }) {
                     <Typography>{mileage.nameInitials}</Typography>
                   </TableCell> */}
                   <TableCell><Typography>{mileage.description}</Typography></TableCell>
-                  <TableCell><Typography>{mileage.departmentId}</Typography></TableCell>
+                  <TableCell><Typography>{mileage.deptId}</Typography></TableCell>
                   <TableCell><Typography>{mileage.ccaCheck ? "✔️" : "❌"}</Typography></TableCell>
                   <TableCell><Typography>{mileage.societyCheck ? "✔️" : "❌"}</Typography></TableCell>
                   <TableCell>

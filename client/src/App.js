@@ -62,7 +62,7 @@ function App({ user }) {
             <NavBar name={name} userType={userType} />
           }
           <Switch>
-            <Route path="/" exact component={isLoggedIn ? (userType === "CCA" ? RequestList : SocietyDashboard) : LoginPage}/>
+            <Route path="/" exact component={isLoggedIn ? (userType === "cca" ? RequestList : SocietyDashboard) : LoginPage}/>
             <Route path="/sponsor-mou" exact component={isLoggedIn ? SponsorForm : LoginPage}/>
             <Route path="/sponsor-mou/:mode/:id" component={isLoggedIn ? SponsorForm : LoginPage}/>
             <Route path="/change-password" exact component={isLoggedIn ? ChangePassword : LoginPage}/>

@@ -132,6 +132,12 @@ function CategoryPanel({categoryData, dispatch}) {
             upperBound: Yup.number()
             .required('Required')
             .min(0),
+            lowerSuggestionBound: Yup.number()
+            .required('Required')
+            .min(0),
+            upperSuggestionBound: Yup.number()
+            .required('Required')
+            .min(0),
           })}
           onSubmit={(values,{setSubmitting}) => {
             dispatch(editMode? 
@@ -139,12 +145,16 @@ function CategoryPanel({categoryData, dispatch}) {
                 categoryId: editId, 
                 name: values.name,
                 lowerBound: values.lowerBound,
-                upperBound: values.upperBound
+                upperBound: values.upperBound,
+                lowerSuggestionBound: values.lowerSuggestionBound,
+                upperSuggestionBound: values.upperSuggestionBound
               })
               :addCategory({
                 name: values.name,
                 lowerBound: values.lowerBound,
-                upperBound: values.upperBound
+                upperBound: values.upperBound,
+                lowerSuggestionBound: values.lowerSuggestionBound,
+                upperSuggestionBound: values.upperSuggestionBound
             })).then(()=>{
               setSubmitting(false)
             })
@@ -164,8 +174,17 @@ function CategoryPanel({categoryData, dispatch}) {
                   </Grid>
 
                   <Grid item style = {{width: 350, marginBottom: 10}}>
+                    <Field component={TextField} name="lowerSuggestionBound" required type="number" label="Lower Suggestion Bound"/>
+                  </Grid>
+
+                  <Grid item style = {{width: 350, marginBottom: 10}}>
                     <Field component={TextField} name="upperBound" required type="number" label="To (Upper Bound)"/>
                   </Grid>
+
+                  <Grid item style = {{width: 350, marginBottom: 10}}>
+                    <Field component={TextField} name="upperSuggestionBound" required type="number" label="Upper Suggestion Bound"/>
+                  </Grid>
+                  
                 </Grid>
               </DialogContent>
               {isSubmitting && <CircularProgress />}
@@ -203,8 +222,10 @@ function CategoryPanel({categoryData, dispatch}) {
               <TableHead >
                 <TableRow>
                   <TableCell>Name</TableCell>
-                  <TableCell>Lower Bound</TableCell>
-                  <TableCell>Upper Bound</TableCell>  
+                  <TableCell>Lower</TableCell>
+                  <TableCell>Lower Suggestion</TableCell>
+                  <TableCell>Upper</TableCell>  
+                  <TableCell>Upper Suggestion</TableCell>  
                 </TableRow>
               </TableHead>
                 
@@ -215,7 +236,9 @@ function CategoryPanel({categoryData, dispatch}) {
               
                   <TableCell><Typography>{category.name}</Typography></TableCell>
                   <TableCell><Typography>{category.lowerBound}</Typography></TableCell>
+                  <TableCell><Typography>{category.lowerSuggestionBound}</Typography></TableCell>
                   <TableCell><Typography>{category.upperBound}</Typography></TableCell>
+                  <TableCell><Typography>{category.upperSuggestionBound}</Typography></TableCell>
                   <TableCell>
                     <Button startIcon={<EditIcon/>} onClick={()=>handleEdit(category.categoryId)}> Edit</Button>
                   </TableCell>

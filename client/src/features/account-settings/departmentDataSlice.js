@@ -2,7 +2,7 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import { apiCaller } from "../../helpers"
 
 const initialState = {
-  departmentList: [{departmentId: 1, name: 'LUMUN'}],
+  departmentList: [{deptId: 1, name: 'LUMUN'}],
   isPending: true,
   error: null
 }
@@ -31,7 +31,7 @@ export const addDepartment = createAsyncThunk(
       name: name
     }, 201,
     (data) => {
-      return {departmentId: data.departmentId, departmentObject}
+      return {deptId: data.deptId, departmentObject}
     },
     rejectWithValue)   
     }
@@ -40,14 +40,14 @@ export const addDepartment = createAsyncThunk(
 export const editDepartment = createAsyncThunk(
   'departmentData/editDepartment',
   async (departmentObject, { rejectWithValue}) => {
-    const {departmentId, name } = departmentObject
+    const {deptId, name } = departmentObject
     let body = {
-      departmentId: departmentId,
+      id: deptId,
       name: name
     }
     return await apiCaller('/api/account/dept/edit', body, 203,
     (data) => {
-      return {departmentId, departmentObject}
+      return {deptId, departmentObject}
     },
     rejectWithValue)
   }
@@ -66,7 +66,7 @@ const departmentData = createSlice({
   extraReducers: {
     [addDepartment.fulfilled]: (state, action) => {
       state.departmentList.push({
-        departmentId: action.payload.departmentId, 
+        deptId: action.payload.deptId, 
         ...action.payload.departmentObject
       })
       state.error = 'Department Added Successfully'
@@ -78,7 +78,7 @@ const departmentData = createSlice({
     [editDepartment.fulfilled]: (state, action) => {
       let i = 0
       state.departmentList.forEach((obj,index) => {
-        if (obj.departmentId === action.payload.departmentId){
+        if (obj.deptId === action.payload.deptId){
           i = index
         }
       })

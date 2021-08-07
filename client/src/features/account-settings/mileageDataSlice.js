@@ -2,7 +2,7 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import { apiCaller } from "../../helpers"
 
 const initialState = {
-  mileageList: [{mileageId: 1, description: 'Contact the sponsor MoU for printing merchandise', departmentId: 1, ccaCheck: true, societyCheck: false}],
+  mileageList: [{mileageId: 1, description: 'Contact the sponsor MoU for printing merchandise', deptId: 1, ccaCheck: true, societyCheck: false}],
   isPending: true,
   error: null
 }
@@ -26,11 +26,12 @@ export const fetchMileages = createAsyncThunk(
 export const addMileage = createAsyncThunk(
   'mileageData/addMileage',
   async (mileageObject, { rejectWithValue }) => {
-    const {name, email, password} = mileageObject
+    const {description, checkdeptId, checkCCA, checkSociety} = mileageObject
     return await apiCaller('/account/category/create-mileage', {
-      name: name,
-      email: email,
-      password: password
+      description, 
+      checkdeptId, 
+      checkCCA, 
+      checkSociety
     }, 201,
     (data) => {
       return {mileageId: data.mileageId, mileageObject}
@@ -42,15 +43,15 @@ export const addMileage = createAsyncThunk(
 export const editMileage = createAsyncThunk(
   'mileageData/editMileage',
   async (mileageObject, { rejectWithValue}) => {
-    const {mileageId, name, email, password } = mileageObject
+    const {mileageId, description, checkdeptId, checkCCA, checkSociety } = mileageObject
     let body = {
-      mileageId: mileageId,
-      name: name,
-      email: email,
+      id: mileageId,
+      description, 
+      checkdeptId, 
+      checkCCA, 
+      checkSociety
     }
-    if (password !== undefined){
-      body = {...body, password: password}
-    }
+
     return await apiCaller('/account/category/edit-mileage', body, 203,
     (data) => {
       return {mileageId, mileageObject}

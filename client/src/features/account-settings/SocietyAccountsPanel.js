@@ -25,12 +25,6 @@ const useStyles = makeStyles({
   },
 })
 
-/**
-  The SocietyAccountsPanel Adds/Edits the data of a society, has fields with
-  validation for email, password, Name, Name Initials, president email, and patron email
-  
-  @param {String} societyData for creating account  
- */
 
 function SocietyAccountsPanel({societyData,dispatch}) {
   useEffect(() => {
@@ -59,8 +53,7 @@ function SocietyAccountsPanel({societyData,dispatch}) {
     let initialValues = {
       name:'',
       email: '',
-      password: '',
-      passwordRequired: !editMode,
+      initials: ''
     }
 
     if (editMode){
@@ -71,8 +64,7 @@ function SocietyAccountsPanel({societyData,dispatch}) {
           initialValues = {
           name: societyDetail.name,
           email: societyDetail.email,
-          password: societyDetail.password  ,
-          passwordRequired: !editMode,
+          initials: societyDetail.initials
         }
       }  
     }
@@ -95,21 +87,15 @@ function SocietyAccountsPanel({societyData,dispatch}) {
           validateOnChange={false} validateOnBlur={true}
           initialValues={initialValues}
           validationSchema={Yup.object({
-            passwordRequired: Yup.boolean(),
             email: Yup.string()
                 .email('Invalid Email Address')
                 .required('Required'),
-            password: Yup.string()
-            .min(8,'Must be at least 8 characters')
-            .max(30,'Must be atmost 30 characters')
-            .matches('^[a-zA-Z0-9]+$', 'All passwords must be alphanumeric (no special symbols).')
-            .when("passwordRequired", {
-              is: true,
-              then: Yup.string().required("Must enter a password for the new account")
-            }),
             name: Yup.string()
             .required('Required')
-            .max(50,'Must be atmost 50 characters')
+            .max(50,'Must be atmost 50 characters'),
+            initials: Yup.string()
+            .required('Required')
+            .max(10, 'Must be at most 10 characters'),
           })}
           onSubmit={(values,{setSubmitting}) => {
             dispatch(editMode? 
@@ -117,12 +103,12 @@ function SocietyAccountsPanel({societyData,dispatch}) {
                 societyId: editId, 
                 name: values.name,
                 email: values.email,
-                password: values.password
+                initials: values.initials,
               })
               :addSocietyAccount({
                 name: values.name,
                 email: values.email,
-                password: values.password
+                initials: values.initials,
             })).then(()=>{
               setSubmitting(false)
             })
@@ -136,14 +122,15 @@ function SocietyAccountsPanel({societyData,dispatch}) {
                   <Grid item style = {{width: 350, marginBottom: 10}}>
                     <Field component={TextField} name="name" required label="Name"/>
                   </Grid>
+
+                  <Grid item style = {{width: 350, marginBottom: 10}}>
+                    <Field component={TextField} name="initials" required label="Initials"/>
+                  </Grid>
                   
                   <Grid item style = {{width: 350, marginBottom: 10}}>
                     <Field component={TextField} name="email" type="email" required label="Email"/>    
                   </Grid>
 
-                  <Grid item style = {{width: 350, marginBottom: 10}}>
-                    <Field component={TextField} name="password" type="password" required label={editMode ? "New Password" : "Password"}/>    
-                  </Grid>
                 </Grid>
               </DialogContent>
               {isSubmitting && <CircularProgress />}
@@ -179,6 +166,7 @@ function SocietyAccountsPanel({societyData,dispatch}) {
               <TableHead >
                 <TableRow>
                   <TableCell>Society Name</TableCell>
+                  <TableCell>Society Initials</TableCell>
                   <TableCell>Society Email</TableCell>  
                 </TableRow>
               </TableHead>
@@ -187,9 +175,9 @@ function SocietyAccountsPanel({societyData,dispatch}) {
               {societyData.societyList.map((society,index) => (
                 societyData.isPending? <CircularProgress variant = "indeterminate"/>:
                 <TableRow key={index} style={{background: society.active ? theme.palette.action.hover : theme.palette.action.disabledBackground}}>
-                  {/* <TableCell component="th" scope="row">
-                    <Typography>{society.nameInitials}</Typography>
-                  </TableCell> */}
+                  <TableCell component="th" scope="row">
+                    <Typography>{society.initials}</Typography>
+                  </TableCell>
                   <TableCell><Typography>{society.name}</Typography></TableCell>
                   <TableCell><Typography>{society.email}</Typography></TableCell>
                   <TableCell>

@@ -42,8 +42,8 @@ function DepartmentPanel({departmentData, dispatch}) {
     setIsOpen (true)
   }
 
-  function handleEdit(departmentId){
-    setEditId(departmentId)
+  function handleEdit(deptId){
+    setEditId(deptId)
     setEditMode(true)  
     setIsOpen (true)
   }
@@ -56,7 +56,7 @@ function DepartmentPanel({departmentData, dispatch}) {
 
     if (editMode){
       const departmentDetail = departmentData.departmentList.find((department,index) =>{
-        return department.departmentId === editId
+        return department.deptId === editId
       })
       if (departmentDetail !== undefined){
           initialValues = {
@@ -90,7 +90,7 @@ function DepartmentPanel({departmentData, dispatch}) {
           onSubmit={(values,{setSubmitting}) => {
             dispatch(editMode? 
               editDepartment({
-                departmentId: editId, 
+                deptId: editId, 
                 name: values.name
               })
               :addDepartment({
@@ -152,7 +152,7 @@ function DepartmentPanel({departmentData, dispatch}) {
                 <TableRow key={index} style={{background: department.active ? theme.palette.action.hover : theme.palette.action.disabledBackground}}>
                   <TableCell><Typography>{department.name}</Typography></TableCell>
                   <TableCell>
-                    <Button startIcon={<EditIcon/>} onClick={()=>handleEdit(department.departmentId)}> Edit</Button>
+                    <Button startIcon={<EditIcon/>} onClick={()=>handleEdit(department.deptId)}> Edit</Button>
                   </TableCell>
                 </TableRow>
               ))}

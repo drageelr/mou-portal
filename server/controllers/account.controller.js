@@ -124,7 +124,7 @@ exports.createDUser = async (req, res, next) => {
             password: hFuncs.hash(password)
         });
 
-        sendAccountCreationEmail(params.email, params.name, password, 'DUser');
+        sendAccountCreationEmail(params.email, params.name, password, 'guser');
 
         res.json({
             statusCode: 200,

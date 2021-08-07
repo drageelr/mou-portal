@@ -98,32 +98,32 @@ function CCAAccountPanel({ccaDetails, dispatch}) {
       <FormControl component="fieldset" style={{marginLeft: "10%", marginBottom: 20}}>
         <FormGroup>
           <FormControlLabel
-            control={<Switch color="primary" size="small" checked={permissions.accountAccess} onChange={handlePermissionsChange} name="accountAccess"/>}
+            control={<Switch color="primary" size="small" checked={permissions.accountAccess} onChange={handlePermissionsChange} name="account"/>}
             label="Account Access"
             style={{marginBottom: 8}}
           />
           <FormControlLabel
-            control={<Switch color="primary" size="small" checked={permissions.approvalAccess} onChange={handlePermissionsChange} name="approvalAccess"/>}
+            control={<Switch color="primary" size="small" checked={permissions.approvalAccess} onChange={handlePermissionsChange} name="approval"/>}
             label="Approval Access"
             style={{marginBottom: 8}}
           />
           <FormControlLabel
-            control={<Switch color="primary" size="small" checked={permissions.reviewAccess} onChange={handlePermissionsChange} name="reviewAccess"/>}
+            control={<Switch color="primary" size="small" checked={permissions.reviewAccess} onChange={handlePermissionsChange} name="review"/>}
             label="Review Access"
             style={{marginBottom: 8}}
           />
           <FormControlLabel
-            control={<Switch color="primary" size="small" checked={permissions.cancelAccess} onChange={handlePermissionsChange} name="cancelAccess"/>}
+            control={<Switch color="primary" size="small" checked={permissions.cancelAccess} onChange={handlePermissionsChange} name="cancel"/>}
             label="Cancel Access"
             style={{marginBottom: 8}}
           />
           <FormControlLabel
-            control={<Switch color="primary" size="small" checked={permissions.logAccess} onChange={handlePermissionsChange} name="logAccess"/>}
+            control={<Switch color="primary" size="small" checked={permissions.logAccess} onChange={handlePermissionsChange} name="log"/>}
             label="View Logs of MoU"
             style={{marginBottom: 8}}
           />
           <FormControlLabel
-            control={<Switch color="primary" size="small" checked={permissions.categoryAccess} onChange={handlePermissionsChange} name="categoryAccess"/>}
+            control={<Switch color="primary" size="small" checked={permissions.categoryAccess} onChange={handlePermissionsChange} name="category"/>}
             label="Categories & Mileage Access"
             style={{marginBottom: 8}}
           />
@@ -142,16 +142,14 @@ function CCAAccountPanel({ccaDetails, dispatch}) {
       name: '',
       designation: '',
       email: '',
-      password: '',
-      passwordRequired: !editMode,
       permissions: {
-        accountAccess: true,
-        approvalAccess: true,
-        reviewAccess: true,
-        verifyAccess: true,
-        cancelAccess: true,
-        logAccess: true,
-        categoryAccess: true
+        account: true,
+        approval: true,
+        review: true,
+        verify: true,
+        cancel: true,
+        log: true,
+        category: true
       }
     }
 
@@ -161,9 +159,7 @@ function CCAAccountPanel({ccaDetails, dispatch}) {
       })
       if(ccaMember !== undefined){
         initialValues = {
-          ...ccaMember,
-          passwordRequired: !editMode,
-
+          ...ccaMember
         }
       }
     }
@@ -183,19 +179,10 @@ function CCAAccountPanel({ccaDetails, dispatch}) {
         validateOnChange={false} validateOnBlur={true}
         initialValues = {initialValues}
         validationSchema={Yup.object({
-          passwordRequired: Yup.boolean(),
           email: Yup.string()
             .email('Invalid Email Address')
             .max(50,'Atmost 50 characters')
             .required('Required'),
-          password: Yup.string()
-            .min(8,'Must be at least 8 characters')
-            .max(30,'Must be atmost 30 characters')
-            .matches('^[a-zA-Z0-9]+$', 'All passwords must be alphanumeric (no special symbols).')
-            .when("passwordRequired", {
-              is: true,
-              then: Yup.string().required("Must enter a password for the new account")
-            }),
           name: Yup.string()
             .required()
             .max(50,'Atmost 50 characters'),
@@ -210,13 +197,11 @@ function CCAAccountPanel({ccaDetails, dispatch}) {
               name: values.name,
               designation: values.designation,
               email: values.email,
-              password: values.password,
             })
             :addCCAAccount({
               name: values.name,
               designation: values.designation,
               email: values.email,
-              password: values.password,
               permissions: initialValues.permissions,
             })).then(() => {
               setSubmitting(false)
@@ -242,9 +227,6 @@ function CCAAccountPanel({ccaDetails, dispatch}) {
                     <Field style={{width: 235}} component={TextField} name="email" required label="Email"/>
                   </Grid>
 
-                  <Grid item>
-                    <Field style={{width: 235}} component={TextField} name="password" required type="password" label={editMode ? "New Password" : "Password"}/>
-                  </Grid>
                   <br/>
                 </Grid>
                 

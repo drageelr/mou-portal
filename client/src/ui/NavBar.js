@@ -63,7 +63,7 @@ export default function NavBar({name,  userType}) {
           <Grid container direction='row' justify="space-between" alignItems="center">
             
             <Grid item>
-            { userType==="CCA" &&
+            { userType==="cca" &&
               <IconButton edge="start" onClick={toggleDrawer} >
                 <MenuIcon />
               </IconButton>
@@ -92,7 +92,7 @@ export default function NavBar({name,  userType}) {
                 </Box>
               </Typography>
               {  
-                userType === "CCA" ? 
+                userType === "cca" ? 
                 <Link to='settings'>
                   <IconButton edge="end" style={{padding: 10, marginRight: 5}}>
                     <SettingsIcon/>
@@ -125,11 +125,11 @@ export default function NavBar({name,  userType}) {
         <Grid container direction="column" justify="flex-end">
           <Grid item>
             {
-              userType === "Society" &&
+              userType === "society" &&
               <RoundLinkButton link={'/sponsor-mou/fill'} icon={<EditIcon fontSize='large'/>} title={'New Sponsor MoU'}/>
             }
             {
-              userType === "Society" ?
+              userType === "society" ?
               <RoundLinkButton link={'/'} icon={<ListAltIcon fontSize='large'/>} title={'My Submissions'}/>
               :
               <RoundLinkButton link={'/request-list'} icon={<ListAltIcon fontSize='large'/>} title={'Submissions'}/>

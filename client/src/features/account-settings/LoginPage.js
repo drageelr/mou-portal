@@ -38,7 +38,7 @@ function LoginPage({error, dispatch, match, location}) {
   const classes = useStyles()
   const selectedBGStyle = {backgroundColor: "#25b6b0", color:"white", borderColor: "#F5FFFA"}
   const normalBGStyle = {backgroundColor: "#148a77", color:"white"}
-  const [userType, setUserType] = React.useState("CCA")
+  const [userType, setUserType] = React.useState("cca")
 
   // React.useEffect(() => {
   //   // dispatch(login({email: "lumun@lums.edu.pk", password: "Test12345", userType: "Society"}))
@@ -84,21 +84,21 @@ function LoginPage({error, dispatch, match, location}) {
 
             <ToggleButtonGroup size="medium" value={userType} exclusive>
               <ToggleButton
-              value="CCA" 
-              onClick={()=>setUserType("CCA")} 
-              style={userType==="CCA" ? selectedBGStyle : normalBGStyle}>
+              value="cca" 
+              onClick={()=>setUserType("cca")} 
+              style={userType==="cca" ? selectedBGStyle : normalBGStyle}>
                 CCA
               </ToggleButton>,
               <ToggleButton 
-              value="Society" 
-              onClick={()=>setUserType("Society")}
-              style={userType==="Society" ? selectedBGStyle : normalBGStyle}>
+              value="society" 
+              onClick={()=>setUserType("society")}
+              style={userType==="society" ? selectedBGStyle : normalBGStyle}>
                 Society
               </ToggleButton>
               <ToggleButton 
-              value="DUser" 
-              onClick={()=>setUserType("DUser")}
-              style={userType==="DUser" ? selectedBGStyle : normalBGStyle}>
+              value="guser" 
+              onClick={()=>setUserType("guser")}
+              style={userType==="guser" ? selectedBGStyle : normalBGStyle}>
                 Dept
               </ToggleButton>
             </ToggleButtonGroup>

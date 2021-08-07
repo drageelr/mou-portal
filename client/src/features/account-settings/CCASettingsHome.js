@@ -10,10 +10,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import { makeStyles, Container, Card } from '@material-ui/core';
 
-/**
-  The CCASettingsHome constitutes buttons for the following: Change Password, CCA Accounts,
-  Society Accounts, and Task Status Panel.
- */
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,

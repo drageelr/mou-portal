@@ -2,7 +2,7 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import { apiCaller } from "../../helpers"
 
 const initialState = {
-  duserList: [{duserId: 1, name: 'Hammad Nasir', departmentId: 1, email: 'hammad.nasir@lums.edu.pk', password: 'hammad123'}],
+  duserList: [{duserId: 1, name: 'Hammad Nasir', deptId: 1, email: 'hammad.nasir@lums.edu.pk'}],
   isPending: true,
   error: null
 }
@@ -26,11 +26,11 @@ export const fetchDUserAccounts = createAsyncThunk(
 export const addDUserAccount = createAsyncThunk(
   'duserData/addDUserAccount',
   async (duserObject, { rejectWithValue }) => {
-    const {name, email, password} = duserObject
+    const {name, email, deptId} = duserObject
     return await apiCaller('/api/account/duser/create', {
-      name: name,
-      email: email,
-      password: password
+      name,
+      email,
+      deptId
     }, 201,
     (data) => {
       return {duserId: data.duserId, duserObject}
@@ -42,15 +42,14 @@ export const addDUserAccount = createAsyncThunk(
 export const editDUserAccount = createAsyncThunk(
   'duserData/editDUserAccount',
   async (duserObject, { rejectWithValue}) => {
-    const {duserId, name, email, password } = duserObject
+    const {duserId, name, email, deptId } = duserObject
     let body = {
-      duserId: duserId,
-      name: name,
-      email: email,
+      id: duserId,
+      name,
+      email,
+      deptId
     }
-    if (password !== undefined){
-      body = {...body, password: password}
-    }
+
     return await apiCaller('/api/account/duser/edit', body, 203,
     (data) => {
       return {duserId, duserObject}

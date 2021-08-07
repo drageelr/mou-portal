@@ -7,7 +7,8 @@ const initialState = {
   password: "",
   name: "",
   designation: "",
-  userType: "CCA", // Society, DUser
+  initials: "",
+  userType: "cca", // society, guser
   isLoggedIn: false,
   themeColor: '#01bc8d',
   darkMode: false,
@@ -35,17 +36,42 @@ export const login = createAsyncThunk(
 
     let QUERY = '/api/auth/login';
 
-    return await apiCaller(QUERY, {email, password, userType}, 200,
+    return await apiCaller(QUERY, {email, password, type: userType}, 200,
     (data)=> {
+      const {token, name, designation, initials} = data.data;
       localStorage.setItem('token', data.token)
-
-      if (userType==="CCA"){
-        return {token: data.token, user: {email, userType, password, name: data.user.name,...data.user},}
+      
+      if (userType==="cca"){
+        return {token, email, userType, password, name, designation}
       }
-      else {
-        return {token: data.token, user: {email, userType, password, ...data.user},}
+      else if (userType == "society"){
+        return {token, email, userType, password, name, initials}
+      }
+      else if (userType == "guser"){
+        return {token, email, userType, password, name}
       }
     },rejectWithValue)
+  }
+)
+
+
+
+export const forgotPassword = createAsyncThunk(
+  'user/forgotPassword',
+  async({email, userType}, {getState, rejectWithValue}) => {
+    const {isPending} = getState().user
+    if (!isPending){
+      return
+    }
+
+    return await apiCaller('/api/auth/forgot-password', {
+      email,
+      type: userType,
+    }, 203,
+    (data) => {
+      return {email}
+    },
+    rejectWithValue)
   }
 )
 
@@ -53,16 +79,14 @@ export const login = createAsyncThunk(
 export const changePassword = createAsyncThunk(
   'user/changePassword',
   async({currentPassword, newPassword}, {getState, rejectWithValue}) => {
-    const {isPending, userType} = getState().user
+    const {isPending} = getState().user
     if (!isPending){
       return
     }
 
-    const QUERY = '/api/account/change-password'
-
-    return await apiCaller(QUERY, {
-      passwordCurrent: currentPassword,
-      passwordNew: newPassword,
+    return await apiCaller('/api/account/change-password', {
+      oldPassword: currentPassword,
+      newPassword: newPassword,
     }, 203,
     (data) => {
       return {newPassword}
@@ -70,6 +94,7 @@ export const changePassword = createAsyncThunk(
     rejectWithValue)
   }
 )
+
 
 
 const user = createSlice ({
@@ -93,6 +118,7 @@ const user = createSlice ({
     }
   },
   extraReducers: {
+    
     [login.pending]: (state, action) => {
       if (state.isPending === false) {
         state.isPending = true
@@ -101,8 +127,7 @@ const user = createSlice ({
     [login.fulfilled]: (state, action) => {
       if (state.isPending === true) {
         return {
-          ...action.payload.user,
-          token: action.payload.token,
+          ...action.payload,
           isLoggedIn: true,
           isPending: false,
           error: null
@@ -115,6 +140,8 @@ const user = createSlice ({
         state.error = action.payload
       }
     },
+    
+    
     [changePassword.pending]: (state, action) => {
       if (state.isPending === false) {
         state.isPending = true
@@ -122,11 +149,29 @@ const user = createSlice ({
     },
     [changePassword.fulfilled]: (state, action) => {
       if (state.isPending === true) {
-        state.password = action.payload
-        state.error = "Changed Password Successfully"
+        state.password = action.payload.newPassword
+        state.error = "Changed password successfully."
       }
     },
     [changePassword.rejected]: (state, action) => {
+      if (state.isPending === true) {
+        state.isPending = false
+        state.error = action.payload
+      }
+    },
+
+
+    [forgotPassword.pending]: (state, action) => {
+      if (state.isPending === false) {
+        state.isPending = true
+      }
+    },
+    [forgotPassword.fulfilled]: (state, action) => {
+      if (state.isPending === true) { 
+        state.error = "Password reset email sent to " + action.payload.email + " successfully."
+      }
+    },
+    [forgotPassword.rejected]: (state, action) => {
       if (state.isPending === true) {
         state.isPending = false
         state.error = action.payload

@@ -2,7 +2,7 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import { apiCaller } from "../../helpers"
 
 const initialState = {
-  societyList: [{societyId: 1, name: 'LUMUN', email: 'lumun@lums.edu.pk', password: 'lumun123'}],
+  societyList: [{societyId: 1, name: 'LUMS Model United Nations', initials: 'LUMUN', email: 'lumun@lums.edu.pk'}],
   isPending: true,
   error: null
 }
@@ -26,11 +26,11 @@ export const fetchSocietyAccounts = createAsyncThunk(
 export const addSocietyAccount = createAsyncThunk(
   'societyData/addSocietyAccount',
   async (societyObject, { rejectWithValue }) => {
-    const { name, email, password } = societyObject
+    const { name, initials, email } = societyObject
     return await apiCaller('/api/account/society/create', {
-      email: email,
-      password: password,
-      name: name
+      email,
+      initials,
+      name
     }, 201,
     (data) => {
       return {societyId: data.societyId, societyObject}
@@ -42,15 +42,14 @@ export const addSocietyAccount = createAsyncThunk(
 export const editSocietyAccount = createAsyncThunk(
   'societyData/editSocietyAccount',
   async (societyObject, { rejectWithValue}) => {
-    const {societyId, name, email, password} = societyObject
+    const {societyId, name, initials, email} = societyObject
     let body = {
-      societyId: societyId,
-      email: email,
-      name: name
+      id: societyId,
+      name,
+      initials,
+      email,
     }
-    if (password !== undefined){
-      body = {...body, password: password}
-    }
+
     return await apiCaller('/api/account/society/edit', body, 203,
     (data) => {
       return {societyId, societyObject}
