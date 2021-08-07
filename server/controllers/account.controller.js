@@ -275,6 +275,83 @@ exports.editDUser = async (req, res, next) => {
     }
 }
 
+exports.fetchCCA = async (req, res, next) => {
+    try {
+        let reqEntries = CCA.find();
+        let reqEntriesAccess = CCAAccess.find();
+
+        await Promise.all([reqEntries, reqEntriesAccess]);
+
+        const users = reqEntries.map(obj => hFuncs.duplicateObject(obj, ['id', 'name', 'designation', 'email', 'active'], true));
+        const userAccess = reqEntriesAccess.map(obj => hFuncs.duplicateObject(obj, ['id', 'account', 'approval', 'review', 'verify', 'cancel', 'log', 'category'], true));
+
+        res.json({
+            statusCode: 200,
+            message: 'CCA Accounts Fetched Successfully!',
+            data: {
+                users: users,
+                userAccess: userAccess
+            }
+        })
+    } catch(err) {
+        next(err);
+    }
+}
+
+exports.fetchSociety = async (req, res, next) => {
+    try {
+        let reqEntries = await Society.find();
+
+        const users = reqEntries.map(obj => hFuncs.duplicateObject(obj, ['id', 'name', 'initials', 'email', 'active'], true));
+
+        res.json({
+            statusCode: 200,
+            message: 'Society Accounts Fetched Successfully!',
+            data: {
+                users: users
+            }
+        })
+    } catch(err) {
+        next(err);
+    }
+}
+
+exports.fetchDepartment = async (req, res, next) => {
+    try {
+        let reqEntries = await Dept.find();
+
+        const departments = reqEntries.map(obj => hFuncs.duplicateObject(obj, ['id', 'name'], true));
+
+        res.json({
+            statusCode: 200,
+            message: 'Departments Fetched Successfully!',
+            data: {
+                departments: departments
+            }
+        })
+    } catch(err) {
+        next(err);
+    }
+}
+
+exports.fetchDUser = async (req, res, next) => {
+    try {
+        let reqEntries = await DUser.find();
+
+        const users = reqEntries.map(obj => hFuncs.duplicateObject(obj, ['id', 'deptId', 'name', 'email', 'active'], true));
+
+        res.json({
+            statusCode: 200,
+            message: 'DUser Accounts Fetched Successfully!',
+            data: {
+                users: users
+            }
+        })
+    } catch(err) {
+        next(err);
+    }
+}
+
 exports.changePassword = async (req, res, next) => {
     try {
         let params = req.body;

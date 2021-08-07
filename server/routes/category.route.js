@@ -45,7 +45,25 @@ router.post(
     categoryController.editMileage
 );
 
-// API 3.5: Add Mileage
+// API 3.5: Fetch Category
+router.post(
+    '/fetch',
+    validate(categoryValidation.fetchCategoryValidation, { keyByField: true }),
+    verfiyUser,
+    validateUserAccess,
+    categoryController.fetchCategory
+);
+
+// API 3.6: Fetch Mileage
+router.post(
+    '/fetch-mileage',
+    validate(categoryValidation.fetchMileageValidation, { keyByField: true }),
+    verfiyUser,
+    validateUserAccess,
+    categoryController.fetchMileage
+);
+
+// API 3.7: Add Mileage
 router.post(
     '/add-mileage',
     validate(categoryValidation.addMileageValidation, { keyByField: true }),
@@ -55,7 +73,7 @@ router.post(
     categoryController.addMileage
 );
 
-// API 3.6: Remove Mileage
+// API 3.8: Remove Mileage
 router.post(
     '/remove-mileage',
     validate(categoryValidation.removeMileageValidation, { keyByField: true }),

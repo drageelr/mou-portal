@@ -12,7 +12,7 @@ const userAccess = {
     '/api/account/society/edit': ['cca'],
     '/api/account/dept/edit': ['cca'],
     '/api/account/duser/edit': ['cca'],
-
+    
     // API 3: Category Management
     '/api/category/create': ['cca'],
     '/api/category/create-mileage': ['cca'],

@@ -95,7 +95,43 @@ router.post(
     accountController.editDUser
 );
 
-// API 2.10: Change Password
+// API 2.10: Fetch CCA
+router.post(
+    '/cca/fetch',
+    validate(accountValidation.fetchCCAValidation, { keyByField: true }),
+    verfiyUser,
+    validateUserAccess,
+    accountController.fetchCCA
+);
+
+// API 2.11: Fetch Society
+router.post(
+    '/society/fetch',
+    validate(accountValidation.fetchSocietyValidation, { keyByField: true }),
+    verfiyUser,
+    validateUserAccess,
+    accountController.fetchSociety
+);
+
+// API 2.12: Fetch Department
+router.post(
+    '/dept/fetch',
+    validate(accountValidation.fetchDepartmentValidation, { keyByField: true }),
+    verfiyUser,
+    validateUserAccess,
+    accountController.fetchDepartment
+);
+
+// API 2.13: Fetch DUser
+router.post(
+    '/duser/fetch',
+    validate(accountValidation.fetchDUserValidation, { keyByField: true }),
+    verfiyUser,
+    validateUserAccess,
+    accountController.fetchDUser
+);
+
+// API 2.14: Change Password
 router.post(
     '/change-password',
     validate(accountValidation.changePasswordValidation, { keyByField: true }),
@@ -103,7 +139,7 @@ router.post(
     accountController.changePassword
 );
 
-// API 2.11: Update Password
+// API 2.15: Update Password
 router.post(
     '/update-password',
     validate(accountValidation.updatePasswordValidation, { keyByField: true }),

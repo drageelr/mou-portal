@@ -3,6 +3,8 @@ const hFuncs = require('../services/helper-funcs');
 const Category = require('../models/category.model');
 const Mileage = require('../models/mileage.model');
 const CategoryMileage = require('../models/category-mileage.model');
+const { sequelize } = require('../services/sequelize');
+const { QueryTypes } = require('sequelize');
 
 exports.createCategory = async (req, res, next) => {
     try {
@@ -92,6 +94,49 @@ exports.editMileage = async (req, res, next) => {
             statusCode: 200,
             message: 'Mileage Update Successful!'
         });
+    } catch(err) {
+        next(err);
+    }
+}
+
+exports.fetchCategory = async (req, res, next) => {
+    try {
+        let reqEntries = await Category.find();
+
+        const categories = reqEntries.map(obj => hFuncs.duplicateObject(obj, ['id', 'name', 'lowerBound', 'upperBound', 'lowerSuggestionBound', 'upperSuggestionBound', 'active'], true));
+
+        res.json({
+            statusCode: 200,
+            message: 'Categories Fetched Successfully!',
+            data: {
+                categories: categories
+            }
+        })
+    } catch(err) {
+        next(err);
+    }
+}
+
+exports.fetchMileage = async (req, res, next) => {
+    try {
+        let params = req.body;
+        let reqEntries = undefined;
+
+        if (params.categoryId) {
+            reqEntries = await sequelize.query('SELECT * FROM Mileage WHERE id in (SELECT mileageId FROM Category_Mileage WHERE categoryId = ' + params.categoryId + ');', QueryTypes.SELECT);
+        } else {
+            reqEntries = await Mileage.find();
+        }
+
+        const mileages = reqEntries.map(obj => hFuncs.duplicateObject(obj, ['id', 'name', 'initials', 'email', 'active'], true));
+
+        res.json({
+            statusCode: 200,
+            message: 'Mileages Fetched Successfully!',
+            data: {
+                mileages: mileages
+            }
+        })
     } catch(err) {
         next(err);
     }
