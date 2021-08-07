@@ -33,8 +33,8 @@ export const addCCAAccount = createAsyncThunk(
       name,
       designation,
       // permissions
-    }, 201,
-    (data) => ({ccaId: data.data.id, ccaObject}),
+    }, 200,
+    (data) => ({ccaId: data.id, ccaObject}),
     rejectWithValue)
   }
 )
@@ -49,7 +49,19 @@ export const fetchCCAAccounts = createAsyncThunk(
     } 
 
     return await apiCaller('/api/account/cca/fetch', {}, 200,
-    (data) => ({isPending: false, error: '' , ccaList: data.userList}),
+    (data) => {
+      let {users, userAccess} = data;
+      let ccaList = []; // merge users and userAccess (permissions) arrays into one based on id
+
+      for(let i=0; i<users.length; i++) {
+        ccaList.push({
+        ...users[i], 
+        permissions: (userAccess.find((ua) => ua.id === users[i].id))
+        });
+      }
+
+      return {isPending: false, error: '' , ccaList}
+    },
     rejectWithValue)
   }
 )
@@ -66,7 +78,7 @@ export const editCCAAccount = createAsyncThunk(
       designation,
     }
 
-    return await apiCaller('/api/account/cca/edit', body, 203,
+    return await apiCaller('/api/account/cca/edit', body, 200,
     (data) => ({ccaId, ccaObject}),
     rejectWithValue)
   }
@@ -80,7 +92,7 @@ export const editCCAPermissions = createAsyncThunk(
     return await apiCaller('/api/account/cca/edit-access', {
       id: ccaId,
       ...permissions // account, approval, review, verify, cancel, log, category
-    }, 203,
+    }, 200,
     (data) => ({ccaId, permissions}),
     rejectWithValue)
   }

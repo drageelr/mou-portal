@@ -17,7 +17,7 @@ export const fetchDepartments = createAsyncThunk(
 
     return await apiCaller('/api/account/dept/fetch', {}, 200,
     (data) => {
-      return {isPending: false, error: '' , departmentList: data.userList}
+      return {isPending: false, error: '' , departmentList: data.departments}
     },
     rejectWithValue)
   }
@@ -29,9 +29,9 @@ export const addDepartment = createAsyncThunk(
     const { name } = departmentObject
     return await apiCaller('/api/account/dept/create', {
       name: name
-    }, 201,
+    }, 200,
     (data) => {
-      return {deptId: data.deptId, departmentObject}
+      return {deptId: data.id, departmentObject}
     },
     rejectWithValue)   
     }
@@ -45,7 +45,7 @@ export const editDepartment = createAsyncThunk(
       id: deptId,
       name: name
     }
-    return await apiCaller('/api/account/dept/edit', body, 203,
+    return await apiCaller('/api/account/dept/edit', body, 200,
     (data) => {
       return {deptId, departmentObject}
     },

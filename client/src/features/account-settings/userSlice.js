@@ -38,7 +38,7 @@ export const login = createAsyncThunk(
 
     return await apiCaller(QUERY, {email, password, type: userType}, 200,
     (data)=> {
-      const {token, name, designation, initials} = data.data;
+      const {token, name, designation, initials} = data;
       localStorage.setItem('token', data.token)
       
       if (userType==="cca"){
@@ -67,7 +67,7 @@ export const forgotPassword = createAsyncThunk(
     return await apiCaller('/api/auth/forgot-password', {
       email,
       type: userType,
-    }, 203,
+    }, 200,
     (data) => {
       return {email}
     },
@@ -87,7 +87,7 @@ export const changePassword = createAsyncThunk(
     return await apiCaller('/api/account/change-password', {
       oldPassword: currentPassword,
       newPassword: newPassword,
-    }, 203,
+    }, 200,
     (data) => {
       return {newPassword}
     },

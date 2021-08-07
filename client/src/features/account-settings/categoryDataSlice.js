@@ -17,7 +17,7 @@ export const fetchCategories = createAsyncThunk(
 
     return await apiCaller('/api/category/fetch', {}, 200,
     (data) => {
-      return {isPending: false, error: '' , categoryList: data.userList}
+      return {isPending: false, error: '' , categoryList: data.categories}
     },
     rejectWithValue)
   }
@@ -34,9 +34,9 @@ export const addCategory = createAsyncThunk(
       lowerSuggestionBound, 
       upperSuggestionBound, 
       active: true
-    }, 201,
+    }, 200,
     (data) => {
-      return {categoryId: data.categoryId, categoryObject}
+      return {categoryId: data.id, categoryObject}
     },
     rejectWithValue)   
   }
@@ -56,7 +56,7 @@ export const editCategory = createAsyncThunk(
       // active
     }
     
-    return await apiCaller('/api/category/edit', body, 203,
+    return await apiCaller('/api/category/edit', body, 200,
     (data) => {
       return {categoryId, categoryObject}
     },
@@ -73,9 +73,9 @@ export const addMileage = createAsyncThunk(
       mileageId: mileageId
     }
 
-    return await apiCaller('/api/category/add-mileage', body, 203,
+    return await apiCaller('/api/category/add-mileage', body, 200,
     (data) => {
-      return {categoryId, categoryObject}
+      return {categoryId, mileageId}
     },
     rejectWithValue)
   }
@@ -90,9 +90,9 @@ export const removeMileage = createAsyncThunk(
       mileageId: mileageId
     }
     
-    return await apiCaller('/api/category/remove-mileage', body, 203,
+    return await apiCaller('/api/category/remove-mileage', body, 200,
     (data) => {
-      return {categoryId, categoryObject}
+      return {categoryId, mileageId}
     },
     rejectWithValue)
   }
@@ -120,6 +120,7 @@ const categoryData = createSlice({
         state.error = action.payload
     },
 
+
     [editCategory.fulfilled]: (state, action) => {
       let i = 0
       state.categoryList.forEach((obj,index) => {
@@ -133,6 +134,9 @@ const categoryData = createSlice({
     [editCategory.rejected]: (state, action) => {
         state.error = action.payload
     },
+
+
+
     [fetchCategories.pending]: (state, action) => {
       if (state.isPending === false) {
         state.isPending = true
@@ -149,7 +153,28 @@ const categoryData = createSlice({
         state.isPending = false
         state.error = action.payload
       }
-    }
+    },
+
+
+    [addMileage.fulfilled]: (state, action) => {
+      state.categoryList.push({
+        categoryId: action.payload.categoryId, 
+        mileageId: action.payload.mileageId
+      })
+    },
+    [addMileage.rejected]: (state, action) => {
+        state.error = action.payload
+    },
+
+
+
+    [removeMileage.fulfilled]: (state, action) => {
+      
+    },
+    [removeMileage.rejected]: (state, action) => {
+        state.error = action.payload
+    },
+
   }
 })
 

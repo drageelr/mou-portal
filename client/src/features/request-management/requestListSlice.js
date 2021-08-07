@@ -31,7 +31,7 @@ export const changeFormStatus = createAsyncThunk(
   'requestListData/changeFormStatus',
   async ({submissionId, status, issue}, {rejectWithValue}) => {
     const body = issue === "" ? {submissionId, status} : {submissionId, status, issue} 
-    return await apiCaller('/api/submission/update-status', body, 203, 
+    return await apiCaller('/api/submission/update-status', body, 200, 
     (data) => ({submissionId, status}), 
     rejectWithValue)
   }

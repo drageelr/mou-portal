@@ -36,7 +36,7 @@ function ItemView({id, templateData, itemsData, submissionId, itemFilledIds, inR
     radio: -1,
     file: ''
   }
-  const data = itemData === undefined ? initialItemData[type] : itemData.data
+  const data = itemData === undefined ? initialItemData[type] : itemdata
   const [localData, setLocalData] = useState(data)
 
 

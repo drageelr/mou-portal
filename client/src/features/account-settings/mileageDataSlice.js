@@ -17,7 +17,7 @@ export const fetchMileages = createAsyncThunk(
 
     return await apiCaller('/account/category/fetch-mileage', {}, 200,
     (data) => {
-      return {isPending: false, error: '' , mileageList: data.userList}
+      return {isPending: false, error: '' , mileageList: data.mileages}
     },
     rejectWithValue)
   }
@@ -32,9 +32,9 @@ export const addMileage = createAsyncThunk(
       checkdeptId, 
       checkCCA, 
       checkSociety
-    }, 201,
+    }, 200,
     (data) => {
-      return {mileageId: data.mileageId, mileageObject}
+      return {mileageId: data.id, mileageObject}
     },
     rejectWithValue)   
     }
@@ -52,7 +52,7 @@ export const editMileage = createAsyncThunk(
       checkSociety
     }
 
-    return await apiCaller('/account/category/edit-mileage', body, 203,
+    return await apiCaller('/account/category/edit-mileage', body, 200,
     (data) => {
       return {mileageId, mileageObject}
     },

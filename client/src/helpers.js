@@ -32,7 +32,7 @@ export async function apiCaller(api, body, successCode, dataReturner, rejectWith
         ? `${data.statusCode}: ${data.message} - ${JSON.stringify(data.error.details).replace(/[[]\{}"'\\]+/g, '').split(':').pop()}`
         : `${data.statusCode}: ${data.message}`) 
       }
-      return dataReturner(data)
+      return dataReturner(data.data)
     }
     throw new Error(`${res.status}, ${res.statusText}`) 
   }

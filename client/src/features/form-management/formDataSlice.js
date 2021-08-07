@@ -91,7 +91,7 @@ export const addComment = createAsyncThunk(
     return await apiCaller('/api/submission/cca/add-comment', {
       submissionId, 
       note
-    }, 203, 
+    }, 200, 
     (data) => {
       return {submissionId, note}
     }, 
@@ -117,7 +117,7 @@ export const uploadFile = createAsyncThunk(
       const res = await fetch('/api/file/upload', req_init)
       if (res.ok) {
         const data = await res.json()
-        if (data.statusCode !==201) {
+        if (data.statusCode !==200) {
           throw new Error((data.error !== undefined) 
           ? `${data.statusCode}: ${data.message} - ${JSON.stringify(data.error.details).replace(/[[]{}"'\\]+/g, '').split(':').pop()}`
           : `${data.statusCode}: ${data.message}`) 

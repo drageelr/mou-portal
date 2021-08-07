@@ -17,7 +17,7 @@ export const fetchSocietyAccounts = createAsyncThunk(
 
     return await apiCaller('/api/account/society/fetch', {}, 200,
     (data) => {
-      return {isPending: false, error: '' , societyList: data.userList}
+      return {isPending: false, error: '' , societyList: data.users}
     },
     rejectWithValue)
   }
@@ -31,9 +31,9 @@ export const addSocietyAccount = createAsyncThunk(
       email,
       initials,
       name
-    }, 201,
+    }, 200,
     (data) => {
-      return {societyId: data.societyId, societyObject}
+      return {societyId: data.id, societyObject}
     },
     rejectWithValue)   
     }
@@ -50,7 +50,7 @@ export const editSocietyAccount = createAsyncThunk(
       email,
     }
 
-    return await apiCaller('/api/account/society/edit', body, 203,
+    return await apiCaller('/api/account/society/edit', body, 200,
     (data) => {
       return {societyId, societyObject}
     },
