@@ -17,7 +17,7 @@ const SMou = sequelize.define('SMou', {
     },
     categoryId: {
         type: DataTypes.INTEGER,
-        // allowNull: false,
+        allowNull: true,
         references: 'Category',
         referencesKey: 'id'
     },
@@ -36,6 +36,10 @@ const SMou = sequelize.define('SMou', {
     tax: {
         type: DataTypes.BOOLEAN,
         allowNull: false
+    },
+    pdf: {
+        type: DataTypes.STRING(50),
+        allowNull: true
     }
 }, {
     freezeTableName: true,
