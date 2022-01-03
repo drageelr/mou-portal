@@ -6,7 +6,6 @@ const SMouBenefit = sequelize.define('SMouBenefit', {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
-        autoIncrement: true
     },
     smouId: {
         type: DataTypes.INTEGER,
