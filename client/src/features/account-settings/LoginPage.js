@@ -40,10 +40,10 @@ function LoginPage({error, dispatch, match, location}) {
   const normalBGStyle = {backgroundColor: "#148a77", color:"white"}
   const [userType, setUserType] = React.useState("cca")
 
-  // React.useEffect(() => {
-  //   // dispatch(login({email: "lumun@lums.edu.pk", password: "Test12345", userType: "Society"}))
-  //   dispatch(login({email: "admin@lums.edu.pk", password: "Test12345", userType: "CCA"}))
-  // }, [])
+//   React.useEffect(() => {
+//     // dispatch(login({email: "lumun@lums.edu.pk", password: "Test12345", userType: "Society"}))
+//     dispatch(login({email: "admin@lums.edu.pk", password: "Test12345", userType: "CCA"}))
+//   }, [])
 
   return (
     <Container component="main" className={classes.root}>

@@ -83,4 +83,13 @@ router.post(
     categoryController.removeMileage
 );
 
+// API 3.9: Suggest Category
+router.post(
+    '/suggest',
+    validate(categoryValidation.suggestCategoryValidation, { keyByField: true }),
+    verfiyUser,
+    validateUserAccess,
+    categoryController.suggestCategory
+)
+
 module.exports = router;

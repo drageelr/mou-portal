@@ -4,7 +4,8 @@ const Category = require('../models/category.model');
 const Mileage = require('../models/mileage.model');
 const CategoryMileage = require('../models/category-mileage.model');
 const { sequelize } = require('../services/sequelize');
-const { QueryTypes } = require('sequelize');
+const { QueryTypes, fn, col, Op } = require('sequelize');
+const SMouBenefit = require('../models/smoubenefit.model');
 
 exports.createCategory = async (req, res, next) => {
     try {
@@ -181,6 +182,47 @@ exports.removeMileage = async (req, res, next) => {
             statusCode: 200,
             message: 'Mileage Deletion Successful!'
         });
+    } catch(err) {
+        next(err);
+    }
+}
+
+exports.suggestCategory = async (req, res, next) => {
+    try {
+        let params = req.body;
+
+        let reqSMouBenefitSum = await SMouBenefit.findAll({
+            where: {
+                smouId: params.smouId
+            },
+            attributes: [
+                [fn('sum', col('value')), 'sum']
+            ]
+        });
+
+        let reqCategory = await Category.findAll({
+            where: {
+                [Op.and]: [
+                    {
+                        [Op.and]: [
+                            { lowerSuggestionBound: { [Op.lte]: reqSMouBenefitSum.sum } },
+                            { upperSuggestionBound: { [Op.gte]: reqSMouBenefitSum.sum } }
+                        ]
+                    },
+                    { active: true }
+                ]
+            }
+        })
+
+        res.json({
+            statusCode: 200,
+            message: 'Category Suggested Successfully!',
+            data: {
+                categories: reqCategory.map((obj) => {
+                    return {id: obj.id, name: obj.name, lowerBound: obj.lowerBound, upperBound: obj.upperBound}
+                })
+            }
+        })
     } catch(err) {
         next(err);
     }

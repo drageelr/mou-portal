@@ -66,3 +66,9 @@ exports.removeMileageValidation = {
         mileageId: Joi.number().integer().required()
     })
 };
+
+exports.suggestCategoryValidation = {
+    body: Joi.object({
+        smouId: Joi.number().integer().required()
+    })
+}

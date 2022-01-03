@@ -19,7 +19,15 @@ const userAccess = {
     '/api/category/edit': ['cca'],
     '/api/category/edit-mileage': ['cca'],
     '/api/category/add-mileage': ['cca'],
-    '/api/category/remove-mileage': ['cca']
+    '/api/category/remove-mileage': ['cca'],
+    '/api/category/suggest': ['society'],
+
+    // API 4: SMou Management
+    '/api/smou/create': ['society'],
+    '/api/smou/benefit-update': ['society'],
+    '/api/smou/benefit-fetch': ['society'],
+    '/api/smou/category-update': ['society'],
+    '/api/smou/category-fetch': ['society']
 };
 
 const ccaAccess = {

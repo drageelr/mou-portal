@@ -6,7 +6,6 @@ const SMouMileage = sequelize.define('SMouMileage', {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
-        autoIncrement: true
     },
     smouId: {
         type: DataTypes.INTEGER,
@@ -17,12 +16,15 @@ const SMouMileage = sequelize.define('SMouMileage', {
     },
     doneId: {
         type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    description: {
+        type: DataTypes.STRING(250),
         allowNull: false
     },
     checkDeptId: {
         type: DataTypes.INTEGER,
-        unique: true,
-        allowNull: false,
+        allowNull: true,
         references: 'Dept',
         referencesKey: 'id'
     },
