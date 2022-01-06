@@ -1,4 +1,11 @@
+if (require('dotenv').config()) {
+    console.log('ENV Vars loaded!');
+} else {
+    console.log('Failed to load ENV Vars!');
+}
+
 const express = require('express');
+
 const { testDBConnection } = require('./services/sequelize');
 const { errorHandler } = require('./errors/errorhandler');
 

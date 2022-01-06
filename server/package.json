@@ -9,6 +9,7 @@
     "@hapi/joi": "^17.1.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
+    "dotenv": "^10.0.0",
     "express": "~4.16.1",
     "express-validation": "^3.0.8",
     "generate-password": "^1.6.1",

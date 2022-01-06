@@ -51,3 +51,70 @@ exports.removeSMouMileageValidation = {
         mileageId: Joi.number().integer().required()
     })
 }
+
+exports.fetchSMouMileageValidation = {
+    body: Joi.object({
+        smouId: Joi.number().integer().required(),
+    })
+}
+
+exports.submitSMouValidation = {
+    body: Joi.object({
+        smouId: Joi.number().integer().required(),
+    })
+}
+
+exports.fetchSMouValidation = {
+    body: Joi.object({
+        smouId: Joi.number().integer().required(),
+    })
+}
+
+exports.reviewSMouValidation = {
+    body: Joi.object({
+        smouId: Joi.number().integer().required(),
+        comment: Joi.string().min(1).max(500)
+    })
+}
+
+exports.approveSMouValidation = {
+    body: Joi.object({
+        smouId: Joi.number().integer().required(),
+        comment: Joi.string().min(1).max(500)
+    })
+}
+
+exports.issueSMouValidation = {
+    body: Joi.object({
+        smouId: Joi.number().integer().required(),
+        comment: Joi.string().min(1).max(500)
+    })
+}
+
+exports.verifySMouValidation = {
+    body: Joi.object({
+        smouId: Joi.number().integer().required(),
+        comment: Joi.string().min(1).max(500)
+    })
+}
+
+exports.cancelSMouValidation = {
+    body: Joi.object({
+        smouId: Joi.number().integer().required(),
+        comment: Joi.string().min(1).max(500)
+    })
+}
+
+exports.fetchSMouLogValidation = {
+    body: Joi.object({
+        smouId: Joi.number().integer().required(),
+    })
+}
+
+exports.updateSMouMileageValidation = {
+    body: Joi.object({
+        smouId: Joi.number().integer().required(),
+        mileageId: Joi.number().integer().required(),
+        status: Joi.boolean().required()
+    })
+}

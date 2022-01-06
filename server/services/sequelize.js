@@ -14,7 +14,7 @@ const sequelize = new Sequelize(
 exports.testDBConnection = () => {
     sequelize.authenticate()
     .then(() => console.log('DB Connection Established!'))
-    .catch(() => console.log('Unable to Establish DB Connection!'));
+    .catch((err) => console.log('Unable to Establish DB Connection!', '\n', err));
 }
 
 exports.sequelize = sequelize;

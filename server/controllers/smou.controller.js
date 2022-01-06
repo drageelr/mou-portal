@@ -1,7 +1,7 @@
 const customError = require('../errors/errors');
 const hFuncs = require('../services/helper-funcs');
 const { sequelize } = require('../services/sequelize');
-const { Op } = require('sequelize');
+const { Op, QueryTypes } = require('sequelize');
 
 const { userTypeMap } = require('../services/constants');
 const CCAAccess = require('../models/ccaaccess.model');
@@ -141,6 +141,13 @@ exports.updateSMouCategory = async (req, res, next) => {
         let smouValidated = await validateSMouAccess(params.userObj.id, params.smouId);
         if (!smouValidated) throw new customError.ForbiddenAccessError("you are not allowed to access somone else's smou");
 
+        let reqSMouStatus = await SMouStatus.findOne({
+            where: {
+                smouId: params.smouId
+            }
+        });
+        if (reqSMouStatus.status != 'In Progress') throw new customError.ForbiddenAccessError("not allowed to update");
+
         let reqSMouBenefitSum = await SMouBenefit.findAll({
             where: {
                 smouId: params.smouId
@@ -230,10 +237,61 @@ exports.addSMouMileage = async (req, res, next) => {
         let smouValidated = await validateSMouAccess(params.userObj.id, params.smouId);
         if (!smouValidated) throw new customError.ForbiddenAccessError("you are not allowed to access somone else's smou");
 
-        await sequelize.query('INSERT INTO SMouMileage (id, smouId, doneId, description, checkDeptId, checkCCA, checkSociety) VALUES ()')
+        let reqSMouStatus = await SMouStatus.findOne({
+            where: {
+                smouId: params.smouId
+            }
+        });
+        if (reqSMouStatus.status != 'In Progress') throw new customError.ForbiddenAccessError("not allowed to update");
 
+        let newSMouMileageId = await sequelize.query('INSERT INTO SMouMileage (id, smouId, doneId, description, checkDeptId, checkCCA, checkSociety) VALUES (SELECT id + 1 FROM SMouMileage WHERE smouId = ' + params.smouId + ', ' + params.smouId + ', NULL, ' + params.description + ', NULL, FALSE, FALSE)', {type: QueryTypes.INSERT});
+
+        res.json({
+            statusCode: 200,
+            message: "SMou Mileage Added Successfully!",
+            data: {
+                id: newSMouMileageId
+            }
+        })
 
     } catch(err) {
         next(err);
     }
 }
+
+exports.removeSMouMileage = async (req, res, next) => {
+    try {
+        let params = req.body;
+
+        let smouValidated = await validateSMouAccess(params.userObj.id, params.smouId);
+        if (!smouValidated) throw new customError.ForbiddenAccessError("you are not allowed to access somone else's smou");
+
+        let reqSMouStatus = await SMouStatus.findOne({
+            where: {
+                smouId: params.smouId
+            }
+        });
+        if (reqSMouStatus.status != 'In Progress') throw new customError.ForbiddenAccessError("not allowed to update");
+
+        await SMouMileage.destroy({
+            where: {
+                [Op.and]: [
+                    {
+                        id: params.mileageId
+                    },
+                    {
+                        smouId: params.smouId
+                    }
+                ]
+            }
+        });
+
+        res.json({
+            statusCode: 200,
+            message: "SMou Mileage Removed Successfully!"
+        });
+    } catch(err) {
+        next(err);
+    }
+}
+

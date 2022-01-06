@@ -1,5 +1,5 @@
 const customError = require('../errors/errors');
-const CCAAccess = require('../models/ccaAccess.model');
+const CCAAccess = require('../models/ccaaccess.model');
 
 const userAccess = {
     // API 2: Account Management
@@ -27,7 +27,19 @@ const userAccess = {
     '/api/smou/benefit-update': ['society'],
     '/api/smou/benefit-fetch': ['society'],
     '/api/smou/category-update': ['society'],
-    '/api/smou/category-fetch': ['society']
+    '/api/smou/category-fetch': ['society'],
+    '/api/smou/mileage-add': ['society'],
+    '/api/smou/mileage-remove': ['society'],
+    '/api/smou/mileage-fetch': ['society', 'duser', 'cca'],
+    '/api/smou/submit': ['society'],
+    '/api/smou/fetch': ['cca'],
+    '/api/smou/review': ['cca'],
+    '/api/smou/approve': ['cca'],
+    '/api/smou/issue': ['cca'],
+    '/api/smou/verify': ['cca'],
+    '/api/smou/cancel': ['cca'],
+    '/api/smou/log-fetch': ['cca'],
+    '/api/smou/mileage-update': ['society', 'duser', 'cca'],
 };
 
 const ccaAccess = {
@@ -48,7 +60,14 @@ const ccaAccess = {
     '/api/category/edit': 'category',
     '/api/category/edit-mileage': 'category',
     '/api/category/add-mileage': 'category',
-    '/api/category/remove-mileage': 'category'
+    '/api/category/remove-mileage': 'category',
+
+    // API 4: SMou Mangement
+    '/api/smou/review': 'review',
+    '/api/smou/approve': 'approve',
+    '/api/smou/verify': 'verify',
+    '/api/smou/verify': 'cancel',
+    '/api/smou/log-fetch': 'log',
 };
 
 exports.validateUserAccess = (req, res, next) => {
@@ -77,7 +96,7 @@ exports.validateUserAccess = (req, res, next) => {
     }
 }
 
-exports.validateCCAAccess = (req, res, next) => {
+exports.validateCCAAccess = async (req, res, next) => {
     try {
         if (req.body.userObj.type === 'cca') {
             let reqCCAAccess = await CCAAccess.findOne({ where: { id: req.body.userObj.id } });

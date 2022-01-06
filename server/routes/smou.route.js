@@ -50,4 +50,128 @@ router.post(
     smouController.fetchSMouCategory
 );
 
+// API 4.6: Add SMou Mileage
+router.post(
+    '/mileage-add',
+    validate(smouValidation.addSMouMileageValidation, { keyByField: true }),
+    verfiyUser,
+    validateUserAccess,
+    smouController.addSMouMileage
+);
+
+// API 4.7: Remove SMou Mileage
+router.post(
+    '/mileage-remove',
+    validate(smouValidation.removeSMouMileageValidation, { keyByField: true }),
+    verfiyUser,
+    validateUserAccess,
+    smouController.removeSMouMileage
+);
+
+// -- NOT IMPLEMENTED BELOW --
+
+// API 4.8: Fetch SMou Mileage
+router.post(
+    '/mileage-fetch',
+    validate(smouValidation.fetchSMouMileageValidation, { keyByField: true }),
+    verfiyUser,
+    validateUserAccess,
+    // smouController.fetchSMouMileage
+);
+
+// API 4.9: Submit SMou
+router.post(
+    '/submit',
+    validate(smouValidation.submitSMouValidation, { keyByField: true }),
+    verfiyUser,
+    validateUserAccess,
+    // smouController.submitSMou
+);
+
+// API 4.10: Fetch SMou
+router.post(
+    '/fetch',
+    validate(smouValidation.fetchSMouValidation, { keyByField: true }),
+    verfiyUser,
+    // smouController.fetchSMou
+);
+
+// API 4.11: Review SMou
+router.post(
+    '/review',
+    validate(smouValidation.reviewSMouValidation, { keyByField: true }),
+    verfiyUser,
+    validateCCAAccess,
+    // smouController.reviewSMou
+);
+
+// API 4.12: Approve SMou
+router.post(
+    '/approve',
+    validate(smouValidation.removeSMouMileageValidation, { keyByField: true }),
+    verfiyUser,
+    validateCCAAccess,
+    // smouController.approveSMou
+);
+
+// API 4.13: Issue SMou
+router.post(
+    '/issue',
+    validate(smouValidation.issueSMouValidation, { keyByField: true }),
+    verfiyUser,
+    // smouController.issueSMou
+);
+
+// // API 4.14: PDF SMou
+// router.post(
+//     '/pdf',
+//     validate(),
+//     // Add another layer of verification here for the token
+//     // smouController.pdfSMou
+// );
+
+// // API 4.15: Sign SMou
+// router.post(
+//     '/sign',
+//     validate(),
+//     // Add another layer of verification here for the token
+//     // smouController.signSMou
+// );
+
+// API 4.16: Verify SMou
+router.post(
+    '/verify',
+    validate(smouValidation.verifySMouValidation, { keyByField: true }),
+    verfiyUser,
+    validateCCAAccess,
+    // smouController.verifySMou
+);
+
+// API 4.17: Cancel SMou
+router.post(
+    '/cancel',
+    validate(smouValidation.cancelSMouValidation, { keyByField: true }),
+    verfiyUser,
+    validateCCAAccess,
+    // smouController.cancelSMou
+);
+
+// API 4.18: Fetch SMou Log
+router.post(
+    '/log-fetch',
+    validate(smouValidation.fetchSMouLogValidation, { keyByField: true }),
+    verfiyUser,
+    validateCCAAccess,
+    // smouController.fetchSMouLog
+);
+
+// API 4.19: Update SMou Mileage
+router.post(
+    '/mielage-update',
+    validate(smouValidation.updateSMouMileageValidation, { keyByField: true }),
+    verfiyUser,
+    validateUserAccess,
+    // smouController.updateSMouMileage
+);
+
 module.exports = router;

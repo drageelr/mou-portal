@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../services/sequelize');
+const { sequelize } = require('../services/sequelize');
 
 const CCAAccess = sequelize.define('CCA_Access', {
     id: {
