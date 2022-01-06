@@ -12,8 +12,10 @@ const SMouComment = sequelize.define('SMouComment', {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
-        references: 'SMou',
-        referencesKey: 'id'
+        references: {
+            model: 'SMou',
+            key: 'id'
+        }
     },
     content: {
         type: DataTypes.STRING(500),
@@ -22,8 +24,10 @@ const SMouComment = sequelize.define('SMouComment', {
     ccaId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: 'CCA',
-        referencesKey: 'id'
+        references: {
+            model: 'CCA',
+            key: 'id'
+        }
     }
 }, {
     freezeTableName: true,

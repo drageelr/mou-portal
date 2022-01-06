@@ -16,8 +16,10 @@ const Mileage = sequelize.define('Mileage', {
     checkDeptId: {
         type: DataTypes.INTEGER,
         allowNull: true,
-        references: 'Dept',
-        referencesKey: 'id'
+        references: {
+            model: 'Dept',
+            key: 'id'
+        }
     },
     checkCCA: {
         type: DataTypes.BOOLEAN,

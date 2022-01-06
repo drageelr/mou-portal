@@ -7,8 +7,10 @@ const CCAAccess = sequelize.define('CCA_Access', {
         unique: true,
         primaryKey: true,
         allowNull: false,
-        references: 'CCA',
-        referencesKey: 'id'
+        references: {
+            model: 'CCA',
+            key: 'id'
+        }
     },
     account: {
         type: DataTypes.BOOLEAN,

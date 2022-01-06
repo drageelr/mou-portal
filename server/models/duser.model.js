@@ -14,8 +14,10 @@ const DUser = sequelize.define('DUser', {
         unique: true,
         primaryKey: true,
         allowNull: false,
-        references: 'Dept',
-        referencesKey: 'id'
+        references: {
+            model: 'Dept',
+            key: 'id'
+        }
     },
     name: {
         type: DataTypes.STRING(50),

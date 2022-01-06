@@ -11,8 +11,10 @@ const SMouBenefit = sequelize.define('SMouBenefit', {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
-        references: 'SMou',
-        referencesKey: 'id'
+        references: {
+            model: 'SMou',
+            key: 'id'
+        }
     },
     description: {
         type: DataTypes.STRING(250),

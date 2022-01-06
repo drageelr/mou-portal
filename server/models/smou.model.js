@@ -12,14 +12,18 @@ const SMou = sequelize.define('SMou', {
     societyId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: 'Society',
-        referencesKey: 'id'
+        references: {
+            model: 'Society',
+            key: 'id'
+        }
     },
     categoryId: {
         type: DataTypes.INTEGER,
         allowNull: true,
-        references: 'Category',
-        referencesKey: 'id'
+        references: {
+            model: 'Category',
+            key: 'id'
+        }
     },
     sponsorName: {
         type: DataTypes.STRING(50),

@@ -39,7 +39,7 @@ exports.createSMou = async (req, res, next) => {
             tax: params.tax
         });
 
-        await SMou.create({
+        await SMouMileage.create({
             smouId: newSMou.id,
             signed: false,
             status: 'In Progress'

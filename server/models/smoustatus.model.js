@@ -6,29 +6,34 @@ const SMouStatus = sequelize.define('SMouStatus', {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
-        references: 'SMou',
-        referencesKey: 'id'
+        references: {
+            model: 'SMou',
+            key: 'id'
+        }
     },
     reviewId: {
         type: DataTypes.INTEGER,
-        unique: true,
         allowNull: true,
-        references: 'CCA',
-        referencesKey: 'id'
+        references: {
+            model: 'CCA',
+            key: 'id'
+        }
     },
     approvalId: {
         type: DataTypes.INTEGER,
-        unique: true,
         allowNull: true,
-        references: 'CCA',
-        referencesKey: 'id'
+        references: {
+            model: 'CCA',
+            key: 'id'
+        }
     },
     verificationId: {
         type: DataTypes.INTEGER,
-        unique: true,
         allowNull: true,
-        references: 'CCA',
-        referencesKey: 'id'
+        references: {
+            model: 'CCA',
+            key: 'id'
+        }
     },
     signed: {
         type: DataTypes.BOOLEAN,
@@ -36,10 +41,11 @@ const SMouStatus = sequelize.define('SMouStatus', {
     },
     cancelId: {
         type: DataTypes.INTEGER,
-        unique: true,
         allowNull: true,
-        references: 'CCA',
-        referencesKey: 'id'
+        references: {
+            model: 'CCA',
+            key: 'id'
+        }
     },
     status: {
         type: DataTypes.STRING(50),
@@ -47,10 +53,11 @@ const SMouStatus = sequelize.define('SMouStatus', {
     },
     commentId: {
         type: DataTypes.INTEGER,
-        unique: true,
         allowNull: true,
-        references: 'SMouComment',
-        referencesKey: 'id'
+        references: {
+            model: 'CCA',
+            key: 'id'
+        }
     }
 }, {
     freezeTableName: true,

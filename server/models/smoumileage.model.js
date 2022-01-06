@@ -11,8 +11,10 @@ const SMouMileage = sequelize.define('SMouMileage', {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
-        references: 'SMou',
-        referencesKey: 'id'
+        references: {
+            model: 'SMou',
+            key: 'id'
+        }
     },
     doneId: {
         type: DataTypes.INTEGER,
@@ -25,8 +27,10 @@ const SMouMileage = sequelize.define('SMouMileage', {
     checkDeptId: {
         type: DataTypes.INTEGER,
         allowNull: true,
-        references: 'Dept',
-        referencesKey: 'id'
+        references: {
+            model: 'Dept',
+            key: 'id'
+        }
     },
     checkCCA: {
         type: DataTypes.BOOLEAN,

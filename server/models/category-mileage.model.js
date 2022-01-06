@@ -7,16 +7,20 @@ const CategoryMileage = sequelize.define('Category_Mileage', {
         unique: true,
         primaryKey: true,
         allowNull: false,
-        references: 'Category',
-        referencesKey: 'id'
+        references: {
+            model: 'Category',
+            key: 'id'
+        }
     },
     mileageId: {
         type: DataTypes.INTEGER,
         unique: true,
         primaryKey: true,
         allowNull: false,
-        references: 'Mileage',
-        referencesKey: 'id'
+        references: {
+            model: 'Mileage',
+            key: 'id'
+        }
     }
 }, {
     freezeTableName: true,
