@@ -156,7 +156,7 @@ exports.editCCA = async (req, res, next) => {
             plain: true
         });
 
-        if (!updatedEntry[0]) throw new customError.BadRequestError('unable to edit cca account');
+        if (!updatedEntry[1]) throw new customError.BadRequestError('unable to edit cca account');
         
         res.json({
             statusCode: 200,
