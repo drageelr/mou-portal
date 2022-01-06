@@ -110,6 +110,6 @@ exports.changePasswordValidation = {
 
 exports.updatePasswordValidation = {
     body: Joi.object({
-        password: Joi.string().min(8).max(30).required()
+        newPassword: Joi.string().min(8).max(30).required()
     })
 };

@@ -383,7 +383,9 @@ exports.updatePassword = async (req, res, next) => {
             plain: true
         });
 
-        if (!updateEntry[0]) throw new customError.BadRequestError('unable to update password');
+        console.log(updateEntry);
+
+        if (!updateEntry[1]) throw new customError.BadRequestError('unable to update password');
 
         res.json({
             statusCode: 200,
