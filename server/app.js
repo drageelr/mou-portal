@@ -1,4 +1,6 @@
-if (require('dotenv').config()) {
+const path = require('path');
+
+if (require('dotenv').config({ path: path.join(__dirname, '.env') })) {
     console.log('ENV Vars loaded!');
 } else {
     console.log('Failed to load ENV Vars!');

@@ -28,7 +28,7 @@ const DUser = sequelize.define('DUser', {
         allowNull: false
     },
     password: {
-        type: DataTypes.STRING(32),
+        type: DataTypes.STRING(64),
         allowNull: false
     },
     active: {
