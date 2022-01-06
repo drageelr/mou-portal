@@ -26,7 +26,7 @@ exports.testDBConnection = async () => {
                 name: "Hammad CCA",
                 designation: "HOD",
                 email: "22100278@lums.edu.pk",
-                password: "Test12345",
+                password: require('../services/helper-funcs').hash("Test12345"),
                 active: true
             });
     
