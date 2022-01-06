@@ -179,7 +179,7 @@ exports.editCCAAccess = async (req, res, next) => {
             plain: true
         });
 
-        if (!updatedEntry[0]) throw new customError.BadRequestError('unable to edit cca account access');
+        if (!updatedEntry[1]) throw new customError.BadRequestError('unable to edit cca account access');
         
         res.json({
             statusCode: 200,
@@ -208,7 +208,7 @@ exports.editSociety = async (req, res, next) => {
             plain: true
         });
 
-        if (!updatedEntry[0]) throw new customError.BadRequestError('unable to edit society account');
+        if (!updatedEntry[1]) throw new customError.BadRequestError('unable to edit society account');
         
         res.json({
             statusCode: 200,
@@ -229,7 +229,7 @@ exports.editDepartment = async (req, res, next) => {
             plain: true
         });
 
-        if (!updatedEntry[0]) throw new customError.BadRequestError('unable to edit department');
+        if (!updatedEntry[1]) throw new customError.BadRequestError('unable to edit department');
         
         res.json({
             statusCode: 200,
@@ -264,7 +264,7 @@ exports.editDUser = async (req, res, next) => {
             plain: true
         });
 
-        if (!updatedEntry[0]) throw new customError.BadRequestError('unable to edit duser account');
+        if (!updatedEntry[1]) throw new customError.BadRequestError('unable to edit duser account');
         
         res.json({
             statusCode: 200,
@@ -362,7 +362,7 @@ exports.changePassword = async (req, res, next) => {
             plain: true
         });
 
-        if (!updateEntry[0]) throw new customError.BadRequestError('invalid old password');
+        if (!updateEntry[1]) throw new customError.BadRequestError('invalid old password');
 
         res.json({
             statusCode: 200,
