@@ -13,7 +13,7 @@ exports.createCategoryValidation = {
 exports.createMileageValidation = {
     body: Joi.object({
         description: Joi.string().min(1).max(250).required(),
-        checkdeptId: Joi.number().integer().required(),
+        checkDeptId: Joi.number().integer().required(),
         checkCCA: Joi.boolean().required(),
         checkSociety: Joi.boolean().required()
     })
@@ -22,7 +22,7 @@ exports.createMileageValidation = {
 exports.editCategoryValidation = {
     body: Joi.object({
         id: Joi.number().integer().required(),
-        name: Joi.string().required().min(1).max(50),
+        name: Joi.string().min(1).max(50),
         lowerBound: Joi.number().integer(),
         upperBound: Joi.number().integer(),
         lowerSuggestionBound: Joi.number().integer(),
@@ -35,7 +35,7 @@ exports.editMileageValidation = {
     body: Joi.object({
         id: Joi.number().integer().required(),
         description: Joi.string().min(1).max(250),
-        checkdeptId: Joi.number().integer(),
+        checkDeptId: Joi.number().integer(),
         checkCCA: Joi.boolean(),
         checkSociety: Joi.boolean()
     })

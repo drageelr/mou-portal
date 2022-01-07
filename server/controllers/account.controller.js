@@ -251,7 +251,7 @@ exports.editDUser = async (req, res, next) => {
         }
 
         if (params.deptId) {
-            let newDept = await DUser.findOne({ where: { id: params.deptId } });
+            let newDept = await Dept.findOne({ where: { id: params.deptId } });
 
             if (!newDept) throw new customError.NotFoundError('department not found');
         }

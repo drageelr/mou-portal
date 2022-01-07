@@ -6,6 +6,8 @@ const CategoryMileage = require('../models/category-mileage.model');
 const { sequelize } = require('../services/sequelize');
 const { QueryTypes, fn, col, Op } = require('sequelize');
 const SMouBenefit = require('../models/smoubenefit.model');
+const Dept = require('../models/dept.model');
+const SMou = require('../models/smou.model');
 
 exports.createCategory = async (req, res, next) => {
     try {
@@ -35,9 +37,12 @@ exports.createMileage = async (req, res, next) => {
     try {
         let params = req.body;
 
+        if (params.checkDeptId <= 0)
+            params.checkDeptId = null;
+
         let newEntry = await Mileage.create({
             description: params.description,
-            checkdeptId: params.checkdeptId,
+            checkdeptId: params.checkDeptId,
             checkCCA: params.checkCCA,
             checkSociety: params.checkSociety
         });
@@ -66,7 +71,7 @@ exports.editCategory = async (req, res, next) => {
             plain: true
         });
 
-        if (!updatedEntry[0]) throw new customError.BadRequestError('unable to edit category');
+        if (!updatedEntry[1]) throw new customError.BadRequestError('unable to edit category');
 
         res.json({
             statusCode: 200,
@@ -81,7 +86,15 @@ exports.editMileage = async (req, res, next) => {
     try {
         let params = req.body;
 
-        let updateAttributes = hFuncs.duplicateObject(params, ['description', 'checkdeptId', 'checkCCA', 'checkSociety'], true);
+        if (params.checkDeptId > 0) {
+            let newDept = await Dept.findOne({ where: { id: params.checkDeptId } });
+
+            if (!newDept) throw new customError.NotFoundError('department not found');
+        } else if (params.checkDeptId <= 0) {
+            params.checkDeptId = null;
+        }
+
+        let updateAttributes = hFuncs.duplicateObject(params, ['description', 'checkDeptId', 'checkCCA', 'checkSociety'], true);
 
         let updatedEntry = await Mileage.update(updateAttributes, {
             where: { id: params.id },
@@ -89,7 +102,7 @@ exports.editMileage = async (req, res, next) => {
             plain: true
         });
 
-        if (!updatedEntry[0]) throw new customError.BadRequestError('unable to edit category');
+        if (!updatedEntry[1]) throw new customError.BadRequestError('unable to edit category');
 
         res.json({
             statusCode: 200,
@@ -124,12 +137,14 @@ exports.fetchMileage = async (req, res, next) => {
         let reqEntries = undefined;
 
         if (params.categoryId) {
-            reqEntries = await sequelize.query('SELECT * FROM Mileage WHERE id in (SELECT mileageId FROM Category_Mileage WHERE categoryId = ' + params.categoryId + ');', QueryTypes.SELECT);
+            let [result, _] = await sequelize.query('SELECT * FROM Mileage WHERE id in (SELECT mileageId FROM Category_Mileage WHERE categoryId = ' + params.categoryId + ');', QueryTypes.SELECT);
+
+            reqEntries = result;
         } else {
             reqEntries = await Mileage.findAll();
         }
 
-        const mileages = reqEntries.map(obj => hFuncs.duplicateObject(obj, ['id', 'name', 'initials', 'email', 'active'], true));
+        const mileages = reqEntries.map(obj => hFuncs.duplicateObject(obj, ['id', 'description', 'checkDeptId', 'checkCCA', 'checkSociety'], true));
 
         res.json({
             statusCode: 200,
@@ -147,12 +162,12 @@ exports.addMileage = async (req, res, next) => {
     try {
         let params = req.body;
 
-        let reqCategory = Category.findOne({ where: { id: params.categoryId } });
-        let reqMileage = Mileage.findOne({ where: { id: params.mileageId } });
+        // let reqCategory = Category.findOne({ where: { id: params.categoryId } });
+        // let reqMileage = Mileage.findOne({ where: { id: params.mileageId } });
 
-        let duplicateEntry = CategoryMileage.findOne({ where: { categoryId: params.categoryId, mileageId: params.mileageId } });
+        // let duplicateEntry = CategoryMileage.findOne({ where: { categoryId: params.categoryId, mileageId: params.mileageId } });
     
-        await Promise.all([reqCategory, reqMileage, duplicateEntry]);
+        let [reqCategory, reqMileage, duplicateEntry] = await Promise.all([Category.findOne({ where: { id: params.categoryId } }), Mileage.findOne({ where: { id: params.mileageId } }), CategoryMileage.findOne({ where: { categoryId: params.categoryId, mileageId: params.mileageId } })]);
 
         if (!reqCategory || !reqMileage) throw new customError.NotFoundError('category or mileage not does not exist');
 
@@ -190,6 +205,9 @@ exports.removeMileage = async (req, res, next) => {
 exports.suggestCategory = async (req, res, next) => {
     try {
         let params = req.body;
+
+        let reqSMou = await SMou.findOne({ where: id: params.smouId });
+        if (!reqSMou) throw new customError.NotFoundError("smou not found");
 
         let reqSMouBenefitSum = await SMouBenefit.findAll({
             where: {
