@@ -206,7 +206,7 @@ exports.suggestCategory = async (req, res, next) => {
     try {
         let params = req.body;
 
-        let reqSMou = await SMou.findOne({ where: id: params.smouId });
+        let reqSMou = await SMou.findOne({ where: { id: params.smouId } });
         if (!reqSMou) throw new customError.NotFoundError("smou not found");
 
         let reqSMouBenefitSum = await SMouBenefit.findAll({
