@@ -253,7 +253,7 @@ exports.editDUser = async (req, res, next) => {
         if (params.deptId) {
             let newDept = await DUser.findOne({ where: { id: params.deptId } });
 
-            if (!deptId) throw new customError.NotFoundError('department not found');
+            if (!newDept) throw new customError.NotFoundError('department not found');
         }
 
         let updateAttributes = hFuncs.duplicateObject(params, ['name', 'initials', 'email', 'deptId'], true);
