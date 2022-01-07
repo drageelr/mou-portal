@@ -277,10 +277,7 @@ exports.editDUser = async (req, res, next) => {
 
 exports.fetchCCA = async (req, res, next) => {
     try {
-        let reqEntries = CCA.find();
-        let reqEntriesAccess = CCAAccess.find();
-
-        await Promise.all([reqEntries, reqEntriesAccess]);
+        let [reqEntries, reqEntriesAccess] = await Promise.all([CCA.findAll(), CCAAccess.findAll()]);
 
         const users = reqEntries.map(obj => hFuncs.duplicateObject(obj, ['id', 'name', 'designation', 'email', 'active'], true));
         const userAccess = reqEntriesAccess.map(obj => hFuncs.duplicateObject(obj, ['id', 'account', 'approval', 'review', 'verify', 'cancel', 'log', 'category'], true));
@@ -300,7 +297,7 @@ exports.fetchCCA = async (req, res, next) => {
 
 exports.fetchSociety = async (req, res, next) => {
     try {
-        let reqEntries = await Society.find();
+        let reqEntries = await Society.findAll();
 
         const users = reqEntries.map(obj => hFuncs.duplicateObject(obj, ['id', 'name', 'initials', 'email', 'active'], true));
 
@@ -318,7 +315,7 @@ exports.fetchSociety = async (req, res, next) => {
 
 exports.fetchDepartment = async (req, res, next) => {
     try {
-        let reqEntries = await Dept.find();
+        let reqEntries = await Dept.findAll();
 
         const departments = reqEntries.map(obj => hFuncs.duplicateObject(obj, ['id', 'name'], true));
 
@@ -336,7 +333,7 @@ exports.fetchDepartment = async (req, res, next) => {
 
 exports.fetchDUser = async (req, res, next) => {
     try {
-        let reqEntries = await DUser.find();
+        let reqEntries = await DUser.findAll();
 
         const users = reqEntries.map(obj => hFuncs.duplicateObject(obj, ['id', 'deptId', 'name', 'email', 'active'], true));
 

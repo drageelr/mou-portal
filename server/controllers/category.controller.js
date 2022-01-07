@@ -102,7 +102,7 @@ exports.editMileage = async (req, res, next) => {
 
 exports.fetchCategory = async (req, res, next) => {
     try {
-        let reqEntries = await Category.find();
+        let reqEntries = await Category.findAll();
 
         const categories = reqEntries.map(obj => hFuncs.duplicateObject(obj, ['id', 'name', 'lowerBound', 'upperBound', 'lowerSuggestionBound', 'upperSuggestionBound', 'active'], true));
 
@@ -126,7 +126,7 @@ exports.fetchMileage = async (req, res, next) => {
         if (params.categoryId) {
             reqEntries = await sequelize.query('SELECT * FROM Mileage WHERE id in (SELECT mileageId FROM Category_Mileage WHERE categoryId = ' + params.categoryId + ');', QueryTypes.SELECT);
         } else {
-            reqEntries = await Mileage.find();
+            reqEntries = await Mileage.findAll();
         }
 
         const mileages = reqEntries.map(obj => hFuncs.duplicateObject(obj, ['id', 'name', 'initials', 'email', 'active'], true));
