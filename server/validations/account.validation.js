@@ -42,13 +42,13 @@ exports.editCCAValidation = {
 exports.editCCAAccessValidation = {
     body: Joi.object({
         id: Joi.number().integer().required(),
-        account: Joi.boolean().required(),
-        approval: Joi.boolean().required(),
-        review: Joi.boolean().required(),
-        verify: Joi.boolean().required(),
-        cancel: Joi.boolean().required(),
-        log: Joi.boolean().required(),
-        category: Joi.boolean().required(),
+        account: Joi.boolean(),
+        approval: Joi.boolean(),
+        review: Joi.boolean(),
+        verify: Joi.boolean(),
+        cancel: Joi.boolean(),
+        log: Joi.boolean(),
+        category: Joi.boolean(),
     })
 };
 
