@@ -173,7 +173,7 @@ exports.editCCAAccess = async (req, res, next) => {
 
         let updateAttributes = hFuncs.duplicateObject(params, ['account', 'appproval', 'review', 'verify', 'cancel', 'log', 'category'], true);
 
-        let updatedEntry = await CCA.update(updateAttributes, {
+        let updatedEntry = await CCAAccess.update(updateAttributes, {
             where: { id: params.id },
             returning: true,
             plain: true
