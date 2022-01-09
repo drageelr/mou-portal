@@ -4,7 +4,6 @@ const { sequelize } = require('../services/sequelize');
 const CategoryMileage = sequelize.define('Category_Mileage', {
     categoryId: {
         type: DataTypes.INTEGER,
-        unique: true,
         primaryKey: true,
         allowNull: false,
         references: {
@@ -14,7 +13,6 @@ const CategoryMileage = sequelize.define('Category_Mileage', {
     },
     mileageId: {
         type: DataTypes.INTEGER,
-        unique: true,
         primaryKey: true,
         allowNull: false,
         references: {

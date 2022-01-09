@@ -1,7 +1,7 @@
 const customError = require('../errors/errors');
 const hFuncs = require('../services/helper-funcs');
 const { sequelize } = require('../services/sequelize');
-const { Op, QueryTypes } = require('sequelize');
+const { fn, col, Op, QueryTypes } = require('sequelize');
 
 const { userTypeMap } = require('../services/constants');
 const CCAAccess = require('../models/ccaaccess.model');
@@ -162,14 +162,14 @@ exports.updateSMouCategory = async (req, res, next) => {
                 [Op.and]: [
                     {
                         [Op.and]: [
-                            { categoryId: params.categoryId },
+                            { id: params.categoryId },
                             { active: true }
                         ]
                     },
                     {
                         [Op.and]: [
-                            { lowerSuggestionBound: { [Op.lte]: reqSMouBenefitSum.sum } },
-                            { upperSuggestionBound: { [Op.gte]: reqSMouBenefitSum.sum } }
+                            { lowerSuggestionBound: { [Op.lte]: reqSMouBenefitSum[0].dataValues.sum } },
+                            { upperSuggestionBound: { [Op.gte]: reqSMouBenefitSum[0].dataValues.sum } }
                         ]
                     }
                 ]
@@ -191,7 +191,7 @@ exports.updateSMouCategory = async (req, res, next) => {
             })
         ]);
 
-        await sequelize.query('SET @num=0; INSERT INTO SMouMileage SELECT @num := @num+1 AS id, ' + params.smouId + ' AS smouId, null AS doneId, description, checkDeptId, checkCCA, checkSociety FROM Mileage WHERE Mileage.id IN (SELECT mileageId FROM Category_Mileage WHERE categoryId = ' + reqCategory.id + ')');
+        await sequelize.query('SET @num=0;\nINSERT INTO SMouMileage (id, smouId, doneId, description, checkDeptId, checkCCA, checkSociety)\nSELECT @num := @num+1 AS id, ' + params.smouId + ' AS smouId, null AS doneId, description, checkDeptId, checkCCA, checkSociety\nFROM Mileage\nWHERE Mileage.id IN (SELECT mileageId FROM Category_Mileage WHERE categoryId = ' + reqCategory.id + ');');
 
         res.json({
             statusCode: 200,
