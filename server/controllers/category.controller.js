@@ -218,13 +218,15 @@ exports.suggestCategory = async (req, res, next) => {
             ]
         });
 
+        console.log(reqSMouBenefitSum[0].dataValues.sum);
+
         let reqCategory = await Category.findAll({
             where: {
                 [Op.and]: [
                     {
                         [Op.and]: [
-                            { lowerSuggestionBound: { [Op.lte]: reqSMouBenefitSum.sum } },
-                            { upperSuggestionBound: { [Op.gte]: reqSMouBenefitSum.sum } }
+                            { lowerSuggestionBound: { [Op.lte]: reqSMouBenefitSum[0].dataValues.sum } },
+                            { upperSuggestionBound: { [Op.gte]: reqSMouBenefitSum[0].dataValues.sum } }
                         ]
                     },
                     { active: true }
