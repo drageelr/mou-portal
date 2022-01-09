@@ -218,8 +218,6 @@ exports.suggestCategory = async (req, res, next) => {
             ]
         });
 
-        console.log(reqSMouBenefitSum[0].dataValues.sum);
-
         let reqCategory = await Category.findAll({
             where: {
                 [Op.and]: [
