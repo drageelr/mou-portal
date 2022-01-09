@@ -215,6 +215,8 @@ exports.fetchSMouCategory = async (req, res, next) => {
             }
         });
 
+        if (!reqCategory) throw new customError.NotFoundError("no category attached");
+
         res.json({
             statusCode: 200,
             message: "SMou Category Fetched Successfully!",
